@@ -26,7 +26,7 @@
       background-color: var(--bg-color);
       color: var(--text-white);
       margin: 0;
-      padding: 30px 20px;
+      padding: 20px 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -37,11 +37,11 @@
     /* 🔴🔵🟡 FRIENDS LOGO HEADER */
     .friends-header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .friends-title {
-      font-size: 3.2rem;
+      font-size: 3rem;
       font-weight: 900;
       letter-spacing: 6px;
       margin: 0;
@@ -66,37 +66,40 @@
       font-style: italic;
       color: var(--border-gold);
       font-size: 1.1rem;
-      margin-top: 6px;
+      margin-top: 4px;
       font-weight: bold;
     }
 
-    /* 🎛️ TOP CONTROL TOOLBAR */
+    /* 🎛️ TOP CONTROL TOOLBAR (STRICT SINGLE ROW) */
     .control-toolbar {
       width: 100%;
-      max-width: 1050px;
+      max-width: 1180px;
       border: 2px solid var(--border-gold);
-      background-color: rgba(43, 17, 62, 0.7);
+      background-color: rgba(43, 17, 62, 0.85);
       border-radius: 40px;
-      padding: 10px 18px;
+      padding: 8px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
+      gap: 6px;
+      flex-wrap: nowrap; /* Prevents wrapping */
+      margin-bottom: 25px;
+      overflow-x: auto;
     }
 
     .btn {
       border: none;
-      padding: 10px 16px;
+      padding: 8px 12px;
       border-radius: 20px;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
       transition: transform 0.1s ease, filter 0.2s ease;
+      flex-shrink: 0;
     }
 
     .btn:hover { filter: brightness(1.15); }
@@ -112,11 +115,50 @@
       border: 2px solid var(--border-gold);
       color: #fff;
       font-weight: bold;
-      font-size: 1.2rem;
-      padding: 6px 18px;
+      font-size: 1.1rem;
+      padding: 5px 14px;
       border-radius: 12px;
-      min-width: 50px;
+      min-width: 45px;
       text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* 🚀 LOBBY / START SCREEN CARD */
+    .lobby-card {
+      width: 100%;
+      max-width: 850px;
+      border: 3px solid var(--border-gold);
+      background-color: var(--card-bg);
+      border-radius: 24px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .lobby-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--border-gold);
+      margin-bottom: 15px;
+    }
+
+    .lobby-join-box {
+      background: rgba(0,0,0,0.3);
+      border: 2px dashed var(--border-gold);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .btn-start-game {
+      font-size: 1.4rem;
+      padding: 14px 40px;
+      border-radius: 30px;
+      margin: 20px auto 0 auto;
+      box-shadow: 0 0 20px rgba(255, 208, 0, 0.4);
     }
 
     /* 🏷️ ROUND BADGE */
@@ -129,7 +171,7 @@
       font-size: 0.95rem;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       box-shadow: 0 0 15px rgba(255, 208, 0, 0.3);
     }
 
@@ -143,11 +185,11 @@
       padding: 35px 30px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
 
     .question-text {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 800;
       line-height: 1.4;
       margin-bottom: 30px;
@@ -199,7 +241,7 @@
     /* 🦶 BOTTOM STATUS FOOTER */
     .footer-bar {
       width: 100%;
-      max-width: 1050px;
+      max-width: 1180px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -217,7 +259,6 @@
 
     @media (max-width: 768px) {
       .options-grid { grid-template-columns: 1fr; }
-      .control-toolbar { justify-content: center; }
       .friends-title { font-size: 2.2rem; }
     }
   </style>
@@ -234,7 +275,7 @@
 
   <!-- 🎛️ CONTROL TOOLBAR -->
   <div class="control-toolbar">
-    <button class="btn btn-yellow" onclick="playAudio('theme')">🎷 FRIENDS THEME ► Play</button>
+    <button class="btn btn-yellow" onclick="playAudio()">🎷 FRIENDS THEME ► Play</button>
     <button class="btn btn-red" onclick="stopAudio()">⏹ Stop All</button>
     
     <div class="timer-box" id="timer-display">0</div>
@@ -246,23 +287,39 @@
     <button class="btn btn-yellow" onclick="nextQuestion()">Next Question ➡️</button>
   </div>
 
-  <!-- 🏷️ ROUND INDICATOR -->
-  <div class="round-badge" id="round-title">
-    LOADING QUESTIONS...
-  </div>
-
-  <!-- ❓ QUESTION DISPLAY BOX -->
-  <div class="question-card">
-    <div class="question-text" id="question-text">
-      Loading game dataset...
+  <!-- 1️⃣ START SCREEN / LOBBY VIEW -->
+  <div id="start-screen" class="lobby-card">
+    <div class="lobby-title">WELCOME TO FRIENDS TRIVIA!</div>
+    <p>Get your devices ready and connect to join the game session.</p>
+    
+    <div class="lobby-join-box">
+      📲 Players Join Here:<br>
+      <span style="color: var(--border-gold);">alicekeeler.github.io/friends-trivia/game/</span>
     </div>
 
-    <div class="options-grid" id="options-container"></div>
+    <button class="btn btn-yellow btn-start-game" onclick="startGame()">
+      🚀 START GAME
+    </button>
+  </div>
+
+  <!-- 2️⃣ GAME SCREEN (HIDDEN INITIALLY) -->
+  <div id="game-screen" style="display: none; width: 100%; display: flex; flex-direction: column; align-items: center;">
+    <div class="round-badge" id="round-title">
+      LOADING QUESTIONS...
+    </div>
+
+    <div class="question-card">
+      <div class="question-text" id="question-text">
+        Loading game dataset...
+      </div>
+
+      <div class="options-grid" id="options-container"></div>
+    </div>
   </div>
 
   <!-- 🦶 FOOTER BAR -->
   <div class="footer-bar">
-    <div class="footer-pill" id="join-url">
+    <div class="footer-pill">
       📲 Players Join: alicekeeler.github.io/friends-trivia/game/
     </div>
     <div class="footer-pill" id="audio-status">
@@ -270,20 +327,24 @@
     </div>
   </div>
 
-  <audio id="audio-player"></audio>
+  <!-- 🎵 AUDIO ENGINE -->
+  <audio id="audio-player" preload="auto"></audio>
 
   <script>
     const LEADERBOARD_URL = "Leaderboard.html";
     const JSON_PATH = "questions.json";
+    // Working Friends Theme Song Audio Stream
+    const THEME_AUDIO_URL = "https://ia800501.us.archive.org/33/items/TvThemeSongs-friends/Friends.mp3";
 
     let gameQuestions = [];
     let rawCategoriesData = [];
     let currentIndex = 0;
     let timerInterval = null;
     let secondsElapsed = 0;
+    let gameStarted = false;
 
-    // 📥 FETCH & INITIALIZE GAME
-    async function initGame() {
+    // 📥 FETCH DATASET ON LOAD
+    async function initDataset() {
       try {
         const response = await fetch(JSON_PATH);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
@@ -292,15 +353,14 @@
         buildRandomizedGame();
       } catch (err) {
         console.error("Error loading questions.json:", err);
-        document.getElementById('question-text').innerText = 
-          "Failed to load questions.json. Ensure file is saved in the same directory and served via a local web server (e.g. GitHub Pages or VS Code Live Server).";
       }
     }
 
     // 🎲 PICK ONE RANDOM QUESTION PER CATEGORY
     function buildRandomizedGame() {
+      if (!rawCategoriesData.length) return;
+
       gameQuestions = rawCategoriesData.map((cat, idx) => {
-        // Pick random question from array
         const randomQIndex = Math.floor(Math.random() * cat.questions.length);
         const selectedQ = cat.questions[randomQIndex];
 
@@ -308,17 +368,28 @@
           round: idx + 1,
           category: cat.category.toUpperCase(),
           q: selectedQ.q,
-          // Strip "A) ", "B) " prefixes if present so option text stays clean
           options: selectedQ.options.map(opt => opt.replace(/^[A-D]\)\s*/i, '')),
           answer: selectedQ.answer
         };
       });
 
       currentIndex = 0;
-      loadQuestion(0);
     }
 
-    // 🚀 DISPLAY CURRENT QUESTION
+    // 🚀 START GAME FROM LOBBY SCREEN
+    function startGame() {
+      gameStarted = true;
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('game-screen').style.display = 'flex';
+      
+      if (gameQuestions.length > 0) {
+        loadQuestion(0);
+      } else {
+        document.getElementById('question-text').innerText = "Failed to load questions.json. Check server setup.";
+      }
+    }
+
+    // ❓ DISPLAY CURRENT QUESTION
     function loadQuestion(index) {
       if (!gameQuestions.length) return;
 
@@ -342,7 +413,7 @@
 
     // 💡 REVEAL CORRECT ANSWER
     function revealAnswer() {
-      if (!gameQuestions.length) return;
+      if (!gameQuestions.length || !gameStarted) return;
       const qData = gameQuestions[currentIndex];
       const correctBtn = document.getElementById(`opt-${qData.answer}`);
       if (correctBtn) {
@@ -352,6 +423,7 @@
 
     // ➡️ NEXT QUESTION
     function nextQuestion() {
+      if (!gameStarted) return;
       if (currentIndex < gameQuestions.length - 1) {
         currentIndex++;
         loadQuestion(currentIndex);
@@ -362,12 +434,17 @@
 
     // 🔄 RESTART ROUND / GAME
     function restartRound() {
-      loadQuestion(currentIndex);
+      if (gameStarted) loadQuestion(currentIndex);
     }
 
     function restartGame() {
-      if (confirm("Restart game? This will pick a new set of random questions from questions.json!")) {
+      if (confirm("Restart game? This will return to the lobby and select new random questions!")) {
         buildRandomizedGame();
+        stopAudio();
+        resetTimer();
+        gameStarted = false;
+        document.getElementById('game-screen').style.display = 'none';
+        document.getElementById('start-screen').style.display = 'block';
       }
     }
 
@@ -393,18 +470,37 @@
       document.getElementById('timer-display').innerText = "0";
     }
 
-    // 🔊 AUDIO
-    function playAudio(type) {
-      document.getElementById('audio-status').innerText = "🔊 Playing: Friends Theme.mp3";
+    // 🔊 AUDIO ENGINE (REAL AUDIO PLAYBACK)
+    function playAudio() {
+      const audio = document.getElementById('audio-player');
+      const status = document.getElementById('audio-status');
+
+      if (!audio.src || audio.src === "") {
+        audio.src = THEME_AUDIO_URL;
+      }
+
+      audio.play().then(() => {
+        status.innerText = "🔊 Playing: Friends Theme";
+      }).catch(err => {
+        console.error("Audio playback error:", err);
+        status.innerText = "⚠️ Audio Error / Blocked";
+      });
     }
 
     function stopAudio() {
-      document.getElementById('audio-status').innerText = "🔇 Audio: Stopped";
+      const audio = document.getElementById('audio-player');
+      const status = document.getElementById('audio-status');
+      
+      audio.pause();
+      audio.currentTime = 0;
+      status.innerText = "🔇 Audio: Stopped";
     }
 
     // START ON LOAD
     window.onload = () => {
-      initGame();
+      // Hide game screen until user clicks Start Game
+      document.getElementById('game-screen').style.display = 'none';
+      initDataset();
     };
   </script>
 </body>
