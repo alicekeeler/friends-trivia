@@ -48,28 +48,22 @@
 
     <!-- ACTION BUTTONS -->
     <div class="flex items-center gap-2 flex-wrap">
-      
-      <!-- RESTART GAME BUTTON -->
       <button onclick="restartGame()" class="bg-red-600 hover:bg-red-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-red-300 shadow transition-all active:scale-95 flex items-center gap-1">
         ⏮️ Restart Game
       </button>
 
-      <!-- RESTART ROUND BUTTON -->
       <button onclick="restartRound()" class="bg-yellow-500 hover:bg-yellow-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-yellow-300 shadow transition-all active:scale-95 flex items-center gap-1">
         🔄 Restart Round
       </button>
 
-      <!-- REVEAL ANSWER BUTTON -->
       <button onclick="revealAnswer()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-green-300 shadow transition-all active:scale-95 flex items-center gap-1">
         💡 Reveal Answer
       </button>
 
-      <!-- LEADERBOARD BUTTON -->
       <button onclick="openLeaderboard()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-blue-300 shadow transition-all active:scale-95 flex items-center gap-1">
         🏆 Leaderboard
       </button>
 
-      <!-- NEXT QUESTION BUTTON -->
       <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-4 py-2 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95 flex items-center gap-1">
         Next Question ➡️
       </button>
@@ -175,10 +169,11 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    // AUDIO REGISTRY & AUDIO UNLOCKING SYSTEM
+    // AUDIO REGISTRY
     const audioFiles = [
       'friends.mp3',
       '30secondfriendsintro.mp3',
+      'i-got-a-question.mp3',
       'hello-you.mp3',
       'claps.mp3',
       'how-dumb-are-you.mp3',
@@ -190,22 +185,9 @@
     const audioPool = {};
     let isUnlocked = false;
 
-    // PRE-PRIME ALL AUDIO OBJECTS TO BYPASS AUTOPLAY RESTRICTIONS
+    // PRE-PRIME ALL AUDIO OBJECTS
     audioFiles.forEach(file => {
-      // Build relative and absolute root URLs
-      const primaryUrl = file;
-      const fallbackUrl = `/friends-trivia/${file}`;
-
-      const audio = new Audio(primaryUrl);
-      
-      // Fallback if primary path fails
-      audio.addEventListener('error', () => {
-        if (audio.src !== window.location.origin + fallbackUrl) {
-          audio.src = fallbackUrl;
-          audio.load();
-        }
-      });
-
+      const audio = new Audio(file);
       audioPool[file] = audio;
     });
 
@@ -213,13 +195,11 @@
       if (isUnlocked) return;
       isUnlocked = true;
 
-      // Prime all audio files on user click
       Object.keys(audioPool).forEach(key => {
-        const a = audioPool[key];
-        a.load();
+        audioPool[key].load();
       });
 
-      document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked & Ready";
+      document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked";
     }
 
     function playSound(filename) {
@@ -240,8 +220,8 @@
           document.getElementById('status-text').innerText = `Playing: ${filename}`;
           document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
         }).catch(err => {
-          console.warn(`Autoplay blocked or file missing: ${filename}`, err);
-          document.getElementById('status-text').innerText = `⚠️ Sound blocked or missing: ${filename}`;
+          console.warn(`Audio play blocked: ${filename}`, err);
+          document.getElementById('status-text').innerText = `⚠️ Audio blocked: ${filename}`;
         });
       }
     }
@@ -255,7 +235,7 @@
       });
     }
 
-    // QUESTION POOL
+    // COMPLETE 11-ROUND TOPIC POOL
     const topicPool = [
       {
         roundNumber: 1,
@@ -276,20 +256,128 @@
         ]
       },
       {
+        roundNumber: 2,
+        badge: "ROUND 2 OF 11: DRESS CODE & PROFESSIONAL IMAGE",
+        questions: [
+          {
+            id: "q2_a",
+            question: "Chandler shows up in leather pants. What is Orion's policy on business appropriate attire?",
+            options: ["Employees must maintain clean, professional dress standard", "Leather pants are mandatory on Thursdays", "Sweatpants are preferred attire", "Costumes are required daily"],
+            correctText: "Employees must maintain clean, professional dress standard"
+          },
+          {
+            id: "q2_b",
+            question: "Rachel wants to know: what is considered acceptable workplace footwear?",
+            options: ["Neat, safe, and professional footwear suitable for the job", "Barefoot at all times", "Flip-flops only", "Roller skates"],
+            correctText: "Neat, safe, and professional footwear suitable for the job"
+          }
+        ]
+      },
+      {
+        roundNumber: 3,
+        badge: "ROUND 3 OF 11: WORKPLACE SAFETY & HEALTH",
+        questions: [
+          {
+            id: "q3_a",
+            question: "Ross yells 'PIVOT!' on the stairs. What is the official Orion procedure for reporting workplace hazards?",
+            options: ["Report any unsafe condition to management immediately", "Yell louder until someone else fixes it", "Ignore it and pivot around it", "Post a meme on Slack"],
+            correctText: "Report any unsafe condition to management immediately"
+          }
+        ]
+      },
+      {
+        roundNumber: 4,
+        badge: "ROUND 4 OF 11: USE OF COMPANY EQUIPMENT",
+        questions: [
+          {
+            id: "q4_a",
+            question: "Joey uses the company laptop to stream Baywatch. Is personal use of company equipment permitted?",
+            options: ["Incidental personal use allowed if it does not interfere with work", "Strictly prohibited at all times", "Encouraged during staff meetings", "Only allowed if streaming sitcoms"],
+            correctText: "Incidental personal use allowed if it does not interfere with work"
+          }
+        ]
+      },
+      {
+        roundNumber: 5,
+        badge: "ROUND 5 OF 11: CONFIDENTIALITY & DATA PRIVACY",
+        questions: [
+          {
+            id: "q5_a",
+            question: "Phoebe accidentally mentions sensitive student records. What is Orion's stance on confidential data?",
+            options: ["Confidential information must be protected and never disclosed without authorization", "Share it if it's really interesting", "Post it in Central Perk", "Only disclose to family members"],
+            correctText: "Confidential information must be protected and never disclosed without authorization"
+          }
+        ]
+      },
+      {
         roundNumber: 6,
         badge: "ROUND 6 OF 11: DRUG FREE WORKPLACE",
         questions: [
           {
             id: "q6_a",
-            question: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
+            question: "Ross accidentally eats a 'special' brownie before work. What is Orion's policy on controlled substances?",
             options: ["Strictly drug-free workplace; prohibited on premises or while performing duties", "Allowed during lunch hours", "Allowed if brought in a Tupperware container", "Only prohibited on Mondays"],
             correctText: "Strictly drug-free workplace; prohibited on premises or while performing duties"
-          },
+          }
+        ]
+      },
+      {
+        roundNumber: 7,
+        badge: "ROUND 7 OF 11: HARASSMENT & DISCRIMINATION",
+        questions: [
           {
-            id: "q6_b",
-            question: "Phoebe brings unauthorized controlled substances near company premises. Is this permitted?",
-            options: ["Strictly prohibited on company premises or during work hours", "Permitted if shared with supervisors", "Permitted on Fridays after 3 PM", "Permitted in the coffee lounge"],
-            correctText: "Strictly prohibited on company premises or during work hours"
+            id: "q7_a",
+            question: "Joey uses his line 'How YOU doin'?' inappropriately. How does Orion handle workplace harassment?",
+            options: ["Zero-tolerance policy; all complaints are investigated promptly", "Allowed if said with a smile", "Handled via arm wrestling", "Ignored if it happens at coffee breaks"],
+            correctText: "Zero-tolerance policy; all complaints are investigated promptly"
+          }
+        ]
+      },
+      {
+        roundNumber: 8,
+        badge: "ROUND 8 OF 11: TIMEKEEPING & PAYROLL",
+        questions: [
+          {
+            id: "q8_a",
+            question: "Chandler forgets what his actual job is ('transponster'). How must employees record worked hours?",
+            options: ["Accurately log all actual hours worked using official timekeeping tools", "Estimate based on vibes", "Have Joey log your time", "Log 40 hours regardless of attendance"],
+            correctText: "Accurately log all actual hours worked using official timekeeping tools"
+          }
+        ]
+      },
+      {
+        roundNumber: 9,
+        badge: "ROUND 9 OF 11: LEAVE POLICIES & PTO",
+        questions: [
+          {
+            id: "q9_a",
+            question: "Monica takes 'WE WERE ON A BREAK' literally. How far in advance should PTO be requested?",
+            options: ["Submit requests as early as possible according to supervisor guidelines", "No notice required, just don't show up", "Shout it out in the hallway", "Send a postcard after you leave"],
+            correctText: "Submit requests as early as possible according to supervisor guidelines"
+          }
+        ]
+      },
+      {
+        roundNumber: 10,
+        badge: "ROUND 10 OF 11: PERFORMANCE & DEVELOPMENT",
+        questions: [
+          {
+            id: "q10_a",
+            question: "Rachel receives feedback on her performance evaluation. What is the main goal of Orion reviews?",
+            options: ["Encourage professional growth, goal setting, and constructive feedback", "To rank the gang in order of favorite Friends", "To eliminate coffee breaks", "To assign seating arrangements"],
+            correctText: "Encourage professional growth, goal setting, and constructive feedback"
+          }
+        ]
+      },
+      {
+        roundNumber: 11,
+        badge: "ROUND 11 OF 11: COMPANY VALUES & CULTURE",
+        questions: [
+          {
+            id: "q11_a",
+            question: "What core value defines the Orion team spirit?",
+            options: ["Collaboration, integrity, dedication, and supporting student success", "Unagi (total state of awareness)", "Never sharing food", "Singing Smelly Cat at meetings"],
+            correctText: "Collaboration, integrity, dedication, and supporting student success"
           }
         ]
       }
@@ -339,7 +427,7 @@
       document.getElementById('question-card').classList.add('hidden');
     }
 
-    function loadQuestion(index, delayMusicMs = 1200) {
+    function loadQuestion(index, delayMusicMs = 0) {
       if (activeGameQuestions.length === 0) initializeGameQueue();
 
       const q = activeGameQuestions[index];
@@ -361,7 +449,7 @@
       startTimer(delayMusicMs);
     }
 
-    function startTimer(delayMusicMs = 1200) {
+    function startTimer(delayMusicMs = 0) {
       clearInterval(timerInterval);
       clearTimeout(musicDelayTimeout);
 
@@ -369,9 +457,13 @@
       document.getElementById('timer-box').innerText = timer;
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
-      musicDelayTimeout = setTimeout(() => {
+      if (delayMusicMs === 0) {
         playSound('30secondfriendsintro.mp3');
-      }, delayMusicMs);
+      } else {
+        musicDelayTimeout = setTimeout(() => {
+          playSound('30secondfriendsintro.mp3');
+        }, delayMusicMs);
+      }
 
       timerInterval = setInterval(() => {
         timer--;
@@ -387,15 +479,14 @@
     }
 
     function nextQuestion() {
-      playSound('hello-you.mp3');
-
+      // Plays 30s music directly without vocal intro interruption
       if (currentQIndex === -1) {
         currentQIndex = 0;
       } else {
         currentQIndex = (currentQIndex + 1) % activeGameQuestions.length;
       }
 
-      loadQuestion(currentQIndex, 1200);
+      loadQuestion(currentQIndex, 0);
     }
 
     function restartRound() {
