@@ -14,16 +14,6 @@
 </head>
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 md:p-8 font-sans select-none" onclick="unlockAudioEngine()">
 
-  <!-- AUDIO ELEMENTS (ROOT FOLDER PRELOAD) -->
-  <audio id="snd-theme" src="friends.mp3" preload="auto"></audio>
-  <audio id="snd-timer" src="30secondfriendsintro.mp3" preload="auto"></audio>
-  <audio id="snd-timer-stop" src="enough-already.mp3" preload="auto"></audio>
-  <audio id="snd-reveal" src="claps.mp3" preload="auto"></audio>
-  <audio id="snd-question" src="i-got-a-question.mp3" preload="auto"></audio>
-  <audio id="snd-leaderboard" src="how-dumb-are-you.mp3" preload="auto"></audio>
-  <audio id="snd-restart-round" src="how-come-you-re-working-here.mp3" preload="auto"></audio>
-  <audio id="snd-restart-game" src="don-t-be-so-negative.mp3" preload="auto"></audio>
-
   <!-- FRIENDS-STYLE HEADER -->
   <header class="text-center my-2">
     <h1 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
@@ -41,7 +31,7 @@
     
     <!-- FRIENDS THEME & STOP ALL -->
     <div class="flex items-center space-x-2">
-      <button onclick="playAudio('snd-theme', 'friends.mp3', 'theme')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
         ☕ FRIENDS THEME ▶ Play
       </button>
       <button onclick="stopAllAudio()" class="bg-red-500 hover:bg-red-400 text-white font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95">
@@ -158,7 +148,7 @@
       </span>
     </div>
     <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow">
-      <span>🔊</span> <span id="status-text">Central Perk Audio Engine Ready</span>
+      <span>🔊</span> <span id="status-text">Central Perk Audio Engine Active</span>
     </div>
   </footer>
 
@@ -185,124 +175,82 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    const audioIds = [
-      'snd-theme', 'snd-timer', 'snd-timer-stop', 'snd-reveal', 
-      'snd-question', 'snd-leaderboard', 'snd-restart-round', 'snd-restart-game'
+    // AUDIO REGISTRY & AUDIO UNLOCKING SYSTEM
+    const audioFiles = [
+      'friends.mp3',
+      '30secondfriendsintro.mp3',
+      'hello-you.mp3',
+      'claps.mp3',
+      'how-dumb-are-you.mp3',
+      'don-t-be-so-negative.mp3',
+      'don-t-blame-the-questions.mp3',
+      'enough-already.mp3'
     ];
 
+    const audioPool = {};
     let isUnlocked = false;
-    let audioCtx = null;
 
-    function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
-    }
+    // PRE-PRIME ALL AUDIO OBJECTS TO BYPASS AUTOPLAY RESTRICTIONS
+    audioFiles.forEach(file => {
+      // Build relative and absolute root URLs
+      const primaryUrl = file;
+      const fallbackUrl = `/friends-trivia/${file}`;
+
+      const audio = new Audio(primaryUrl);
+      
+      // Fallback if primary path fails
+      audio.addEventListener('error', () => {
+        if (audio.src !== window.location.origin + fallbackUrl) {
+          audio.src = fallbackUrl;
+          audio.load();
+        }
+      });
+
+      audioPool[file] = audio;
+    });
 
     function unlockAudioEngine() {
       if (isUnlocked) return;
       isUnlocked = true;
-      getAudioContext();
 
-      // Pre-flight play & pause on DOM audio elements to unlock iOS/Chrome restrictions
-      audioIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.play().then(() => {
-            el.pause();
-            el.currentTime = 0;
-          }).catch(() => {});
-        }
+      // Prime all audio files on user click
+      Object.keys(audioPool).forEach(key => {
+        const a = audioPool[key];
+        a.load();
       });
 
-      document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked";
+      document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked & Ready";
     }
 
-    function playSynthFallback(soundType) {
-      try {
-        const ctx = getAudioContext();
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        if (soundType === 'question' || soundType === 'next') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(587.33, now);
-          osc.frequency.exponentialRampToValueAtTime(880, now + 0.2);
-          gain.gain.setValueAtTime(0.3, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-          osc.start(now);
-          osc.stop(now + 0.3);
-        } else if (soundType === 'reveal' || soundType === 'claps') {
-          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-            const o = ctx.createOscillator();
-            const g = ctx.createGain();
-            o.connect(g);
-            g.connect(ctx.destination);
-            o.frequency.value = freq;
-            g.gain.setValueAtTime(0.2, now + (idx * 0.08));
-            g.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.08) + 0.3);
-            o.start(now + (idx * 0.08));
-            o.stop(now + (idx * 0.08) + 0.3);
-          });
-        } else if (soundType === 'timer_stop') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(220, now);
-          osc.frequency.linearRampToValueAtTime(110, now + 0.4);
-          gain.gain.setValueAtTime(0.3, now);
-          gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
-          osc.start(now);
-          osc.stop(now + 0.4);
-        } else {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(440, now);
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-          osc.start(now);
-          osc.stop(now + 0.25);
-        }
-      } catch(e) {
-        console.error("Synth playback error:", e);
-      }
-    }
-
-    function playAudio(elementId, filename, synthType = 'default') {
+    function playSound(filename) {
       unlockAudioEngine();
       stopAllAudio();
 
-      const el = document.getElementById(elementId);
-      if (el) {
-        el.currentTime = 0;
-        const promise = el.play();
+      let audio = audioPool[filename];
+      if (!audio) {
+        audio = new Audio(filename);
+        audioPool[filename] = audio;
+      }
 
-        if (promise !== undefined) {
-          promise.then(() => {
-            document.getElementById('status-text').innerText = `Playing: ${filename}`;
-            document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
-          }).catch(err => {
-            console.warn(`File ${filename} failed to play from root. Playing synth.`, err);
-            document.getElementById('status-text').innerText = `🔊 Playing Synth Sound (${filename} missing/blocked)`;
-            document.getElementById('status-indicator').className = "text-yellow-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-500/40 shadow";
-            playSynthFallback(synthType);
-          });
-        }
-      } else {
-        playSynthFallback(synthType);
+      audio.currentTime = 0;
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          document.getElementById('status-text').innerText = `Playing: ${filename}`;
+          document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
+        }).catch(err => {
+          console.warn(`Autoplay blocked or file missing: ${filename}`, err);
+          document.getElementById('status-text').innerText = `⚠️ Sound blocked or missing: ${filename}`;
+        });
       }
     }
 
     function stopAllAudio() {
-      audioIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.pause();
-          el.currentTime = 0;
+      Object.keys(audioPool).forEach(key => {
+        if (audioPool[key]) {
+          audioPool[key].pause();
+          audioPool[key].currentTime = 0;
         }
       });
     }
@@ -422,7 +370,7 @@
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
       musicDelayTimeout = setTimeout(() => {
-        playAudio('snd-timer', '30secondfriendsintro.mp3', 'timer');
+        playSound('30secondfriendsintro.mp3');
       }, delayMusicMs);
 
       timerInterval = setInterval(() => {
@@ -433,13 +381,13 @@
         }
         if (timer <= 0) {
           clearInterval(timerInterval);
-          playAudio('snd-timer-stop', 'enough-already.mp3', 'timer_stop');
+          playSound('enough-already.mp3');
         }
       }, 1000);
     }
 
     function nextQuestion() {
-      playAudio('snd-question', 'i-got-a-question.mp3', 'question');
+      playSound('hello-you.mp3');
 
       if (currentQIndex === -1) {
         currentQIndex = 0;
@@ -452,12 +400,12 @@
 
     function restartRound() {
       if (currentQIndex === -1) return;
-      playAudio('snd-restart-round', 'how-come-you-re-working-here.mp3', 'next');
+      playSound('don-t-blame-the-questions.mp3');
       loadQuestion(currentQIndex, 1800);
     }
 
     function restartGame() {
-      playAudio('snd-restart-game', 'don-t-be-so-negative.mp3', 'next');
+      playSound('don-t-be-so-negative.mp3');
 
       if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
         initializeGameQueue();
@@ -469,7 +417,7 @@
     function revealAnswer() {
       if (currentQIndex === -1) return;
       clearTimeout(musicDelayTimeout);
-      playAudio('snd-reveal', 'claps.mp3', 'reveal');
+      playSound('claps.mp3');
 
       const q = activeGameQuestions[currentQIndex];
       if (!q) return;
@@ -483,7 +431,7 @@
     }
 
     async function openLeaderboard() {
-      playAudio('snd-leaderboard', 'how-dumb-are-you.mp3', 'reveal');
+      playSound('how-dumb-are-you.mp3');
 
       document.getElementById('leaderboard-modal').classList.remove('hidden');
       const listContainer = document.getElementById('leaderboard-list');
