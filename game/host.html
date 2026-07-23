@@ -501,6 +501,7 @@
 
       timer = 30;
       document.getElementById('timer-box').innerText = timer;
+      // Set to purple initially
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
       if (delayMusicMs === 0) {
@@ -514,9 +515,12 @@
       timerInterval = setInterval(() => {
         timer--;
         document.getElementById('timer-box').innerText = timer;
-        if (timer <= 5) {
+        
+        // 🔴 FIX 1: Turn red at 10 seconds and don't overwrite every second
+        if (timer === 10) {
           document.getElementById('timer-box').className = "bg-red-900 border-2 border-red-400 text-red-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner animate-pulse";
         }
+        
         if (timer <= 0) {
           clearInterval(timerInterval);
           playSound('enough-already.mp3');
@@ -546,7 +550,8 @@
       if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
         initializeGameQueue();
         showWelcomeScreen();
-        fetch(`${SCRIPT_URL}?action=reset`).catch(() => {});
+        // 🔴 FIX 2: Added mode: 'no-cors' so Google doesn't block the spreadsheet reset request!
+        fetch(`${SCRIPT_URL}?action=reset`, { mode: 'no-cors' }).catch(err => console.error("Reset failed:", err));
       }
     }
 
