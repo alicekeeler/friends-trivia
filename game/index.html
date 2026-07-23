@@ -2,400 +2,206 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Orion Friends Trivia - Central Perk Lounge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friends Trivia - Player Screen</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700;900&family=Permanent+Marker&display=swap" rel="stylesheet">
-  
   <style>
-    body {
-      font-family: 'Fredoka', sans-serif;
-      background: radial-gradient(circle at center, #3B124D 0%, #1A0524 100%);
-    }
-    .chalk-font { font-family: 'Permanent Marker', cursive; }
-    
-    .brick-pattern {
-      background-color: #2a1130;
-      background-image: radial-gradient(#3a1743 1.5px, transparent 0);
-      background-size: 18px 18px;
-    }
-
-    .central-perk-green { background-color: #0d3b2e; }
-    .couch-orange { background-color: #C85A17; }
-    .door-purple { background-color: #4A154B; }
-    
-    .yellow-frame {
-      border: 4px solid #F2C94C;
-      box-shadow: 0 0 18px rgba(242, 201, 76, 0.4), inset 0 0 8px rgba(242, 201, 76, 0.2);
-    }
-
-    .chalkboard-card {
-      background-color: #17221E;
-      border: 2px solid #2A3B34;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-
+    .purple-door { background-color: #2D0A3E; }
     .friends-dot-red { color: #E11D48; }
     .friends-dot-blue { color: #2563EB; }
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="brick-pattern text-white min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none" onclick="unlockAudioEngine()">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans select-none">
 
-  <!-- HEADER -->
-  <header class="max-w-xl w-full mx-auto text-center mb-2 relative">
-    <div class="absolute right-0 top-0 flex items-center space-x-1.5 bg-black/60 px-2.5 py-1 rounded-full border border-yellow-400/40 text-[10px]">
-      <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-      <span id="conn-text" class="text-yellow-300 font-bold">Live 🟢</span>
-    </div>
-
-    <div class="pt-2">
-      <!-- ORION LOGO -->
-      <h1 class="text-2xl sm:text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 uppercase drop-shadow-md">
-        <span>O</span><span class="friends-dot-red">•</span>
-        <span>R</span><span class="friends-dot-blue">•</span>
-        <span>I</span><span class="friends-dot-yellow">•</span>
-        <span>O</span><span class="friends-dot-red">•</span>
-        <span>N</span>
-      </h1>
-      
-      <!-- FRIENDS LOGO -->
-      <h2 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 uppercase drop-shadow-md -mt-1">
-        <span>F</span><span class="friends-dot-red">•</span>
-        <span>R</span><span class="friends-dot-blue">•</span>
-        <span>I</span><span class="friends-dot-yellow">•</span>
-        <span>E</span><span class="friends-dot-red">•</span>
-        <span>N</span><span class="friends-dot-blue">•</span>
-        <span>D</span><span class="friends-dot-yellow">•</span>
-        <span>S</span>
-      </h2>
-
-      <div class="inline-block couch-orange text-amber-100 px-3.5 py-0.5 rounded-full text-xs font-bold shadow mt-1 tracking-wide border border-amber-300/40">
-        ☕ Central Perk Player Lounge ☕
-      </div>
-    </div>
+  <!-- FRIENDS-STYLE HEADER -->
+  <header class="text-center my-2">
+    <h1 class="text-3xl sm:text-4xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
+      <span>O</span><span class="friends-dot-red">•</span>
+      <span>R</span><span class="friends-dot-blue">•</span>
+      <span>I</span><span class="friends-dot-yellow">•</span>
+      <span>O</span><span class="friends-dot-red">•</span>
+      <span>N</span>
+    </h1>
+    <p class="text-yellow-400 italic text-xs sm:text-sm font-bold tracking-widest mt-1">Team Player Screen ☕</p>
   </header>
 
-  <!-- MAIN GAME CONTAINER -->
-  <main class="max-w-xl w-full mx-auto my-auto space-y-3.5">
+  <!-- TOP TEAM STATUS BAR -->
+  <div id="team-status-bar" class="max-w-md w-full mx-auto bg-purple-950/90 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex items-center justify-between gap-2 mb-4 hidden">
+    <div class="flex items-center space-x-2 truncate">
+      <span class="text-lg">👥</span>
+      <span id="display-team-name" class="font-black text-yellow-300 text-sm sm:text-base truncate">Team Name</span>
+    </div>
+    
+    <!-- LIVE SCORE BADGE -->
+    <div class="bg-purple-900 border border-yellow-400/80 px-3 py-1 rounded-xl flex items-center gap-1.5 shadow">
+      <span class="text-xs text-yellow-400 font-bold uppercase tracking-wider">Score:</span>
+      <span id="display-team-score" class="font-black text-white text-lg">0</span>
+    </div>
+  </div>
 
-    <!-- STEP 1: TEAM SELECTION CARD -->
-    <div id="team-card" class="door-purple yellow-frame rounded-2xl p-5 shadow-2xl space-y-3 text-center relative overflow-hidden">
-      <div class="absolute -top-6 -right-6 bg-yellow-400 text-purple-950 font-black text-xs px-8 py-7 rotate-12 shadow">
-        PIVOT!
-      </div>
-      
-      <h2 class="text-lg font-black text-yellow-300 uppercase tracking-wider">
-        Reserve Your Table
+  <!-- MAIN CARD CONTAINER -->
+  <main class="max-w-md w-full mx-auto my-auto space-y-4">
+
+    <!-- STEP 1: TEAM LOCK-IN CARD -->
+    <div id="login-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 shadow-2xl space-y-5 text-center">
+      <h2 class="text-2xl font-black text-yellow-300">
+        Choose Your Team! ☕
       </h2>
-      <p class="text-xs text-purple-200">Pick or type your group's team name to start!</p>
+      
+      <p class="text-xs sm:text-sm text-purple-200 font-semibold">
+        Select your team name from the drop-down below to lock in this device.
+      </p>
 
-      <select id="team-dropdown" onchange="handleTeamSelect()" class="w-full bg-purple-950 border-2 border-yellow-400/70 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400">
-        <option value="">-- Select Your Team --</option>
-        <option value="Team Central Perk">Team Central Perk ☕</option>
-        <option value="Team Pivot!">Team Pivot! 🛋️</option>
-        <option value="Team Unagi">Team Unagi 🍣</option>
-        <option value="Team Transponsters">Team Transponsters 💼</option>
-        <option value="Team Smelly Cat">Team Smelly Cat 🎸</option>
-        <option value="Team Holiday Armadillo">Team Holiday Armadillo 🦦</option>
-        <option value="Team We Were On A Break">Team We Were On A Break 💔</option>
-        <option value="CUSTOM">-- Type Custom Team Name --</option>
-      </select>
+      <div class="space-y-3 text-left">
+        <label class="block text-xs font-bold text-yellow-400 uppercase tracking-wider">Team Name</label>
+        <select id="team-select" class="w-full bg-purple-950 text-white font-bold p-3.5 rounded-xl border-2 border-yellow-400/60 focus:border-yellow-400 outline-none">
+          <option value="">-- Select Your Team --</option>
+          <option value="Central Perk Regulars">Central Perk Regulars</option>
+          <option value="The Chanandler Bongs">The Chanandler Bongs</option>
+          <option value="Princess Consuela">Princess Consuela</option>
+          <option value="Regina Phalange">Regina Phalange</option>
+          <option value="The Holiday Armadillos">The Holiday Armadillos</option>
+          <option value="Ken Adams">Ken Adams</option>
+          <option value="The Smelly Cats">The Smelly Cats</option>
+          <option value="Unagi Masters">Unagi Masters</option>
+          <option value="The Pivoters">The Pivoters</option>
+          <option value="Ugly Naked Guys">Ugly Naked Guys</option>
+        </select>
+        
+        <p class="text-[11px] text-purple-300 text-center italic">Or type a custom team name below:</p>
+        <input type="text" id="custom-team-input" placeholder="Custom Team Name..." class="w-full bg-purple-950 text-white font-bold p-3 rounded-xl border border-purple-700 focus:border-yellow-400 outline-none text-sm placeholder-purple-400"/>
+      </div>
 
-      <input id="custom-team-input" type="text" placeholder="Enter Custom Team Name..." class="w-full bg-purple-950 border-2 border-yellow-400/70 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400 hidden" />
-
-      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 active:scale-95 text-purple-950 font-black py-3 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wider">
-        Lock In Team Name 🔒
+      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-base py-3.5 rounded-xl border-2 border-yellow-200 shadow-lg active:scale-95 transition-all cursor-pointer">
+        🔒 Lock In Team
       </button>
     </div>
 
-    <!-- MAIN GAME PANEL (HIDDEN UNTIL TEAM IS LOCKED) -->
-    <div id="game-panel" class="hidden space-y-3">
-      
-      <!-- QUESTION SELECTOR MATRIX (Q1 to Q11) -->
-      <div class="chalkboard-card border-2 border-yellow-500/60 rounded-2xl p-3 shadow-xl">
-        <div class="flex items-center justify-between border-b border-yellow-500/30 pb-2 mb-2">
-          <span class="chalk-font text-xs text-yellow-300 tracking-wider">Select Question:</span>
-          <span id="progress-text" class="text-[11px] font-bold text-amber-200">0 of 11 Answered</span>
-        </div>
-        
-        <div id="q-nav-grid" class="grid grid-cols-6 gap-1.5 text-center">
-          <!-- Generated dynamically via JS -->
-        </div>
+    <!-- STEP 2: ACTIVE QUESTION PLAY CARD -->
+    <div id="play-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 shadow-2xl space-y-5 text-center hidden">
+      <div id="round-indicator" class="text-xs font-black text-yellow-400 uppercase tracking-widest bg-purple-950/80 px-3 py-1.5 rounded-full inline-block border border-yellow-400/30">
+        Waiting for Host...
       </div>
 
-      <!-- ACTIVE QUESTION HEADER BANNER -->
-      <div class="text-center chalkboard-card border-2 border-yellow-500/40 py-2.5 px-4 rounded-xl shadow-lg flex items-center justify-between">
-        <span id="active-q-title" class="chalk-font text-base text-yellow-300 tracking-wider">
-          Question 1
-        </span>
-        <span id="q-status-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
-          Unanswered
-        </span>
+      <h2 id="player-question-text" class="text-lg sm:text-xl font-black text-white leading-snug">
+        Get ready! The host will push the question shortly.
+      </h2>
+
+      <!-- OPTIONS GRID -->
+      <div id="player-options-grid" class="grid grid-cols-1 gap-3 text-left">
+        <button id="p-opt-0" onclick="submitAnswer(0, 'A')" class="p-option-btn w-full bg-purple-950 hover:bg-purple-800 border-2 border-yellow-400/60 p-3.5 rounded-2xl flex items-center space-x-3 transition-all active:scale-95">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded-lg text-base">A</span>
+          <span id="p-opt-0-text" class="text-sm font-bold text-purple-100">Option A</span>
+        </button>
+        <button id="p-opt-1" onclick="submitAnswer(1, 'B')" class="p-option-btn w-full bg-purple-950 hover:bg-purple-800 border-2 border-yellow-400/60 p-3.5 rounded-2xl flex items-center space-x-3 transition-all active:scale-95">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded-lg text-base">B</span>
+          <span id="p-opt-1-text" class="text-sm font-bold text-purple-100">Option B</span>
+        </button>
+        <button id="p-opt-2" onclick="submitAnswer(2, 'C')" class="p-option-btn w-full bg-purple-950 hover:bg-purple-800 border-2 border-yellow-400/60 p-3.5 rounded-2xl flex items-center space-x-3 transition-all active:scale-95">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded-lg text-base">C</span>
+          <span id="p-opt-2-text" class="text-sm font-bold text-purple-100">Option C</span>
+        </button>
+        <button id="p-opt-3" onclick="submitAnswer(3, 'D')" class="p-option-btn w-full bg-purple-950 hover:bg-purple-800 border-2 border-yellow-400/60 p-3.5 rounded-2xl flex items-center space-x-3 transition-all active:scale-95">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded-lg text-base">D</span>
+          <span id="p-opt-3-text" class="text-sm font-bold text-purple-100">Option D</span>
+        </button>
       </div>
 
-      <!-- ANSWER BUTTONS (A, B, C, D) -->
-      <div id="answer-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        
-        <button onclick="selectOption('A')" id="btn-A" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-          <div class="flex items-center space-x-3">
-            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ A</span>
-            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option A</span>
-          </div>
-          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-        </button>
-
-        <button onclick="selectOption('B')" id="btn-B" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-          <div class="flex items-center space-x-3">
-            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ B</span>
-            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option B</span>
-          </div>
-          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-        </button>
-
-        <button onclick="selectOption('C')" id="btn-C" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-          <div class="flex items-center space-x-3">
-            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ C</span>
-            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option C</span>
-          </div>
-          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-        </button>
-
-        <button onclick="selectOption('D')" id="btn-D" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-          <div class="flex items-center space-x-3">
-            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ D</span>
-            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option D</span>
-          </div>
-          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-        </button>
-
+      <div id="lock-status" class="text-xs font-bold text-yellow-400 italic hidden">
+        ✓ Answer locked in! Waiting for next question...
       </div>
-
-      <!-- SYNC STATUS TOAST -->
-      <div id="sync-toast" class="text-center text-xs text-yellow-300/80 font-semibold py-1 h-5">
-        <!-- Live status feedback text -->
-      </div>
-
     </div>
 
   </main>
 
-  <!-- PHOEBE'S SOUNDBOARD SECTION -->
-  <section class="max-w-xl w-full mx-auto chalkboard-card border-2 border-yellow-500/60 rounded-2xl p-3 shadow-2xl my-3">
-    <div class="flex items-center justify-between border-b border-yellow-500/30 pb-1.5 mb-2 px-1">
-      <h3 class="chalk-font text-xs text-yellow-400 tracking-wider flex items-center gap-1.5">
-        🎸 Phoebe's Central Perk Soundboard
-      </h3>
-      <button onclick="stopAllAudio()" class="bg-red-600 hover:bg-red-500 text-white font-black text-[10px] px-2.5 py-1 rounded-lg shadow active:scale-95 uppercase">
-        ⏹ Stop Audio
-      </button>
-    </div>
-
-    <div class="grid grid-cols-5 gap-1.5 text-center">
-      <button onclick="playSound('claps.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👏 Claps</button>
-      <button onclick="playSound('how-you-doing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">😏 How Doin'?</button>
-      <button onclick="playSound('all-right.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👍 All Right</button>
-      <button onclick="playSound('bing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🔔 Bing!</button>
-      <button onclick="playSound('excellent.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">✨ Excellent</button>
-
-      <button onclick="playSound('good-very-good.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👌 Very Good</button>
-      <button onclick="playSound('hello-you.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👋 Hello You</button>
-      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🤯 Decision!</button>
-      <button onclick="playSound('game/i-don-t-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🤷 Don't Know</button>
-      <button onclick="playSound('game/i-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">💡 I Know!</button>
-    </div>
-  </section>
-
   <!-- FOOTER -->
-  <footer class="text-center text-[11px] text-purple-300 mt-1">
-    <span id="active-team-label" class="font-bold text-yellow-300">Table: Not Reserved</span>
+  <footer class="text-center text-[11px] text-purple-300 pt-4">
+    <button onclick="changeTeam()" class="underline hover:text-yellow-300 cursor-pointer">Change Team Name</button>
   </footer>
 
   <script>
-    // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE
-    cconst SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2spTFExlUe6ktSTGX5Tr22ZCHjymqh19gOwjZSnCHCPTCb7R9Ce5ia8YCFj1sQisT/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-TaX6YIZ9mr3fgc-HL-Lcb3nEYLhlrKO9p17btvgmrV8ewcmLkibJU7lHyjm6M0Et/exec";
 
-    let selectedTeam = "";
-    let activeQuestion = "Q1";
-    let teamAnswers = {}; // Stores { "Q1": "A", "Q2": "C", ... }
+    let currentTeam = "";
+    let currentQuestionId = "";
+    let hasAnsweredCurrentQuestion = false;
 
-    // AUDIO SYSTEM
-    const audioFiles = [
-      'claps.mp3', 'how-you-doing.mp3', 'all-right.mp3', 'bing.mp3', 'excellent.mp3',
-      'good-very-good.mp3', 'hello-you.mp3', 'game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3',
-      'game/i-don-t-know.mp3', 'game/i-know.mp3'
-    ];
-
-    const audioPool = {};
-    let isUnlocked = false;
-
-    function getCandidateUrls(file) {
-      const cleanFile = file.replace(/^game\//, '');
-      return [file, cleanFile, `./${cleanFile}`, `../${cleanFile}`, `game/${cleanFile}`];
-    }
-
-    audioFiles.forEach(file => {
-      const candidates = getCandidateUrls(file);
-      let currentIdx = 0;
-      const audio = new Audio(candidates[0]);
-      audio.addEventListener('error', () => {
-        currentIdx++;
-        if (currentIdx < candidates.length) {
-          audio.src = candidates[currentIdx];
-          audio.load();
-        }
-      });
-      audioPool[file] = audio;
-    });
-
-    function unlockAudioEngine() {
-      if (isUnlocked) return;
-      isUnlocked = true;
-      Object.keys(audioPool).forEach(key => {
-        const audio = audioPool[key];
-        const promise = audio.play();
-        if (promise !== undefined) {
-          promise.then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
-        }
-      });
-    }
-
-    function playSound(filename) {
-      unlockAudioEngine();
-      stopAllAudio();
-      let audio = audioPool[filename] || new Audio(filename);
-      audio.currentTime = 0;
-      audio.play().catch(err => console.warn("Audio play blocked:", err));
-    }
-
-    function stopAllAudio() {
-      Object.keys(audioPool).forEach(key => {
-        if (audioPool[key]) {
-          audioPool[key].pause();
-          audioPool[key].currentTime = 0;
-        }
-      });
-    }
-
-    // GAME INITIALIZATION & NAV
-    function handleTeamSelect() {
-      const select = document.getElementById('team-dropdown');
-      const customInput = document.getElementById('custom-team-input');
-      if (select.value === 'CUSTOM') {
-        customInput.classList.remove('hidden');
-        customInput.focus();
+    function initPlayerScreen() {
+      const savedTeam = localStorage.getItem('friends_trivia_team');
+      if (savedTeam) {
+        currentTeam = savedTeam;
+        showPlayCard();
       } else {
-        customInput.classList.add('hidden');
+        showLoginCard();
       }
     }
 
-    async function lockInTeam() {
-      unlockAudioEngine();
-      const select = document.getElementById('team-dropdown');
-      const customInput = document.getElementById('custom-team-input');
+    function lockInTeam() {
+      const selectVal = document.getElementById('team-select').value;
+      const customVal = document.getElementById('custom-team-input').value.trim();
+      
+      const chosenTeam = customVal !== "" ? customVal : selectVal;
 
-      selectedTeam = (select.value === 'CUSTOM') ? customInput.value.trim() : select.value;
-
-      if (!selectedTeam) {
-        alert("Please select or enter a Team Name!");
+      if (!chosenTeam) {
+        alert("Please select or enter a team name!");
         return;
       }
 
-      document.getElementById('team-card').classList.add('hidden');
-      document.getElementById('game-panel').classList.remove('hidden');
-      document.getElementById('active-team-label').innerText = `Table Reserved: ${selectedTeam}`;
-
-      renderQuestionNav();
-      updateActiveQuestionUI();
-
-      // Fetch any existing submissions from spreadsheet
-      await fetchExistingAnswers();
+      currentTeam = chosenTeam;
+      localStorage.setItem('friends_trivia_team', currentTeam);
+      showPlayCard();
     }
 
-    function renderQuestionNav() {
-      const grid = document.getElementById('q-nav-grid');
-      grid.innerHTML = '';
-
-      for (let i = 1; i <= 11; i++) {
-        const qKey = `Q${i}`;
-        const hasAnswer = !!teamAnswers[qKey];
-        const isActive = activeQuestion === qKey;
-
-        const btn = document.createElement('button');
-        btn.onclick = () => switchQuestion(qKey);
-
-        let bgClass = "bg-purple-950/80 border-purple-800 text-purple-200 hover:border-yellow-400";
-        if (isActive) {
-          bgClass = "bg-yellow-400 text-purple-950 font-black border-2 border-yellow-200 scale-105 shadow-lg";
-        } else if (hasAnswer) {
-          bgClass = "central-perk-green text-yellow-300 font-bold border border-emerald-400/50";
-        }
-
-        btn.className = `p-2 rounded-xl text-xs flex flex-col items-center justify-center transition-all ${bgClass}`;
-        btn.innerHTML = `
-          <span>Q${i}</span>
-          <span class="text-[9px] ${isActive ? 'text-purple-950' : 'text-yellow-400'}">${hasAnswer ? `✓ (${teamAnswers[qKey]})` : '—'}</span>
-        `;
-
-        grid.appendChild(btn);
+    function changeTeam() {
+      if (confirm("Are you sure you want to change your team name?")) {
+        localStorage.removeItem('friends_trivia_team');
+        currentTeam = "";
+        showLoginCard();
       }
-
-      // Update progress counter
-      const answeredCount = Object.keys(teamAnswers).length;
-      document.getElementById('progress-text').innerText = `${answeredCount} of 11 Answered`;
     }
 
-    function switchQuestion(qKey) {
-      unlockAudioEngine();
-      activeQuestion = qKey;
-      renderQuestionNav();
-      updateActiveQuestionUI();
+    function showLoginCard() {
+      document.getElementById('login-card').classList.remove('hidden');
+      document.getElementById('play-card').classList.add('hidden');
+      document.getElementById('team-status-bar').classList.add('hidden');
     }
 
-    function updateActiveQuestionUI() {
-      document.getElementById('active-q-title').innerText = `Question ${activeQuestion.replace('Q', '')}`;
-      
-      const currentAns = teamAnswers[activeQuestion];
-      const badge = document.getElementById('q-status-badge');
+    function showPlayCard() {
+      document.getElementById('login-card').classList.add('hidden');
+      document.getElementById('play-card').classList.remove('hidden');
+      document.getElementById('team-status-bar').classList.remove('hidden');
+      document.getElementById('display-team-name').innerText = currentTeam;
 
-      if (currentAns) {
-        badge.innerText = `Selected: (${currentAns})`;
-        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
-      } else {
-        badge.innerText = "Unanswered";
-        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30";
-      }
+      // Sync score and check answered questions immediately
+      syncTeamScore();
+    }
 
-      // Reset option button highlights
-      ['A', 'B', 'C', 'D'].forEach(opt => {
-        const btn = document.getElementById(`btn-${opt}`);
-        const check = btn.querySelector('.check-icon');
-
-        if (currentAns === opt) {
-          btn.className = "chalkboard-card bg-yellow-400 text-purple-950 border-4 border-yellow-200 p-4 rounded-2xl shadow-xl flex items-center justify-between transition-all font-black scale-[1.01]";
-          if (check) {
-            check.classList.remove('opacity-0');
-            check.className = "text-purple-950 text-xl font-black check-icon";
+    async function syncTeamScore() {
+      if (!currentTeam) return;
+      try {
+        const response = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(currentTeam)}`);
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+          // Update live score badge
+          document.getElementById('display-team-score').innerText = result.score || 0;
+          
+          // Check if current question was already answered
+          if (currentQuestionId && result.answers && result.answers[currentQuestionId]) {
+            markQuestionAsAnswered(result.answers[currentQuestionId]);
           }
-        } else {
-          btn.className = "chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group";
-          if (check) check.classList.add('opacity-0');
         }
-      });
+      } catch (err) {
+        console.error("Failed to sync score:", err);
+      }
     }
 
-    async function selectOption(optionLetter) {
-      unlockAudioEngine();
-      if (!selectedTeam) return;
+    async function submitAnswer(optIdx, letter) {
+      if (hasAnsweredCurrentQuestion || !currentTeam || !currentQuestionId) return;
 
-      teamAnswers[activeQuestion] = optionLetter;
-      renderQuestionNav();
-      updateActiveQuestionUI();
-
-      const toast = document.getElementById('sync-toast');
-      toast.innerText = `Saving ${activeQuestion} -> (${optionLetter})...`;
+      hasAnsweredCurrentQuestion = true;
+      markQuestionAsAnswered(letter);
 
       try {
         await fetch(SCRIPT_URL, {
@@ -403,36 +209,37 @@
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            action: 'submitAnswer',
-            team: selectedTeam,
-            question: activeQuestion,
-            answer: optionLetter
+            team: currentTeam,
+            question: currentQuestionId,
+            answer: letter
           })
         });
 
-        toast.innerText = `✓ ${activeQuestion} recorded as (${optionLetter})!`;
-        setTimeout(() => { if (toast.innerText.includes('recorded')) toast.innerText = ''; }, 3000);
+        // Re-sync team score after submission
+        setTimeout(syncTeamScore, 1000);
+
       } catch (err) {
-        toast.innerText = `⚠️ Failed to save. Check internet connection.`;
-        console.error("Save error:", err);
+        console.error("Submission error:", err);
       }
     }
 
-    async function fetchExistingAnswers() {
-      try {
-        const res = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(selectedTeam)}&t=${Date.now()}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.answers) {
-            teamAnswers = data.answers;
-            renderQuestionNav();
-            updateActiveQuestionUI();
-          }
+    function markQuestionAsAnswered(selectedLetter) {
+      const letterIndexMap = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+      const selectedIndex = letterIndexMap[selectedLetter];
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`p-opt-${i}`);
+        if (i === selectedIndex) {
+          btn.className = "p-option-btn w-full bg-yellow-400 text-purple-950 font-black p-3.5 rounded-2xl flex items-center space-x-3 transition-all border-4 border-yellow-200 scale-105 shadow-lg";
+        } else {
+          btn.className = "p-option-btn w-full bg-purple-950/40 opacity-40 border-2 border-purple-800 p-3.5 rounded-2xl flex items-center space-x-3 transition-all pointer-events-none";
         }
-      } catch (err) {
-        console.warn("Could not fetch initial answers:", err);
       }
+
+      document.getElementById('lock-status').classList.remove('hidden');
     }
+
+    initPlayerScreen();
   </script>
 </body>
 </html>
