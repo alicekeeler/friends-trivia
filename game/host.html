@@ -6,64 +6,94 @@
   <title>Host TV Screen - Orion Friends Trivia</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .purple-door { background-color: #3B0764; }
+    .purple-door { background-color: #2D0A3E; }
     .yellow-frame {
       border: 8px solid #FBBF24;
-      box-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
     }
+    .friends-dot-red { color: #E11D48; }
+    .friends-dot-blue { color: #2563EB; }
+    .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-8 font-sans">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans">
 
-  <!-- HEADER CONTROLS -->
-  <header class="flex justify-between items-center border-b-4 border-yellow-400 pb-4">
-    <div>
-      <h1 class="text-4xl font-black text-yellow-300 tracking-wider">ORION HANDBOOK TRIVIA</h1>
-      <p class="text-sm text-purple-200 uppercase tracking-widest mt-1">The One With The Policies • Host Screen</p>
+  <!-- HEADER AREA -->
+  <header class="flex flex-col items-center w-full max-w-5xl mx-auto border-b-4 border-yellow-400 pb-4">
+    
+    <!-- FRIENDS STYLE LOGO HEADER -->
+    <div class="text-center my-2">
+      <h1 class="text-5xl md:text-6xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
+        <span>O</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
+        <span>R</span><span class="friends-dot-blue text-3xl mx-0.5">•</span>
+        <span>I</span><span class="friends-dot-yellow text-3xl mx-0.5">•</span>
+        <span>O</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
+        <span>N</span>
+        <span class="mx-4 text-yellow-400 text-4xl">|</span>
+        <span>T</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
+        <span>R</span><span class="friends-dot-blue text-3xl mx-0.5">•</span>
+        <span>I</span><span class="friends-dot-yellow text-3xl mx-0.5">•</span>
+        <span>V</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
+        <span>I</span><span class="friends-dot-blue text-3xl mx-0.5">•</span>
+        <span>A</span>
+      </h1>
+      <p class="text-xl italic text-yellow-300 font-serif font-bold mt-2">
+        "The One With the Employee Handbook"
+      </p>
     </div>
-    <div class="flex items-center space-x-4">
-      
-      <!-- MANUAL THEME MUSIC BUTTON -->
-      <button onclick="toggleTheme()" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 border-2 border-yellow-400 font-bold px-4 py-3 rounded-xl text-sm shadow-md flex items-center space-x-2 transition-transform active:scale-95 cursor-pointer">
-        <span id="theme-icon">🎵</span> <span id="theme-btn-text">PLAY THEME</span>
-      </button>
 
-      <!-- 30-SECOND TIMER -->
-      <div id="timer" class="text-5xl font-black text-yellow-400 bg-purple-950 px-6 py-2 rounded-2xl border-4 border-yellow-400 shadow-lg min-w-[100px] text-center">30</div>
+    <!-- AUDIO PLAYER & GAME CONTROLS ROW -->
+    <div class="w-full flex flex-col md:flex-row justify-between items-center mt-4 bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-500/40 gap-4">
       
-      <!-- NEXT QUESTION BUTTON -->
-      <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black px-8 py-4 rounded-2xl text-xl shadow-xl transition-transform active:scale-95 cursor-pointer">
-        NEXT QUESTION ➡️
-      </button>
+      <!-- CENTRAL PERK THEME SONG BAR -->
+      <div class="flex items-center space-x-3 w-full md:w-auto">
+        <span class="text-yellow-400 font-bold text-sm tracking-wider flex items-center whitespace-nowrap">
+          🎵 CENTRAL PERK THEME SONG
+        </span>
+        <audio id="theme-player" controls class="h-9 w-64 rounded-lg accent-yellow-400">
+          <source src="../30secondfriendsintro.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+
+      <!-- TIMER & NEXT BUTTON -->
+      <div class="flex items-center space-x-4">
+        <div id="timer" class="text-4xl font-black text-yellow-400 bg-purple-900 px-5 py-1 rounded-xl border-2 border-yellow-400 shadow-md min-w-[80px] text-center">
+          30
+        </div>
+        <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black px-6 py-2.5 rounded-xl text-lg shadow-lg transition-transform active:scale-95 cursor-pointer whitespace-nowrap">
+          NEXT QUESTION ➡️
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- MAIN QUESTION BOARD -->
-  <main class="my-auto flex flex-col items-center w-full max-w-5xl mx-auto">
-    <div id="category-badge" class="bg-yellow-400 text-purple-950 font-black text-lg px-8 py-2 rounded-full uppercase mb-6 shadow-md">
+  <main class="my-auto flex flex-col items-center w-full max-w-5xl mx-auto py-4">
+    <div id="category-badge" class="bg-yellow-400 text-purple-950 font-black text-base px-6 py-1.5 rounded-full uppercase mb-4 shadow-md tracking-wide">
       Category: Welcome to Friends Trivia
     </div>
 
-    <div class="yellow-frame bg-purple-900 p-8 rounded-3xl w-full text-center shadow-2xl">
-      <h2 id="question-text" class="text-3xl font-bold text-white mb-8 min-h-[90px] flex items-center justify-center">
-        Click "PLAY THEME" for music or "NEXT QUESTION" to begin! ☕
+    <div class="yellow-frame bg-purple-900/90 p-8 rounded-3xl w-full text-center shadow-2xl">
+      <h2 id="question-text" class="text-2xl md:text-3xl font-bold text-white mb-6 min-h-[80px] flex items-center justify-center">
+        Click "NEXT QUESTION" above to start Round 1! ☕
       </h2>
 
       <!-- 4 OPTIONS GRID -->
-      <div class="grid grid-cols-2 gap-6 text-left">
-        <div id="opt-box-0" class="bg-purple-950 p-5 rounded-xl border-2 border-yellow-500 text-lg font-semibold flex items-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+        <div id="opt-box-0" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
           <span class="text-yellow-400 font-black text-2xl mr-3">A</span>
           <span id="h-opt-0" class="text-purple-100">Option A</span>
         </div>
-        <div id="opt-box-1" class="bg-purple-950 p-5 rounded-xl border-2 border-yellow-500 text-lg font-semibold flex items-center">
+        <div id="opt-box-1" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
           <span class="text-yellow-400 font-black text-2xl mr-3">B</span>
           <span id="h-opt-1" class="text-purple-100">Option B</span>
         </div>
-        <div id="opt-box-2" class="bg-purple-950 p-5 rounded-xl border-2 border-yellow-500 text-lg font-semibold flex items-center">
+        <div id="opt-box-2" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
           <span class="text-yellow-400 font-black text-2xl mr-3">C</span>
           <span id="h-opt-2" class="text-purple-100">Option C</span>
         </div>
-        <div id="opt-box-3" class="bg-purple-950 p-5 rounded-xl border-2 border-yellow-500 text-lg font-semibold flex items-center">
+        <div id="opt-box-3" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
           <span class="text-yellow-400 font-black text-2xl mr-3">D</span>
           <span id="h-opt-3" class="text-purple-100">Option D</span>
         </div>
@@ -72,7 +102,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="flex justify-between items-center text-sm text-purple-300 border-t-2 border-purple-800 pt-4">
+  <footer class="flex justify-between items-center text-xs md:text-sm text-purple-300 border-t-2 border-purple-800/60 pt-3 max-w-5xl mx-auto w-full">
     <div class="flex items-center space-x-2">
       <span>📲 Players Scan & Join:</span>
       <span class="text-yellow-300 font-mono font-bold bg-purple-950 px-3 py-1 rounded-lg border border-yellow-400/30">
@@ -80,57 +110,23 @@
       </span>
     </div>
     <div id="audio-status" class="text-green-400 font-semibold flex items-center">
-      <span class="mr-2">🔊</span> Sound Engine Active
+      <span class="mr-1.5">🔊</span> Friends Audio Engine Active
     </div>
   </footer>
 
   <!-- SCRIPT LOGIC -->
   <script>
-    // EXACT RELATIVE AUDIO PATHS (Stored in root repository directory)
     const SFX = {
-      theme: new Audio('../short%20friends%20intro.mp3'),
-      timerMusic: new Audio('../timer-music.mp3'), // Optional: Upload 30s timer music to root as timer-music.mp3
-      join: new Audio('../hello-you.mp3'),
-      tableSelect: new Audio('../how-you-doin.mp3'),
+      theme: document.getElementById('theme-player'),
       question: new Audio('../i-got-a-question.mp3'),
       warning: new Audio('../how-the-hell-am-i-supposed-to-make-this-kind-of-decision.mp3'),
       timesUp: new Audio('../enough-already.mp3'),
-      check: new Audio('../check.mp3'),
-      reveal: new Audio('../bing.mp3'),
-      correct: new Audio('../excellent.mp3'),
-      wrong: new Audio('../don-t-blame-the-questions.mp3'),
-      hardQuestion: new Audio('../have-you-lost-your-mind.mp3'),
       winner: new Audio('../i-know.mp3')
     };
 
     let bank = [];
     let currentRound = -1;
     let timerInterval = null;
-    let isThemePlaying = false;
-
-    // TOGGLE MANUAL THEME MUSIC
-    function toggleTheme() {
-      if (isThemePlaying) {
-        SFX.theme.pause();
-        SFX.theme.currentTime = 0;
-        isThemePlaying = false;
-        document.getElementById('theme-btn-text').innerText = 'PLAY THEME';
-        document.getElementById('theme-icon').innerText = '🎵';
-      } else {
-        SFX.theme.currentTime = 0;
-        SFX.theme.play().catch(e => console.log('Autoplay blocked:', e));
-        isThemePlaying = true;
-        document.getElementById('theme-btn-text').innerText = 'PAUSE THEME';
-        document.getElementById('theme-icon').innerText = '⏸️';
-      }
-    }
-
-    // Auto-reset theme button icon when track finishes naturally
-    SFX.theme.onended = () => {
-      isThemePlaying = false;
-      document.getElementById('theme-btn-text').innerText = 'PLAY THEME';
-      document.getElementById('theme-icon').innerText = '🎵';
-    };
 
     // FETCH QUESTIONS FROM QUESTIONS.JSON
     window.addEventListener('DOMContentLoaded', async () => {
@@ -141,7 +137,7 @@
         console.log('Question bank loaded successfully:', bank);
       } catch (err) {
         console.error('Failed to load questions.json:', err);
-        document.getElementById('question-text').innerText = '⚠️ Error loading questions.json! Make sure questions.json exists in /game/';
+        document.getElementById('question-text').innerText = '⚠️ Error loading questions.json! Ensure questions.json exists in /game/';
       }
     });
 
@@ -151,13 +147,10 @@
         return;
       }
 
-      // Automatically stop theme music when moving to the next question
-      if (isThemePlaying) toggleTheme();
-
       currentRound++;
       if (currentRound >= bank.length) {
         clearInterval(timerInterval);
-        SFX.timerMusic.pause();
+        SFX.theme.pause();
         document.getElementById('category-badge').innerText = 'GAME COMPLETED';
         document.getElementById('question-text').innerText = '🎉 Congratulations! You survived the Handbook Trivia!';
         SFX.winner.play().catch(() => {});
@@ -167,7 +160,7 @@
       // Reset option box styling
       for (let i = 0; i < 4; i++) {
         const box = document.getElementById(`opt-box-${i}`);
-        box.className = "bg-purple-950 p-5 rounded-xl border-2 border-yellow-500 text-lg font-semibold flex items-center";
+        box.className = "bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center";
       }
 
       // Select topic and pick a random question inside it
@@ -182,7 +175,7 @@
       document.getElementById('h-opt-2').innerText = q.options[2];
       document.getElementById('h-opt-3').innerText = q.options[3];
 
-      // Play Question Sound & Start Timer
+      // Play Intro Voice Clip & Start 30s Music Countdown
       SFX.question.play().catch(() => {});
       startTimer();
     }
@@ -192,9 +185,9 @@
       let timeLeft = 30;
       document.getElementById('timer').innerText = timeLeft;
 
-      // Play background timer music if file exists
-      SFX.timerMusic.currentTime = 0;
-      SFX.timerMusic.play().catch(() => {});
+      // Reset & play the 30-second theme song
+      SFX.theme.currentTime = 0;
+      SFX.theme.play().catch(e => console.log('Audio play blocked:', e));
 
       timerInterval = setInterval(() => {
         timeLeft--;
@@ -205,7 +198,7 @@
         }
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
-          SFX.timerMusic.pause();
+          SFX.theme.pause();
           SFX.timesUp.play().catch(() => {});
         }
       }, 1000);
