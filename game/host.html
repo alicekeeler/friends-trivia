@@ -373,8 +373,11 @@
     </div>
   </div>
 
-  <!-- THEME AUDIO ELEMENT -->
+  <!-- 🔊 HARDCODED AUDIO ELEMENTS (Fixes Browser Autoplay/Loading Bugs) -->
   <audio id="audio-player" crossorigin="anonymous" preload="auto"></audio>
+  <audio id="sfx-click" src="click.mp3" preload="auto"></audio>
+  <audio id="sfx-tick" src="tick.mp3" preload="auto"></audio>
+  <audio id="sfx-reveal" src="correct.mp3" preload="auto"></audio>
 
   <script>
     // ==========================================
@@ -382,36 +385,33 @@
     // ==========================================
     const JSON_PATH = "questions.json";
     const THEME_AUDIO_URL = "https://archive.org/download/TvThemeSongs-friends/Friends.mp3";
-    
-    // Update these exactly to match your local MP3 file names!
-    const SFX_CLICK_URL = "click.mp3";
-    const SFX_TICK_URL = "tick.mp3";
-    const SFX_REVEAL_URL = "correct.mp3";
-
-    // Preload HTML5 Audio objects
-    const sfxClick = new Audio(SFX_CLICK_URL);
-    const sfxTick = new Audio(SFX_TICK_URL);
-    const sfxReveal = new Audio(SFX_REVEAL_URL);
 
     let gameQuestions = [];
     let rawCategoriesData = [];
     let currentIndex = -1;
     let timerInterval = null;
-    let secondsElapsed = 0;
+    let timeLeft = 30; // START AT 30
 
     // ==========================================
     // 🔊 AUDIO HELPER FUNCTIONS
     // ==========================================
-    function playMP3(audioObj) {
-      // Reset to start of clip in case it's played rapidly
-      audioObj.currentTime = 0;
-      audioObj.play().catch(err => {
-        console.warn("Audio play blocked by browser until user clicks:", err);
-      });
+    function playMP3(audioId) {
+      const audioElement = document.getElementById(audioId);
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        
+        const playPromise = audioElement.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn(`Browser blocked ${audioId} until interaction:`, err);
+          });
+        }
+      }
     }
 
     function playThemeAudio() {
-      playMP3(sfxClick);
+      playMP3('sfx-click');
       const audio = document.getElementById('audio-player');
       const status = document.getElementById('audio-status');
 
@@ -434,7 +434,7 @@
     }
 
     function stopAllAudio() {
-      playMP3(sfxClick);
+      playMP3('sfx-click');
       const audio = document.getElementById('audio-player');
       const status = document.getElementById('audio-status');
       
@@ -442,8 +442,8 @@
       audio.currentTime = 0;
       
       // Stop SFX if they are mid-play
-      sfxTick.pause();
-      sfxReveal.pause();
+      document.getElementById('sfx-tick').pause();
+      document.getElementById('sfx-reveal').pause();
       
       status.innerText = "🎭 Central Perk Audio Engine Active";
     }
@@ -481,7 +481,7 @@
     }
 
     function nextQuestion() {
-      playMP3(sfxClick);
+      playMP3('sfx-click');
       if (currentIndex === -1) {
         currentIndex = 0;
         document.getElementById('welcome-screen').style.display = 'none';
@@ -517,7 +517,7 @@
     }
 
     function revealAnswer() {
-      playMP3(sfxReveal); // Play correct sound!
+      playMP3('sfx-reveal'); // Play correct sound!
       
       if (currentIndex < 0 || !gameQuestions.length) return;
       const qData = gameQuestions[currentIndex];
@@ -528,17 +528,16 @@
     }
 
     function restartRound() {
-      playMP3(sfxClick);
+      playMP3('sfx-click');
       if (currentIndex >= 0) loadQuestion(currentIndex);
     }
 
     function restartGame() {
-      playMP3(sfxClick);
+      playMP3('sfx-click');
       if (confirm("Restart game back to the Welcome Screen?")) {
         buildRandomizedGame();
         stopAllAudio();
         resetTimer();
-        document.getElementById('timer-display').innerText = "30";
         currentIndex = -1;
         document.getElementById('game-screen').style.display = 'none';
         document.getElementById('welcome-screen').style.display = 'flex';
@@ -547,20 +546,27 @@
 
     function startTimer() {
       clearInterval(timerInterval);
-      secondsElapsed = 0;
-      document.getElementById('timer-display').innerText = secondsElapsed;
+      timeLeft = 30; // Reset to 30
+      document.getElementById('timer-display').innerText = timeLeft;
       
       timerInterval = setInterval(() => {
-        secondsElapsed++;
-        document.getElementById('timer-display').innerText = secondsElapsed;
-        playMP3(sfxTick); // Play tick sound!
+        timeLeft--; // Count DOWN
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timeLeft = 0;
+          document.getElementById('timer-display').innerText = "0";
+        } else {
+          document.getElementById('timer-display').innerText = timeLeft;
+          playMP3('sfx-tick'); // Play tick sound!
+        }
       }, 1000);
     }
 
     function resetTimer() {
       clearInterval(timerInterval);
-      secondsElapsed = 0;
-      document.getElementById('timer-display').innerText = "0";
+      timeLeft = 30;
+      document.getElementById('timer-display').innerText = "30";
     }
 
     window.onload = () => {
