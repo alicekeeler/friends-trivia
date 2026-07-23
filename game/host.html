@@ -136,7 +136,6 @@
       </button>
     </div>
 
-    <!-- SOUND EFFECT BUTTONS GRID -->
     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 text-center">
       <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-bold text-[11px] p-2 rounded-xl shadow active:scale-95 truncate">
         ☕ Friends Theme
@@ -198,6 +197,7 @@
   </div>
 
   <script>
+    // UPDATE THIS URL IF NEEDED
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
     const audioFiles = [
@@ -287,7 +287,7 @@
       });
     }
 
-    // 4 QUESTIONS PER ROUND. THE 'correct' VALUE IS THE INDEX OF THE RIGHT ANSWER (0=A, 1=B, 2=C, 3=D)
+    // 44 FULLY FLESHED OUT QUESTIONS
     const topicPool = [
       {
         roundNumber: 1,
@@ -297,25 +297,25 @@
             id: "q1_1",
             question: "Monica is obsessed with being on time. What is Orion's policy regarding tardiness?",
             options: ["Notify supervisor ASAP if arriving late", "Hide under your desk until noon", "Blame Chandler", "Tardiness is strictly allowed on Tuesdays"],
-            correct: 0 // Index 0 (A)
+            correct: 0
           },
           {
             id: "q1_2",
-            question: "Ross is running late because of his leather pants. What is the grace period for clocking in?",
-            options: ["There is no grace period, be on time", "5 minutes", "15 minutes", "Whenever your pants dry"],
-            correct: 1 // Index 1 (B)
+            question: "Ross is running late because of his leather pants. What is the standard expectation for reporting an absence?",
+            options: ["No call, no show is totally fine", "Call out exactly 1 minute before your shift", "Notify your supervisor prior to your start time", "Send a carrier pigeon"],
+            correct: 2
           },
           {
             id: "q1_3",
-            question: "Chandler is stuck in an ATM vestibule. Who should he call first according to Orion policy?",
-            options: ["Jill Goodacre", "His direct supervisor", "Joey", "Human Resources"],
-            correct: 1 // Index 1 (B)
+            question: "Chandler is stuck in an ATM vestibule with Jill Goodacre. According to attendance policy, chronic tardiness can lead to:",
+            options: ["A promotion", "Disciplinary action", "A mandatory coffee run", "Free pizza in the breakroom"],
+            correct: 1
           },
           {
             id: "q1_4",
-            question: "Joey loses track of time at an audition. How many unexcused tardies lead to a write-up?",
-            options: ["One", "Two", "Three", "It depends on the audition"],
-            correct: 2 // Index 2 (C)
+            question: "Joey loses track of time at an acting audition. If an employee is a 'No Call/No Show' for multiple consecutive days, Orion generally considers this:",
+            options: ["A fun surprise", "Job abandonment", "An extended lunch break", "An impromptu sabbatical"],
+            correct: 1
           }
         ]
       },
@@ -323,100 +323,300 @@
         roundNumber: 2,
         badge: "ROUND 2 OF 11: DRESS CODE & PROFESSIONAL IMAGE",
         questions: [
-          { id: "q2_1", question: "Dress Code Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q2_2", question: "Dress Code Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q2_3", question: "Dress Code Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q2_4", question: "Dress Code Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q2_1",
+            question: "Chandler shows up in a pink bunny suit. What is Orion's general policy on workplace attire?",
+            options: ["Employees must maintain a clean, professional appearance", "Costumes are required daily", "Sweatpants are preferred", "Pajamas are the standard uniform"],
+            correct: 0
+          },
+          {
+            id: "q2_2",
+            question: "Rachel gets a job at Ralph Lauren. What type of dress is typically unacceptable in a professional office setting?",
+            options: ["Slacks or khakis", "A collared polo", "Graphic tees with offensive slogans", "A standard blouse or sweater"],
+            correct: 2
+          },
+          {
+            id: "q2_3",
+            question: "Ross wants to wear his 'Frankie Say Relax' shirt. When is casual dress appropriate?",
+            options: ["Whenever you feel like it", "Only on designated casual days or when role-appropriate", "Every single Monday", "Only when it's raining outside"],
+            correct: 1
+          },
+          {
+            id: "q2_4",
+            question: "Phoebe brings her guitar and wears heavily ripped jeans. How does Orion handle dress code violations?",
+            options: ["They sing Smelly Cat", "Management will address the employee to correct the issue", "They give out a fashion award", "They force you to wear a tie-dye shirt"],
+            correct: 1
+          }
         ]
       },
       {
         roundNumber: 3,
         badge: "ROUND 3 OF 11: WORKPLACE SAFETY & HEALTH",
         questions: [
-          { id: "q3_1", question: "Safety Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q3_2", question: "Safety Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q3_3", question: "Safety Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q3_4", question: "Safety Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q3_1",
+            question: "Ross yells 'PIVOT!' while moving a couch. What is the proper Orion procedure for reporting workplace hazards?",
+            options: ["Yell louder until someone else fixes it", "Ignore it and pivot around it", "Report any unsafe condition to management immediately", "Post a meme on the team Slack"],
+            correct: 2
+          },
+          {
+            id: "q3_2",
+            question: "Monica is hyper-vigilant about cleanliness. What should employees do if they sustain an on-the-job injury?",
+            options: ["Rub some dirt on it", "Report it immediately so an incident report can be filed", "Wait three weeks to see if it heals", "Keep it a secret forever"],
+            correct: 1
+          },
+          {
+            id: "q3_3",
+            question: "Gunther spots a broken coffee machine sparking. What is the first step in emergency response?",
+            options: ["Make a latte anyway", "Ensure personal safety and alert the proper authorities/management", "Unplug it and take it home", "Ignore the sparks, it adds flavor"],
+            correct: 1
+          },
+          {
+            id: "q3_4",
+            question: "Joey wants to build an entertainment unit in the office. What is a core tenet of Orion's safety policy?",
+            options: ["Safety is everyone's shared responsibility", "Only the safety committee cares", "Power tools are allowed at all desks", "Safety rules only apply on Fridays"],
+            correct: 0
+          }
         ]
       },
       {
         roundNumber: 4,
         badge: "ROUND 4 OF 11: USE OF COMPANY EQUIPMENT",
         questions: [
-          { id: "q4_1", question: "Equipment Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q4_2", question: "Equipment Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q4_3", question: "Equipment Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q4_4", question: "Equipment Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q4_1",
+            question: "Joey uses the company laptop to stream Baywatch. Is personal use of company equipment permitted?",
+            options: ["Strictly prohibited at all times", "Incidental personal use allowed if it does not interfere with work", "Encouraged during staff meetings", "Only allowed if streaming sitcoms"],
+            correct: 1
+          },
+          {
+            id: "q4_2",
+            question: "Chandler wants to download unknown software (a 'transponster' app) to his work PC. What is the policy?",
+            options: ["Employees must not install unauthorized software on company networks", "Download away, it's fine", "Only download if it looks fun", "Always install toolbars"],
+            correct: 0
+          },
+          {
+            id: "q4_3",
+            question: "Ross uses the office printer to print 500 pages about dinosaurs for personal use. What does the handbook say?",
+            options: ["Company resources should not be used for excessive personal projects", "Dinosaur facts are the exception", "Print as much as you want", "Only print in full color"],
+            correct: 0
+          },
+          {
+            id: "q4_4",
+            question: "Rachel leaves her company laptop unattended at Central Perk. What is the security expectation?",
+            options: ["Leave it open so people can see your screen", "Employees are responsible for securing company property against loss or theft", "The barista will guard it", "Laptops don't need passwords"],
+            correct: 1
+          }
         ]
       },
       {
         roundNumber: 5,
         badge: "ROUND 5 OF 11: CONFIDENTIALITY & DATA PRIVACY",
         questions: [
-          { id: "q5_1", question: "Privacy Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q5_2", question: "Privacy Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q5_3", question: "Privacy Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q5_4", question: "Privacy Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q5_1",
+            question: "Phoebe accidentally mentions sensitive student records. What is Orion's stance on confidential data?",
+            options: ["Share it if it's really interesting", "Post it on the bulletin board in Central Perk", "Confidential info must be protected and never disclosed without authorization", "Only disclose to family members"],
+            correct: 2
+          },
+          {
+            id: "q5_2",
+            question: "Chandler sees a coworker's private HR file on a desk. What should he do?",
+            options: ["Read it and gossip to Joey", "Ignore it and notify the person or a supervisor to secure it", "Take a picture", "Post it on social media"],
+            correct: 1
+          },
+          {
+            id: "q5_3",
+            question: "Monica loves organizing data. What is the primary law regarding the privacy of student educational records?",
+            options: ["HIPAA", "FERPA", "OSHA", "The Central Perk Privacy Act"],
+            correct: 1
+          },
+          {
+            id: "q5_4",
+            question: "Ross wants to share proprietary Orion training methods with a competitor. This violates:",
+            options: ["The Non-Disclosure and Confidentiality Policy", "The Dinosaur Code", "The unwritten rules of friendship", "Absolutely nothing"],
+            correct: 0
+          }
         ]
       },
       {
         roundNumber: 6,
         badge: "ROUND 6 OF 11: DRUG FREE WORKPLACE",
         questions: [
-          { id: "q6_1", question: "Drug Free Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q6_2", question: "Drug Free Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q6_3", question: "Drug Free Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q6_4", question: "Drug Free Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q6_1",
+            question: "Ross accidentally eats a 'special' brownie before work. What is Orion's policy on controlled substances?",
+            options: ["Allowed during lunch hours", "Allowed if brought in a Tupperware", "Strictly drug-free workplace; prohibited on premises or while performing duties", "Only prohibited on Mondays"],
+            correct: 2
+          },
+          {
+            id: "q6_2",
+            question: "Chandler takes a prescribed medication that makes him very drowsy. What should he do?",
+            options: ["Sleep at his desk", "Inform HR/Management if the medication impairs his ability to work safely", "Drink 10 cups of coffee", "Operate heavy machinery"],
+            correct: 1
+          },
+          {
+            id: "q6_3",
+            question: "The gang wants to bring margaritas to the office. What is the policy on alcohol at work?",
+            options: ["Margaritas are mandatory", "Alcohol consumption on the job is strictly forbidden", "Only allowed if salted rims are provided", "Allowed on Thursdays"],
+            correct: 1
+          },
+          {
+            id: "q6_4",
+            question: "If an employee is suspected of working under the influence, Orion reserves the right to:",
+            options: ["High-five them", "Request reasonable suspicion drug testing according to policy", "Ask them to host the meeting", "Give them extra snacks"],
+            correct: 1
+          }
         ]
       },
       {
         roundNumber: 7,
         badge: "ROUND 7 OF 11: HARASSMENT & DISCRIMINATION",
         questions: [
-          { id: "q7_1", question: "Harassment Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q7_2", question: "Harassment Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q7_3", question: "Harassment Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q7_4", question: "Harassment Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q7_1",
+            question: "Joey uses his line 'How YOU doin'?' inappropriately. How does Orion handle workplace harassment?",
+            options: ["Allowed if said with a smile", "Ignored if it happens at coffee breaks", "Handled via arm wrestling", "Zero-tolerance policy; all complaints are investigated promptly"],
+            correct: 3
+          },
+          {
+            id: "q7_2",
+            question: "Rachel feels she was passed over for a project based on bias. Orion is committed to:",
+            options: ["Equal Employment Opportunity (EEO) for all", "Favoritism based on haircut", "Only promoting Central Perk regulars", "Ignoring all complaints"],
+            correct: 0
+          },
+          {
+            id: "q7_3",
+            question: "If Phoebe witnesses inappropriate comments being made to a coworker, she should:",
+            options: ["Write a song about it", "Report the incident to HR or management without fear of retaliation", "Join in on the comments", "Pretend she didn't hear it"],
+            correct: 1
+          },
+          {
+            id: "q7_4",
+            question: "Ross creates a hostile work environment by constantly screaming about 'Unagi.' This behavior:",
+            options: ["Is a violation of the anti-harassment/bullying policy", "Is a valid martial art technique", "Is required for all managers", "Earns him Employee of the Month"],
+            correct: 0
+          }
         ]
       },
       {
         roundNumber: 8,
         badge: "ROUND 8 OF 11: TIMEKEEPING & PAYROLL",
         questions: [
-          { id: "q8_1", question: "Payroll Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q8_2", question: "Payroll Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q8_3", question: "Payroll Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q8_4", question: "Payroll Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q8_1",
+            question: "Chandler forgets what his actual job is (a 'transponster'). How must employees record worked hours?",
+            options: ["Estimate based on vibes", "Accurately log all actual hours worked using official timekeeping tools", "Have Joey log your time", "Log 40 hours regardless of attendance"],
+            correct: 1
+          },
+          {
+            id: "q8_2",
+            question: "Monica works through her unpaid lunch break without telling anyone. What is the policy?",
+            options: ["All hours worked, including overtime, must be accurately reported and approved", "Working off the clock is encouraged", "Lunch is just a myth", "She gets a gold star"],
+            correct: 0
+          },
+          {
+            id: "q8_3",
+            question: "Rachel doesn't submit her timesheet on time. What happens?",
+            options: ["It may result in delayed processing of payroll", "Gunther pays her directly", "She gets double pay next week", "Nothing, it's optional"],
+            correct: 0
+          },
+          {
+            id: "q8_4",
+            question: "Joey wants to clock in for Ross so Ross can sleep in. This practice is:",
+            options: ["A sign of true friendship", "Strictly prohibited and considered timecard fraud", "Allowed once a month", "Only allowed if Ross brings bagels"],
+            correct: 1
+          }
         ]
       },
       {
         roundNumber: 9,
         badge: "ROUND 9 OF 11: LEAVE POLICIES & PTO",
         questions: [
-          { id: "q9_1", question: "PTO Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q9_2", question: "PTO Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q9_3", question: "PTO Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q9_4", question: "PTO Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q9_1",
+            question: "Monica takes 'WE WERE ON A BREAK' literally. How far in advance should standard PTO be requested?",
+            options: ["No notice required, just don't show up", "Shout it out in the hallway", "Submit requests as early as possible according to supervisor guidelines", "Send a postcard after you leave"],
+            correct: 2
+          },
+          {
+            id: "q9_2",
+            question: "Phoebe gets sick and cannot come to work. What should she use?",
+            options: ["Vacation time", "Accrued Sick Leave/Sick PTO in accordance with policy", "A doctor's note from Dr. Drake Ramoray", "Unpaid leave automatically"],
+            correct: 1
+          },
+          {
+            id: "q9_3",
+            question: "Rachel is having a baby! What type of leave might she be eligible for?",
+            options: ["FMLA (Family and Medical Leave Act) if she meets requirements", "A permanent vacation", "Only sick leave", "None, she must bring the baby to work"],
+            correct: 0
+          },
+          {
+            id: "q9_4",
+            question: "Ross wants to take a 3-month sabbatical to dig up bones. Long-term leaves of absence:",
+            options: ["Are automatically approved", "Must be formally requested and approved by HR/Management", "Are handled by flipping a coin", "Can be taken without telling anyone"],
+            correct: 1
+          }
         ]
       },
       {
         roundNumber: 10,
         badge: "ROUND 10 OF 11: PERFORMANCE & DEVELOPMENT",
         questions: [
-          { id: "q10_1", question: "Performance Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q10_2", question: "Performance Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q10_3", question: "Performance Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q10_4", question: "Performance Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q10_1",
+            question: "Rachel receives feedback on her performance evaluation. What is the main goal of Orion reviews?",
+            options: ["To rank the gang in order of favorite Friends", "To eliminate coffee breaks", "Encourage professional growth, goal setting, and constructive feedback", "To assign seating arrangements"],
+            correct: 2
+          },
+          {
+            id: "q10_2",
+            question: "Monica demands perfection from her team. If an employee is struggling to meet performance standards, Orion may:",
+            options: ["Fire them immediately via text", "Implement a Performance Improvement Plan (PIP)", "Make them wear a dunce cap", "Ignore it completely"],
+            correct: 1
+          },
+          {
+            id: "q10_3",
+            question: "Joey is confused about his daily tasks. Who should he seek out for clarification and coaching?",
+            options: ["His direct supervisor/manager", "The pizza delivery guy", "Chandler", "No one, just guess"],
+            correct: 0
+          },
+          {
+            id: "q10_4",
+            question: "Ross wants to attend a paleontology conference for professional development. Orion generally:",
+            options: ["Forbids learning new things", "Supports continued education and training relevant to the role", "Only pays for coffee-making classes", "Requires employees to stay in the office forever"],
+            correct: 1
+          }
         ]
       },
       {
         roundNumber: 11,
         badge: "ROUND 11 OF 11: COMPANY VALUES & CULTURE",
         questions: [
-          { id: "q11_1", question: "Culture Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
-          { id: "q11_2", question: "Culture Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
-          { id: "q11_3", question: "Culture Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
-          { id: "q11_4", question: "Culture Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
+          {
+            id: "q11_1",
+            question: "What core value defines the Orion team spirit?",
+            options: ["Unagi (total state of awareness)", "Never sharing food", "Collaboration, integrity, dedication, and supporting student success", "Singing Smelly Cat at meetings"],
+            correct: 2
+          },
+          {
+            id: "q11_2",
+            question: "When interacting with colleagues, students, and partners, Orion employees are expected to:",
+            options: ["Maintain a respectful, professional, and inclusive demeanor", "Yell across the room", "Use sarcasm exclusively", "Only speak when spoken to"],
+            correct: 0
+          },
+          {
+            id: "q11_3",
+            question: "Joey doesn't share food! But at Orion, team members are expected to share:",
+            options: ["Their toothbrushes", "Knowledge, resources, and support to achieve common goals", "Their bank accounts", "Absolutely nothing"],
+            correct: 1
+          },
+          {
+            id: "q11_4",
+            question: "As an ambassador for Orion Education, your behavior in the community should:",
+            options: ["Embarrass the company", "Reflect positively on the organization's mission and values", "Be chaotic and unpredictable", "Focus solely on finding the best coffee shop"],
+            correct: 1
+          }
         ]
       }
     ];
@@ -437,7 +637,7 @@
           roundNumber: topic.roundNumber,
           badge: topic.badge,
           question: randomQ.question,
-          options: randomQ.options, // Options stay exactly as written in the array
+          options: randomQ.options, 
           correct: randomQ.correct
         };
       });
@@ -529,6 +729,7 @@
         initializeGameQueue();
         showWelcomeScreen();
         
+        // Make sure this 'action' matches what your Code.gs file is expecting!
         fetch(SCRIPT_URL, { 
           method: 'POST',
           mode: 'no-cors',
@@ -568,7 +769,6 @@
       const currentQ = activeGameQuestions[currentQIndex];
 
       try {
-        // We are now asking the server specifically for 'getScores' instead of 'getVotes'
         const response = await fetch(`${SCRIPT_URL}?action=getScores&round=${currentQ.roundNumber}`);
         const data = await response.json();
 
@@ -581,7 +781,6 @@
             return;
           }
 
-          // Sort teams by highest score
           teams.sort((a, b) => scores[b] - scores[a]);
 
           let html = '';
@@ -619,7 +818,7 @@
             number: q.roundNumber,
             question: q.question,
             options: q.options,
-            correctAnswer: q.correct // THIS TELLS THE GOOGLE SHEET WHAT THE RIGHT ANSWER IS
+            correctAnswer: q.correct
           })
         });
       } catch (err) {
