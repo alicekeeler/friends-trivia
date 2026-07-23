@@ -16,7 +16,6 @@
       --btn-red: #ff4d6d;
       --btn-yellow: #ffd000;
       --btn-green: #2ec4b6;
-      --btn-blue: #3a86ef;
     }
 
     * { box-sizing: border-box; }
@@ -41,7 +40,7 @@
     }
 
     .friends-title {
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 900;
       letter-spacing: 6px;
       margin: 0;
@@ -70,33 +69,32 @@
       font-weight: bold;
     }
 
-    /* 🎛️ TOP CONTROL TOOLBAR (STRICT SINGLE ROW) */
+    /* 🎛️ TOP CONTROL TOOLBAR */
     .control-toolbar {
       width: 100%;
-      max-width: 1180px;
+      max-width: 1100px;
       border: 2px solid var(--border-gold);
       background-color: rgba(43, 17, 62, 0.85);
       border-radius: 40px;
-      padding: 8px 14px;
+      padding: 8px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
-      flex-wrap: nowrap; /* Prevents wrapping */
-      margin-bottom: 25px;
-      overflow-x: auto;
+      gap: 8px;
+      flex-wrap: nowrap;
+      margin-bottom: 15px;
     }
 
     .btn {
       border: none;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 20px;
       font-weight: bold;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       white-space: nowrap;
       transition: transform 0.1s ease, filter 0.2s ease;
       flex-shrink: 0;
@@ -108,71 +106,95 @@
     .btn-yellow { background-color: var(--btn-yellow); color: #000; }
     .btn-red { background-color: var(--btn-red); color: #fff; }
     .btn-green { background-color: var(--btn-green); color: #000; }
-    .btn-blue { background-color: var(--btn-blue); color: #fff; }
 
     .timer-box {
       background: #14051e;
       border: 2px solid var(--border-gold);
       color: #fff;
       font-weight: bold;
-      font-size: 1.1rem;
-      padding: 5px 14px;
+      font-size: 1.2rem;
+      padding: 4px 16px;
       border-radius: 12px;
-      min-width: 45px;
+      min-width: 50px;
       text-align: center;
       flex-shrink: 0;
     }
 
-    /* 🚀 LOBBY / START SCREEN CARD */
-    .lobby-card {
+    /* 🏷️ PILL BADGES */
+    .pill-badge {
+      background-color: var(--border-gold);
+      color: #000;
+      font-weight: 900;
+      padding: 6px 22px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      box-shadow: 0 0 15px rgba(255, 208, 0, 0.3);
+      display: inline-block;
+    }
+
+    /* 🚀 WELCOME CARD */
+    .welcome-card {
       width: 100%;
       max-width: 850px;
       border: 3px solid var(--border-gold);
       background-color: var(--card-bg);
       border-radius: 24px;
-      padding: 40px 30px;
+      padding: 35px 30px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       text-align: center;
       margin-bottom: 30px;
     }
 
-    .lobby-title {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--border-gold);
-      margin-bottom: 15px;
-    }
-
-    .lobby-join-box {
-      background: rgba(0,0,0,0.3);
-      border: 2px dashed var(--border-gold);
-      border-radius: 16px;
-      padding: 20px;
-      margin: 20px 0;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    .btn-start-game {
-      font-size: 1.4rem;
-      padding: 14px 40px;
-      border-radius: 30px;
-      margin: 20px auto 0 auto;
-      box-shadow: 0 0 20px rgba(255, 208, 0, 0.4);
-    }
-
-    /* 🏷️ ROUND BADGE */
-    .round-badge {
-      background-color: var(--border-gold);
-      color: #000;
+    .welcome-title {
+      font-size: 2.2rem;
       font-weight: 900;
-      padding: 8px 24px;
-      border-radius: 20px;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      color: var(--border-gold);
       margin-bottom: 20px;
-      box-shadow: 0 0 15px rgba(255, 208, 0, 0.3);
+    }
+
+    .instructions-container {
+      border: 2px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      text-align: left;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .instructions-list {
+      list-style-type: decimal;
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .instructions-list li {
+      margin-bottom: 12px;
+    }
+
+    .url-box {
+      border: 2px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-family: monospace;
+      font-size: 1.25rem;
+      color: #ffa8e8;
+      background: rgba(20, 5, 30, 0.6);
+      margin: 15px 0;
+      word-break: break-all;
+    }
+
+    .host-note {
+      font-style: italic;
+      color: var(--border-gold);
+      font-size: 0.95rem;
+      font-weight: bold;
     }
 
     /* ❓ MAIN QUESTION CARD */
@@ -189,7 +211,7 @@
     }
 
     .question-text {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 800;
       line-height: 1.4;
       margin-bottom: 30px;
@@ -241,7 +263,7 @@
     /* 🦶 BOTTOM STATUS FOOTER */
     .footer-bar {
       width: 100%;
-      max-width: 1180px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -251,7 +273,7 @@
     .footer-pill {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.15);
-      padding: 8px 18px;
+      padding: 6px 16px;
       border-radius: 20px;
       color: var(--border-gold);
       font-weight: 600;
@@ -259,6 +281,7 @@
 
     @media (max-width: 768px) {
       .options-grid { grid-template-columns: 1fr; }
+      .control-toolbar { overflow-x: auto; }
       .friends-title { font-size: 2.2rem; }
     }
   </style>
@@ -273,39 +296,46 @@
     <div class="subtitle">"The One With the Employee Handbook" ☕</div>
   </div>
 
-  <!-- 🎛️ CONTROL TOOLBAR -->
+  <!-- 🎛️ CONTROL TOOLBAR (WITHOUT LEADERBOARD BUTTON) -->
   <div class="control-toolbar">
     <button class="btn btn-yellow" onclick="playAudio()">🎷 FRIENDS THEME ► Play</button>
     <button class="btn btn-red" onclick="stopAudio()">⏹ Stop All</button>
     
-    <div class="timer-box" id="timer-display">0</div>
+    <div class="timer-box" id="timer-display">30</div>
 
     <button class="btn btn-red" onclick="restartGame()">⏮ Restart Game</button>
     <button class="btn btn-yellow" onclick="restartRound()">🔄 Restart Round</button>
     <button class="btn btn-green" onclick="revealAnswer()">💡 Reveal Answer</button>
-    <button class="btn btn-blue" onclick="openLeaderboard()">🏆 Leaderboard</button>
     <button class="btn btn-yellow" onclick="nextQuestion()">Next Question ➡️</button>
   </div>
 
-  <!-- 1️⃣ START SCREEN / LOBBY VIEW -->
-  <div id="start-screen" class="lobby-card">
-    <div class="lobby-title">WELCOME TO FRIENDS TRIVIA!</div>
-    <p>Get your devices ready and connect to join the game session.</p>
-    
-    <div class="lobby-join-box">
-      📲 Players Join Here:<br>
-      <span style="color: var(--border-gold);">alicekeeler.github.io/friends-trivia/game/</span>
-    </div>
+  <!-- 1️⃣ START / WELCOME SCREEN VIEW -->
+  <div id="welcome-screen" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+    <div class="pill-badge">WELCOME TO CENTRAL PERK ☕</div>
 
-    <button class="btn btn-yellow btn-start-game" onclick="startGame()">
-      🚀 START GAME
-    </button>
+    <div class="welcome-card">
+      <div class="welcome-title">Could this BE any more exciting? ☕</div>
+      
+      <div class="instructions-container">
+        <ol class="instructions-list">
+          <li>Gather your crew and form a team! (Pivot those chairs!)</li>
+          <li>Pick ONE device per team and go to:
+            <div class="url-box">https://alicekeeler.github.io/friends-trivia/game/</div>
+          </li>
+          <li>Select your Team Name from the drop down and get locked in.</li>
+        </ol>
+      </div>
+
+      <div class="host-note">
+        👉 Host: Click "Next Question ➡️" above when all teams are ready to start Round 1!
+      </div>
+    </div>
   </div>
 
-  <!-- 2️⃣ GAME SCREEN (HIDDEN INITIALLY) -->
-  <div id="game-screen" style="display: none; width: 100%; display: flex; flex-direction: column; align-items: center;">
-    <div class="round-badge" id="round-title">
-      LOADING QUESTIONS...
+  <!-- 2️⃣ GAME SCREEN VIEW (HIDDEN INITIALLY) -->
+  <div id="game-screen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+    <div class="pill-badge" id="round-title">
+      ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY
     </div>
 
     <div class="question-card">
@@ -320,10 +350,10 @@
   <!-- 🦶 FOOTER BAR -->
   <div class="footer-bar">
     <div class="footer-pill">
-      📲 Players Join: alicekeeler.github.io/friends-trivia/game/
+      📲 Players Join: <span style="text-decoration: underline;">alicekeeler.github.io/friends-trivia/game/</span>
     </div>
     <div class="footer-pill" id="audio-status">
-      🔊 Audio: Ready
+      🎭 Central Perk Audio Engine Active
     </div>
   </div>
 
@@ -331,17 +361,14 @@
   <audio id="audio-player" preload="auto"></audio>
 
   <script>
-    const LEADERBOARD_URL = "Leaderboard.html";
     const JSON_PATH = "questions.json";
-    // Working Friends Theme Song Audio Stream
     const THEME_AUDIO_URL = "https://ia800501.us.archive.org/33/items/TvThemeSongs-friends/Friends.mp3";
 
     let gameQuestions = [];
     let rawCategoriesData = [];
-    let currentIndex = 0;
+    let currentIndex = -1; // -1 represents Welcome Screen
     let timerInterval = null;
     let secondsElapsed = 0;
-    let gameStarted = false;
 
     // 📥 FETCH DATASET ON LOAD
     async function initDataset() {
@@ -372,20 +399,21 @@
           answer: selectedQ.answer
         };
       });
-
-      currentIndex = 0;
     }
 
-    // 🚀 START GAME FROM LOBBY SCREEN
-    function startGame() {
-      gameStarted = true;
-      document.getElementById('start-screen').style.display = 'none';
-      document.getElementById('game-screen').style.display = 'flex';
-      
-      if (gameQuestions.length > 0) {
+    // ➡️ ADVANCE QUESTION / START GAME
+    function nextQuestion() {
+      if (currentIndex === -1) {
+        // Transition from Welcome Screen to Round 1
+        currentIndex = 0;
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('game-screen').style.display = 'flex';
         loadQuestion(0);
+      } else if (currentIndex < gameQuestions.length - 1) {
+        currentIndex++;
+        loadQuestion(currentIndex);
       } else {
-        document.getElementById('question-text').innerText = "Failed to load questions.json. Check server setup.";
+        alert("You have reached the end of all rounds!");
       }
     }
 
@@ -413,7 +441,7 @@
 
     // 💡 REVEAL CORRECT ANSWER
     function revealAnswer() {
-      if (!gameQuestions.length || !gameStarted) return;
+      if (currentIndex < 0 || !gameQuestions.length) return;
       const qData = gameQuestions[currentIndex];
       const correctBtn = document.getElementById(`opt-${qData.answer}`);
       if (correctBtn) {
@@ -421,36 +449,21 @@
       }
     }
 
-    // ➡️ NEXT QUESTION
-    function nextQuestion() {
-      if (!gameStarted) return;
-      if (currentIndex < gameQuestions.length - 1) {
-        currentIndex++;
-        loadQuestion(currentIndex);
-      } else {
-        alert("You have reached the end of all rounds!");
-      }
-    }
-
     // 🔄 RESTART ROUND / GAME
     function restartRound() {
-      if (gameStarted) loadQuestion(currentIndex);
+      if (currentIndex >= 0) loadQuestion(currentIndex);
     }
 
     function restartGame() {
-      if (confirm("Restart game? This will return to the lobby and select new random questions!")) {
+      if (confirm("Restart game back to the Welcome Screen?")) {
         buildRandomizedGame();
         stopAudio();
         resetTimer();
-        gameStarted = false;
+        document.getElementById('timer-display').innerText = "30";
+        currentIndex = -1;
         document.getElementById('game-screen').style.display = 'none';
-        document.getElementById('start-screen').style.display = 'block';
+        document.getElementById('welcome-screen').style.display = 'flex';
       }
-    }
-
-    // 🏆 LEADERBOARD
-    function openLeaderboard() {
-      window.open(LEADERBOARD_URL, '_blank');
     }
 
     // ⏱️ TIMER
@@ -470,7 +483,7 @@
       document.getElementById('timer-display').innerText = "0";
     }
 
-    // 🔊 AUDIO ENGINE (REAL AUDIO PLAYBACK)
+    // 🔊 AUDIO ENGINE
     function playAudio() {
       const audio = document.getElementById('audio-player');
       const status = document.getElementById('audio-status');
@@ -493,13 +506,11 @@
       
       audio.pause();
       audio.currentTime = 0;
-      status.innerText = "🔇 Audio: Stopped";
+      status.innerText = "🎭 Central Perk Audio Engine Active";
     }
 
-    // START ON LOAD
+    // INITIALIZE ON LOAD
     window.onload = () => {
-      // Hide game screen until user clicks Start Game
-      document.getElementById('game-screen').style.display = 'none';
       initDataset();
     };
   </script>
