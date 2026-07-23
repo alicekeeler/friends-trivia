@@ -312,8 +312,8 @@
 
   <!-- 🎛️ CONTROL TOOLBAR -->
   <div class="control-toolbar">
-    <button class="btn btn-yellow" onclick="playAudio()">🎷 FRIENDS THEME ► Play</button>
-    <button class="btn btn-red" onclick="stopAudio()">⏹ Stop All</button>
+    <button class="btn btn-yellow" onclick="playThemeAudio()">🎷 FRIENDS THEME ► Play</button>
+    <button class="btn btn-red" onclick="stopAllAudio()">⏹ Stop All</button>
     
     <div class="timer-box" id="timer-display">30</div>
 
@@ -373,11 +373,25 @@
     </div>
   </div>
 
+  <!-- THEME AUDIO ELEMENT -->
   <audio id="audio-player" crossorigin="anonymous" preload="auto"></audio>
 
   <script>
+    // ==========================================
+    // 📁 FILE PATHS & SETUP
+    // ==========================================
     const JSON_PATH = "questions.json";
     const THEME_AUDIO_URL = "https://archive.org/download/TvThemeSongs-friends/Friends.mp3";
+    
+    // Update these exactly to match your local MP3 file names!
+    const SFX_CLICK_URL = "click.mp3";
+    const SFX_TICK_URL = "tick.mp3";
+    const SFX_REVEAL_URL = "correct.mp3";
+
+    // Preload HTML5 Audio objects
+    const sfxClick = new Audio(SFX_CLICK_URL);
+    const sfxTick = new Audio(SFX_TICK_URL);
+    const sfxReveal = new Audio(SFX_REVEAL_URL);
 
     let gameQuestions = [];
     let rawCategoriesData = [];
@@ -385,6 +399,58 @@
     let timerInterval = null;
     let secondsElapsed = 0;
 
+    // ==========================================
+    // 🔊 AUDIO HELPER FUNCTIONS
+    // ==========================================
+    function playMP3(audioObj) {
+      // Reset to start of clip in case it's played rapidly
+      audioObj.currentTime = 0;
+      audioObj.play().catch(err => {
+        console.warn("Audio play blocked by browser until user clicks:", err);
+      });
+    }
+
+    function playThemeAudio() {
+      playMP3(sfxClick);
+      const audio = document.getElementById('audio-player');
+      const status = document.getElementById('audio-status');
+
+      if (!audio.src || audio.src === "" || audio.src !== THEME_AUDIO_URL) {
+        audio.src = THEME_AUDIO_URL;
+        audio.load();
+      }
+
+      status.innerText = "⏳ Loading Theme Song...";
+
+      const promise = audio.play();
+      if (promise !== undefined) {
+        promise.then(() => {
+          status.innerText = "🔊 Playing: Friends Theme";
+        }).catch(err => {
+          console.error("Audio playback error:", err);
+          status.innerText = "⚠️ Audio Blocked - Click play once more!";
+        });
+      }
+    }
+
+    function stopAllAudio() {
+      playMP3(sfxClick);
+      const audio = document.getElementById('audio-player');
+      const status = document.getElementById('audio-status');
+      
+      audio.pause();
+      audio.currentTime = 0;
+      
+      // Stop SFX if they are mid-play
+      sfxTick.pause();
+      sfxReveal.pause();
+      
+      status.innerText = "🎭 Central Perk Audio Engine Active";
+    }
+
+    // ==========================================
+    // 🎮 GAME LOGIC
+    // ==========================================
     async function initDataset() {
       try {
         const response = await fetch(JSON_PATH);
@@ -415,6 +481,7 @@
     }
 
     function nextQuestion() {
+      playMP3(sfxClick);
       if (currentIndex === -1) {
         currentIndex = 0;
         document.getElementById('welcome-screen').style.display = 'none';
@@ -450,6 +517,8 @@
     }
 
     function revealAnswer() {
+      playMP3(sfxReveal); // Play correct sound!
+      
       if (currentIndex < 0 || !gameQuestions.length) return;
       const qData = gameQuestions[currentIndex];
       const correctBtn = document.getElementById(`opt-${qData.answer}`);
@@ -459,13 +528,15 @@
     }
 
     function restartRound() {
+      playMP3(sfxClick);
       if (currentIndex >= 0) loadQuestion(currentIndex);
     }
 
     function restartGame() {
+      playMP3(sfxClick);
       if (confirm("Restart game back to the Welcome Screen?")) {
         buildRandomizedGame();
-        stopAudio();
+        stopAllAudio();
         resetTimer();
         document.getElementById('timer-display').innerText = "30";
         currentIndex = -1;
@@ -478,9 +549,11 @@
       clearInterval(timerInterval);
       secondsElapsed = 0;
       document.getElementById('timer-display').innerText = secondsElapsed;
+      
       timerInterval = setInterval(() => {
         secondsElapsed++;
         document.getElementById('timer-display').innerText = secondsElapsed;
+        playMP3(sfxTick); // Play tick sound!
       }, 1000);
     }
 
@@ -488,37 +561,6 @@
       clearInterval(timerInterval);
       secondsElapsed = 0;
       document.getElementById('timer-display').innerText = "0";
-    }
-
-    function playAudio() {
-      const audio = document.getElementById('audio-player');
-      const status = document.getElementById('audio-status');
-
-      if (!audio.src || audio.src === "" || audio.src !== THEME_AUDIO_URL) {
-        audio.src = THEME_AUDIO_URL;
-        audio.load();
-      }
-
-      status.innerText = "⏳ Loading Theme Song...";
-
-      const promise = audio.play();
-      if (promise !== undefined) {
-        promise.then(() => {
-          status.innerText = "🔊 Playing: Friends Theme";
-        }).catch(err => {
-          console.error("Audio playback error:", err);
-          status.innerText = "⚠️ Audio Blocked - Click play once more!";
-        });
-      }
-    }
-
-    function stopAudio() {
-      const audio = document.getElementById('audio-player');
-      const status = document.getElementById('audio-status');
-      
-      audio.pause();
-      audio.currentTime = 0;
-      status.innerText = "🎭 Central Perk Audio Engine Active";
     }
 
     window.onload = () => {
