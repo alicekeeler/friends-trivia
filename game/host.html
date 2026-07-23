@@ -445,7 +445,8 @@
     }
 
     function initializeGameQueue() {
-      activeGameQuestions = topicPool.map(topic => {
+      // Create a linear array of questions
+      const unShuffledQuestions = topicPool.map(topic => {
         const rawQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
         const shuffledOpts = shuffleArray(rawQ.options);
         const newCorrectIndex = shuffledOpts.indexOf(rawQ.correctText);
@@ -459,6 +460,9 @@
           correct: newCorrectIndex
         };
       });
+      
+      // Shuffle the order of the actual questions/rounds!
+      activeGameQuestions = shuffleArray(unShuffledQuestions);
     }
 
     function showWelcomeScreen() {
@@ -501,7 +505,6 @@
 
       timer = 30;
       document.getElementById('timer-box').innerText = timer;
-      // Set to purple initially
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
       if (delayMusicMs === 0) {
@@ -516,8 +519,8 @@
         timer--;
         document.getElementById('timer-box').innerText = timer;
         
-        // 🔴 FIX 1: Turn red at 10 seconds and don't overwrite every second
-        if (timer === 10) {
+        // Triggers at 5 seconds and pulses
+        if (timer === 5) {
           document.getElementById('timer-box').className = "bg-red-900 border-2 border-red-400 text-red-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner animate-pulse";
         }
         
@@ -550,8 +553,15 @@
       if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
         initializeGameQueue();
         showWelcomeScreen();
-        // 🔴 FIX 2: Added mode: 'no-cors' so Google doesn't block the spreadsheet reset request!
-        fetch(`${SCRIPT_URL}?action=reset`, { mode: 'no-cors' }).catch(err => console.error("Reset failed:", err));
+        
+        // Changed to POST request with JSON body. This matches exactly how your broadcast works, 
+        // which guarantees Google Apps Script will properly receive and process the reset command.
+        fetch(SCRIPT_URL, { 
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'reset' })
+        }).catch(err => console.error("Reset failed:", err));
       }
     }
 
