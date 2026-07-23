@@ -2,106 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orion Handbook Trivia - Friends Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friends Trivia - Player Pad</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .purple-door { background-color: #4C1D95; }
-    .yellow-frame {
-      border: 6px solid #FBBF24;
-      box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
-    }
+    .purple-door { background-color: #2D0A3E; }
+    .friends-dot-red { color: #E11D48; }
+    .friends-dot-blue { color: #2563EB; }
+    .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between font-sans p-4">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans">
 
   <!-- HEADER -->
-  <header class="text-center py-4 border-b-2 border-yellow-400">
-    <h1 class="text-2xl font-bold tracking-wider text-yellow-300">ORION HANDBOOK TRIVIA</h1>
-    <p class="text-xs text-purple-200 uppercase tracking-widest mt-1">The One With The Policies</p>
+  <header class="text-center my-4">
+    <h1 class="text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
+      <span>O</span><span class="friends-dot-red">•</span>
+      <span>R</span><span class="friends-dot-blue">•</span>
+      <span>I</span><span class="friends-dot-yellow">•</span>
+      <span>O</span><span class="friends-dot-red">•</span>
+      <span>N</span>
+    </h1>
+    <p class="text-yellow-400 text-sm font-bold italic mt-1">Player Pad ☕</p>
   </header>
 
-  <!-- LOBBY / JOIN SCREEN -->
-  <main id="lobby-screen" class="flex-grow flex flex-col justify-center items-center my-6">
-    <div class="yellow-frame bg-purple-800 p-6 rounded-2xl w-full max-w-sm text-center">
-      <div class="text-4xl mb-3">🚪</div>
-      <h2 class="text-xl font-bold mb-4 text-yellow-300">Welcome to Central Perk!</h2>
-      
-      <label class="block text-left text-sm font-bold mb-1 text-purple-200">Your Name:</label>
-      <input id="player-name" type="text" placeholder="e.g. Chandler Bing" class="w-full p-3 rounded-lg text-black mb-4 font-semibold" />
+  <main class="w-full max-w-md mx-auto my-auto space-y-6">
 
-      <label class="block text-left text-sm font-bold mb-1 text-purple-200">Select Your Table / Apartment:</label>
-      <select id="team-select" class="w-full p-3 rounded-lg text-black font-semibold mb-6">
-        <option value="">-- Choose Table --</option>
-        <option value="Apartment 19">Apartment 19 (Joey & Chandler)</option>
-        <option value="Apartment 20">Apartment 20 (Monica & Rachel)</option>
-        <option value="Central Perk Couch">Central Perk Couch</option>
-        <option value="The Holiday Armadillos">The Holiday Armadillos</option>
-        <option value="Chanandler Bongs">Chanandler Bongs</option>
-        <option value="Smelly Cats">The Smelly Cats</option>
-        <option value="Ugly Naked Guys">The Ugly Naked Guys</option>
-      </select>
-
-      <button onclick="joinGame()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-3 rounded-xl text-lg transition-transform active:scale-95 shadow-lg">
-        JOIN GAME ☕
-      </button>
-    </div>
-  </main>
-
-  <!-- GAME SCREEN (Hidden initially) -->
-  <main id="game-screen" class="hidden flex-grow flex flex-col justify-between my-4">
-    <div class="yellow-frame bg-purple-800 p-4 rounded-xl text-center mb-4">
-      <span id="current-category" class="bg-yellow-400 text-purple-950 font-black text-xs px-3 py-1 rounded-full uppercase">Category</span>
-      <h3 id="player-status" class="text-sm font-semibold text-purple-200 mt-2">Select your answer below!</h3>
+    <!-- TEAM NAME INPUT -->
+    <div class="bg-purple-900/90 p-5 rounded-2xl border-2 border-yellow-400 shadow-xl text-center">
+      <label for="team-name" class="block text-yellow-300 font-bold mb-2 uppercase text-sm tracking-wider">
+        Enter Team / Player Name:
+      </label>
+      <input 
+        type="text" 
+        id="team-name" 
+        placeholder="e.g. The Chan-Chan Mans" 
+        class="w-full p-3 rounded-xl bg-purple-950 border border-yellow-400 text-white font-bold text-center text-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+      />
     </div>
 
     <!-- ANSWER BUTTONS -->
-    <div class="grid grid-cols-1 gap-3 flex-grow">
-      <button onclick="submitAnswer(0)" class="bg-red-600 active:bg-red-700 text-white font-bold p-4 rounded-xl text-left text-sm yellow-frame flex items-center">
-        <span class="text-xl mr-3 font-black">A</span> <span id="opt-0">Option A</span>
-      </button>
-      <button onclick="submitAnswer(1)" class="bg-blue-600 active:bg-blue-700 text-white font-bold p-4 rounded-xl text-left text-sm yellow-frame flex items-center">
-        <span class="text-xl mr-3 font-black">B</span> <span id="opt-1">Option B</span>
-      </button>
-      <button onclick="submitAnswer(2)" class="bg-yellow-600 active:bg-yellow-700 text-white font-bold p-4 rounded-xl text-left text-sm yellow-frame flex items-center">
-        <span class="text-xl mr-3 font-black">C</span> <span id="opt-2">Option C</span>
-      </button>
-      <button onclick="submitAnswer(3)" class="bg-green-600 active:bg-green-700 text-white font-bold p-4 rounded-xl text-left text-sm yellow-frame flex items-center">
-        <span class="text-xl mr-3 font-black">D</span> <span id="opt-3">Option D</span>
-      </button>
+    <div class="bg-purple-900/90 p-5 rounded-2xl border-2 border-yellow-400 shadow-xl">
+      <p class="text-center text-purple-200 text-sm font-semibold mb-4">Select your answer for the active question:</p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <button onclick="submitAnswer(0)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
+          A
+        </button>
+        <button onclick="submitAnswer(1)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
+          B
+        </button>
+        <button onclick="submitAnswer(2)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
+          C
+        </button>
+        <button onclick="submitAnswer(3)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
+          D
+        </button>
+      </div>
     </div>
+
+    <!-- STATUS MESSAGE -->
+    <div id="status-msg" class="text-center font-bold text-lg min-h-[30px] text-yellow-300"></div>
+
   </main>
 
-  <!-- FOOTER -->
-  <footer class="text-center text-xs text-purple-300 py-2 border-t border-purple-700">
-    <span id="player-info">Not Connected</span>
+  <footer class="text-center text-xs text-purple-300 my-2">
+    Orion Handbook Trivia • Powered by Central Perk
   </footer>
 
   <script>
-    let player = { name: '', team: '' };
+    const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxZPWY8Tjkc5vkik0sVLLciZHw5VMrkUoTb2APTwOZk7IZRzPkSVSkN0WLlFzXaOSoI/exec";
 
-    function joinGame() {
-      const name = document.getElementById('player-name').value;
-      const team = document.getElementById('team-select').value;
-      if (!name || !team) { alert('Please enter your name and choose a table!'); return; }
-      
-      player.name = name;
-      player.team = team;
-      
-      document.getElementById('lobby-screen').classList.add('hidden');
-      document.getElementById('game-screen').classList.remove('hidden');
-      document.getElementById('player-info').innerText = `${player.name} • ${player.team}`;
+    async function submitAnswer(index) {
+      const teamName = document.getElementById('team-name').value.trim();
+      const statusMsg = document.getElementById('status-msg');
 
-      // Local tap sound (referenced from root directory)
-      new Audio('../hello-you.mp3').play().catch(()=>{});
-    }
+      if (!teamName) {
+        alert("Please enter a Team Name first!");
+        return;
+      }
 
-    function submitAnswer(optionIndex) {
-      // Local tap sound trigger
-      new Audio('../good-very-good.mp3').play().catch(()=>{});
-      
-      document.getElementById('player-status').innerText = '✅ Answer Locked In! Look at the TV!';
-      // Here: Send response payload to Google Apps Script / Firestore backend endpoint
+      const options = ['A', 'B', 'C', 'D'];
+      const chosenOption = options[index];
+
+      statusMsg.className = "text-center font-bold text-lg text-yellow-400 animate-pulse";
+      statusMsg.innerText = `Submitting choice ${chosenOption}...`;
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'submitVote',
+            team: teamName,
+            round: window.currentActiveRound || 1,
+            answer: index
+          })
+        });
+
+        statusMsg.className = "text-center font-bold text-lg text-green-400";
+        statusMsg.innerText = `✅ Locked in choice ${chosenOption} for team "${teamName}"!`;
+      } catch (err) {
+        console.error(err);
+        statusMsg.className = "text-center font-bold text-lg text-red-400";
+        statusMsg.innerText = "❌ Failed to submit answer. Try again.";
+      }
     }
   </script>
 </body>
