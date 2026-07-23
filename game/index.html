@@ -44,11 +44,11 @@
 </head>
 <body class="brick-pattern text-white min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none" onclick="unlockAudioEngine()">
 
-  <!-- HEADER & LIVE STATUS -->
+  <!-- HEADER -->
   <header class="max-w-xl w-full mx-auto text-center mb-2 relative">
     <div class="absolute right-0 top-0 flex items-center space-x-1.5 bg-black/60 px-2.5 py-1 rounded-full border border-yellow-400/40 text-[10px]">
       <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-      <span id="conn-text" class="text-yellow-300 font-bold">Connected 🟢</span>
+      <span id="conn-text" class="text-yellow-300 font-bold">Live 🟢</span>
     </div>
 
     <div class="pt-2">
@@ -90,7 +90,7 @@
       <h2 class="text-lg font-black text-yellow-300 uppercase tracking-wider">
         Reserve Your Table
       </h2>
-      <p class="text-xs text-purple-200">Pick or type your group's team name to join!</p>
+      <p class="text-xs text-purple-200">Pick or type your group's team name to start!</p>
 
       <select id="team-dropdown" onchange="handleTeamSelect()" class="w-full bg-purple-950 border-2 border-yellow-400/70 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400">
         <option value="">-- Select Your Team --</option>
@@ -111,58 +111,73 @@
       </button>
     </div>
 
-    <!-- LIVE STATUS BANNER -->
-    <div id="round-banner" class="text-center chalkboard-card border-2 border-yellow-500/40 py-2.5 px-4 rounded-xl shadow-lg">
-      <span id="round-status-text" class="chalk-font text-sm text-yellow-300 tracking-wider">
-        ☕ Reserve your table above to enter Central Perk...
-      </span>
-    </div>
-
-    <!-- ANSWER BUTTONS -->
-    <div id="buzzer-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 opacity-40 pointer-events-none transition-all">
+    <!-- MAIN GAME PANEL (HIDDEN UNTIL TEAM IS LOCKED) -->
+    <div id="game-panel" class="hidden space-y-3">
       
-      <!-- OPTION A -->
-      <button onclick="submitAnswer(0)" id="btn-0" class="buzzer-btn chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-        <div class="flex items-center space-x-3">
-          <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ A</span>
-          <span id="btn-text-0" class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option A</span>
+      <!-- QUESTION SELECTOR MATRIX (Q1 to Q11) -->
+      <div class="chalkboard-card border-2 border-yellow-500/60 rounded-2xl p-3 shadow-xl">
+        <div class="flex items-center justify-between border-b border-yellow-500/30 pb-2 mb-2">
+          <span class="chalk-font text-xs text-yellow-300 tracking-wider">Select Question:</span>
+          <span id="progress-text" class="text-[11px] font-bold text-amber-200">0 of 11 Answered</span>
         </div>
-        <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-      </button>
-
-      <!-- OPTION B -->
-      <button onclick="submitAnswer(1)" id="btn-1" class="buzzer-btn chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-        <div class="flex items-center space-x-3">
-          <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ B</span>
-          <span id="btn-text-1" class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option B</span>
+        
+        <div id="q-nav-grid" class="grid grid-cols-6 gap-1.5 text-center">
+          <!-- Generated dynamically via JS -->
         </div>
-        <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-      </button>
+      </div>
 
-      <!-- OPTION C -->
-      <button onclick="submitAnswer(2)" id="btn-2" class="buzzer-btn chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-        <div class="flex items-center space-x-3">
-          <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ C</span>
-          <span id="btn-text-2" class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option C</span>
-        </div>
-        <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-      </button>
+      <!-- ACTIVE QUESTION HEADER BANNER -->
+      <div class="text-center chalkboard-card border-2 border-yellow-500/40 py-2.5 px-4 rounded-xl shadow-lg flex items-center justify-between">
+        <span id="active-q-title" class="chalk-font text-base text-yellow-300 tracking-wider">
+          Question 1
+        </span>
+        <span id="q-status-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
+          Unanswered
+        </span>
+      </div>
 
-      <!-- OPTION D -->
-      <button onclick="submitAnswer(3)" id="btn-3" class="buzzer-btn chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
-        <div class="flex items-center space-x-3">
-          <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ D</span>
-          <span id="btn-text-3" class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option D</span>
-        </div>
-        <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
-      </button>
+      <!-- ANSWER BUTTONS (A, B, C, D) -->
+      <div id="answer-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        
+        <button onclick="selectOption('A')" id="btn-A" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ A</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option A</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
+        </button>
 
-    </div>
+        <button onclick="selectOption('B')" id="btn-B" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ B</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option B</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
+        </button>
 
-    <!-- VOTE CONFIRMATION CARD -->
-    <div id="feedback-card" class="hidden text-center central-perk-green border-2 border-yellow-400 p-3.5 rounded-2xl shadow-xl space-y-1">
-      <p class="text-sm font-black text-yellow-300 uppercase tracking-wider">Answer Locked In! ☕</p>
-      <p id="feedback-subtext" class="text-xs text-emerald-100 font-semibold">Waiting for Gunther & Host to reveal the results...</p>
+        <button onclick="selectOption('C')" id="btn-C" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ C</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option C</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
+        </button>
+
+        <button onclick="selectOption('D')" id="btn-D" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ D</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option D</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
+        </button>
+
+      </div>
+
+      <!-- SYNC STATUS TOAST -->
+      <div id="sync-toast" class="text-center text-xs text-yellow-300/80 font-semibold py-1 h-5">
+        <!-- Live status feedback text -->
+      </div>
+
     </div>
 
   </main>
@@ -178,39 +193,18 @@
       </button>
     </div>
 
-    <!-- 10 SOUND BUTTONS -->
     <div class="grid grid-cols-5 gap-1.5 text-center">
-      <button onclick="playSound('claps.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        👏 Claps
-      </button>
-      <button onclick="playSound('how-you-doing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        😏 How Doin'?
-      </button>
-      <button onclick="playSound('all-right.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        👍 All Right
-      </button>
-      <button onclick="playSound('bing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        🔔 Bing!
-      </button>
-      <button onclick="playSound('excellent.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        ✨ Excellent
-      </button>
+      <button onclick="playSound('claps.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👏 Claps</button>
+      <button onclick="playSound('how-you-doing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">😏 How Doin'?</button>
+      <button onclick="playSound('all-right.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👍 All Right</button>
+      <button onclick="playSound('bing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🔔 Bing!</button>
+      <button onclick="playSound('excellent.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">✨ Excellent</button>
 
-      <button onclick="playSound('good-very-good.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        👌 Very Good
-      </button>
-      <button onclick="playSound('hello-you.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        👋 Hello You
-      </button>
-      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        🤯 Decision!
-      </button>
-      <button onclick="playSound('game/i-don-t-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        🤷 Don't Know
-      </button>
-      <button onclick="playSound('game/i-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">
-        💡 I Know!
-      </button>
+      <button onclick="playSound('good-very-good.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👌 Very Good</button>
+      <button onclick="playSound('hello-you.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👋 Hello You</button>
+      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🤯 Decision!</button>
+      <button onclick="playSound('game/i-don-t-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🤷 Don't Know</button>
+      <button onclick="playSound('game/i-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">💡 I Know!</button>
     </div>
   </section>
 
@@ -220,25 +214,18 @@
   </footer>
 
   <script>
+    // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzg7wu_Znn_A8IjXBOlkh03B-Lj1gZI6BFL28dWa0srxCLRx3O3_FRk6u-8HbdTdKGI/exec";
 
     let selectedTeam = "";
-    let activeQuestionId = null;
-    let activeRoundNumber = null;
-    let hasVotedCurrentRound = false;
+    let activeQuestion = "Q1";
+    let teamAnswers = {}; // Stores { "Q1": "A", "Q2": "C", ... }
 
     // AUDIO SYSTEM
     const audioFiles = [
-      'claps.mp3',
-      'how-you-doing.mp3',
-      'all-right.mp3',
-      'bing.mp3',
-      'excellent.mp3',
-      'good-very-good.mp3',
-      'hello-you.mp3',
-      'game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3',
-      'game/i-don-t-know.mp3',
-      'game/i-know.mp3'
+      'claps.mp3', 'how-you-doing.mp3', 'all-right.mp3', 'bing.mp3', 'excellent.mp3',
+      'good-very-good.mp3', 'hello-you.mp3', 'game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3',
+      'game/i-don-t-know.mp3', 'game/i-know.mp3'
     ];
 
     const audioPool = {};
@@ -253,7 +240,6 @@
       const candidates = getCandidateUrls(file);
       let currentIdx = 0;
       const audio = new Audio(candidates[0]);
-
       audio.addEventListener('error', () => {
         currentIdx++;
         if (currentIdx < candidates.length) {
@@ -261,22 +247,17 @@
           audio.load();
         }
       });
-
       audioPool[file] = audio;
     });
 
     function unlockAudioEngine() {
       if (isUnlocked) return;
       isUnlocked = true;
-
       Object.keys(audioPool).forEach(key => {
         const audio = audioPool[key];
         const promise = audio.play();
         if (promise !== undefined) {
-          promise.then(() => {
-            audio.pause();
-            audio.currentTime = 0;
-          }).catch(() => {});
+          promise.then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
         }
       });
     }
@@ -284,13 +265,7 @@
     function playSound(filename) {
       unlockAudioEngine();
       stopAllAudio();
-
-      let audio = audioPool[filename];
-      if (!audio) {
-        audio = new Audio(filename);
-        audioPool[filename] = audio;
-      }
-
+      let audio = audioPool[filename] || new Audio(filename);
       audio.currentTime = 0;
       audio.play().catch(err => console.warn("Audio play blocked:", err));
     }
@@ -304,7 +279,7 @@
       });
     }
 
-    // GAME CONTROLS
+    // GAME INITIALIZATION & NAV
     function handleTeamSelect() {
       const select = document.getElementById('team-dropdown');
       const customInput = document.getElementById('custom-team-input');
@@ -316,16 +291,12 @@
       }
     }
 
-    function lockInTeam() {
+    async function lockInTeam() {
       unlockAudioEngine();
       const select = document.getElementById('team-dropdown');
       const customInput = document.getElementById('custom-team-input');
 
-      if (select.value === 'CUSTOM') {
-        selectedTeam = customInput.value.trim();
-      } else {
-        selectedTeam = select.value;
-      }
+      selectedTeam = (select.value === 'CUSTOM') ? customInput.value.trim() : select.value;
 
       if (!selectedTeam) {
         alert("Please select or enter a Team Name!");
@@ -333,74 +304,98 @@
       }
 
       document.getElementById('team-card').classList.add('hidden');
+      document.getElementById('game-panel').classList.remove('hidden');
       document.getElementById('active-team-label').innerText = `Table Reserved: ${selectedTeam}`;
 
-      if (activeRoundNumber) {
-        enableBuzzers();
-        document.getElementById('round-status-text').innerText = `☕ ROUND ${activeRoundNumber} IS LIVE — TAP YOUR CHOICE BELOW!`;
-      } else {
-        document.getElementById('round-status-text').innerText = "☕ Table Reserved! Waiting for Host to launch Question...";
+      renderQuestionNav();
+      updateActiveQuestionUI();
+
+      // Fetch any existing submissions from spreadsheet
+      await fetchExistingAnswers();
+    }
+
+    function renderQuestionNav() {
+      const grid = document.getElementById('q-nav-grid');
+      grid.innerHTML = '';
+
+      for (let i = 1; i <= 11; i++) {
+        const qKey = `Q${i}`;
+        const hasAnswer = !!teamAnswers[qKey];
+        const isActive = activeQuestion === qKey;
+
+        const btn = document.createElement('button');
+        btn.onclick = () => switchQuestion(qKey);
+
+        let bgClass = "bg-purple-950/80 border-purple-800 text-purple-200 hover:border-yellow-400";
+        if (isActive) {
+          bgClass = "bg-yellow-400 text-purple-950 font-black border-2 border-yellow-200 scale-105 shadow-lg";
+        } else if (hasAnswer) {
+          bgClass = "central-perk-green text-yellow-300 font-bold border border-emerald-400/50";
+        }
+
+        btn.className = `p-2 rounded-xl text-xs flex flex-col items-center justify-center transition-all ${bgClass}`;
+        btn.innerHTML = `
+          <span>Q${i}</span>
+          <span class="text-[9px] ${isActive ? 'text-purple-950' : 'text-yellow-400'}">${hasAnswer ? `✓ (${teamAnswers[qKey]})` : '—'}</span>
+        `;
+
+        grid.appendChild(btn);
       }
+
+      // Update progress counter
+      const answeredCount = Object.keys(teamAnswers).length;
+      document.getElementById('progress-text').innerText = `${answeredCount} of 11 Answered`;
     }
 
-    function enableBuzzers() {
-      if (!selectedTeam || hasVotedCurrentRound) return;
-      const grid = document.getElementById('buzzer-grid');
-      grid.classList.remove('opacity-40', 'pointer-events-none');
-    }
-
-    function disableBuzzers() {
-      const grid = document.getElementById('buzzer-grid');
-      grid.classList.add('opacity-40', 'pointer-events-none');
-    }
-
-    function resetBuzzerUI() {
-      hasVotedCurrentRound = false;
-      document.getElementById('feedback-card').classList.add('hidden');
-
-      for (let i = 0; i < 4; i++) {
-        const btn = document.getElementById(`btn-${i}`);
-        btn.className = "buzzer-btn chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group";
-        const check = btn.querySelector('.check-icon');
-        if (check) check.classList.add('opacity-0');
-      }
-
-      if (selectedTeam && activeRoundNumber) {
-        enableBuzzers();
-      }
-    }
-
-    async function submitAnswer(optionIndex) {
+    function switchQuestion(qKey) {
       unlockAudioEngine();
-      if (!selectedTeam) {
-        alert("Please lock in your team name first!");
-        return;
+      activeQuestion = qKey;
+      renderQuestionNav();
+      updateActiveQuestionUI();
+    }
+
+    function updateActiveQuestionUI() {
+      document.getElementById('active-q-title').innerText = `Question ${activeQuestion.replace('Q', '')}`;
+      
+      const currentAns = teamAnswers[activeQuestion];
+      const badge = document.getElementById('q-status-badge');
+
+      if (currentAns) {
+        badge.innerText = `Selected: (${currentAns})`;
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
+      } else {
+        badge.innerText = "Unanswered";
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30";
       }
 
-      if (hasVotedCurrentRound) return;
-
-      hasVotedCurrentRound = true;
-      disableBuzzers();
-
-      const letterMap = ["A", "B", "C", "D"];
-
-      for (let i = 0; i < 4; i++) {
-        const btn = document.getElementById(`btn-${i}`);
+      // Reset option button highlights
+      ['A', 'B', 'C', 'D'].forEach(opt => {
+        const btn = document.getElementById(`btn-${opt}`);
         const check = btn.querySelector('.check-icon');
 
-        if (i === optionIndex) {
-          btn.className = "buzzer-btn bg-yellow-400 text-purple-950 border-4 border-yellow-200 p-4 rounded-2xl shadow-xl flex items-center justify-between transition-all font-black scale-[1.02]";
+        if (currentAns === opt) {
+          btn.className = "chalkboard-card bg-yellow-400 text-purple-950 border-4 border-yellow-200 p-4 rounded-2xl shadow-xl flex items-center justify-between transition-all font-black scale-[1.01]";
           if (check) {
             check.classList.remove('opacity-0');
             check.className = "text-purple-950 text-xl font-black check-icon";
           }
         } else {
-          btn.className = "buzzer-btn chalkboard-card opacity-25 p-4 rounded-2xl flex items-center justify-between";
+          btn.className = "chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group";
+          if (check) check.classList.add('opacity-0');
         }
-      }
+      });
+    }
 
-      document.getElementById('feedback-subtext').innerText = `You submitted Choice (${letterMap[optionIndex]}). Waiting for host to reveal results...`;
-      document.getElementById('feedback-card').classList.remove('hidden');
+    async function selectOption(optionLetter) {
+      unlockAudioEngine();
+      if (!selectedTeam) return;
+
+      teamAnswers[activeQuestion] = optionLetter;
+      renderQuestionNav();
+      updateActiveQuestionUI();
+
+      const toast = document.getElementById('sync-toast');
+      toast.innerText = `Saving ${activeQuestion} -> (${optionLetter})...`;
 
       try {
         await fetch(SCRIPT_URL, {
@@ -408,85 +403,36 @@
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            action: 'submitVote',
-            actionAlt: 'vote',
+            action: 'submitAnswer',
             team: selectedTeam,
-            round: activeRoundNumber,
-            answer: optionIndex
+            question: activeQuestion,
+            answer: optionLetter
           })
         });
+
+        toast.innerText = `✓ ${activeQuestion} recorded as (${optionLetter})!`;
+        setTimeout(() => { if (toast.innerText.includes('recorded')) toast.innerText = ''; }, 3000);
       } catch (err) {
-        console.error("Failed to submit vote:", err);
+        toast.innerText = `⚠️ Failed to save. Check internet connection.`;
+        console.error("Save error:", err);
       }
     }
 
-    // REAL-TIME FLEXIBLE POLLING ENGINE
-    async function pollActiveQuestion() {
-      const connDot = document.getElementById('conn-dot');
-      const connText = document.getElementById('conn-text');
-      const statusBannerText = document.getElementById('round-status-text');
-
+    async function fetchExistingAnswers() {
       try {
-        const response = await fetch(`${SCRIPT_URL}?action=getActiveQuestion&t=${Date.now()}`);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        // Update status indicator
-        connDot.className = "w-2.5 h-2.5 rounded-full bg-green-500 inline-block";
-        connText.innerText = "Connected 🟢";
-
-        // Parse round & question structure flexibly across GAS formats
-        const q = data.activeQuestion || data.question || data.currentQuestion || data;
-        const roundNum = q.number || q.round || q.roundNumber || data.round || data.roundNumber || data.currentRound;
-        const isLive = (data.status === 'active' || data.status === 'live' || data.state === 'active' || (roundNum != null && roundNum > 0));
-
-        if (roundNum && isLive) {
-          // Update option labels if backend provides choice texts
-          const opts = q.options || q.choices || q.answers || data.options;
-          if (Array.isArray(opts) && opts.length >= 4) {
-            for (let i = 0; i < 4; i++) {
-              const labelSpan = document.getElementById(`btn-text-${i}`);
-              if (labelSpan) labelSpan.innerText = opts[i];
-            }
-          }
-
-          if (roundNum !== activeRoundNumber) {
-            activeQuestionId = q.id || `round-${roundNum}`;
-            activeRoundNumber = roundNum;
-            resetBuzzerUI();
-          }
-
-          if (selectedTeam) {
-            statusBannerText.innerText = `☕ ROUND ${roundNum} IS LIVE — TAP YOUR CHOICE BELOW!`;
-            if (!hasVotedCurrentRound) enableBuzzers();
-          } else {
-            statusBannerText.innerText = `🔥 ROUND ${roundNum} IS LIVE! Reserve your table above to answer!`;
-          }
-        } else {
-          // Waiting mode
-          activeQuestionId = null;
-          activeRoundNumber = null;
-          disableBuzzers();
-
-          if (selectedTeam) {
-            statusBannerText.innerText = "☕ Table Reserved! Waiting for Host to launch Question...";
-          } else {
-            statusBannerText.innerText = "☕ Reserve your table above to enter Central Perk...";
+        const res = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(selectedTeam)}&t=${Date.now()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.answers) {
+            teamAnswers = data.answers;
+            renderQuestionNav();
+            updateActiveQuestionUI();
           }
         }
       } catch (err) {
-        connDot.className = "w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block";
-        connText.innerText = "Connecting...";
-        console.warn("Polling retry:", err);
+        console.warn("Could not fetch initial answers:", err);
       }
     }
-
-    setInterval(pollActiveQuestion, 1500);
-    pollActiveQuestion();
   </script>
 </body>
 </html>
