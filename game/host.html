@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>O·R·I·O·N - The One With the Employee Handbook</title>
+  <title>O·R·I·O·N - Host Console</title>
   <style>
     :root {
       --bg-color: #1a0826;
@@ -33,7 +33,7 @@
       justify-content: space-between;
     }
 
-    /* 🔴🔵🟡 FRIENDS LOGO HEADER */
+    /* 🔴🔵🟡 HEADER */
     .friends-header {
       text-align: center;
       margin-bottom: 15px;
@@ -196,7 +196,7 @@
       font-size: 0.95rem;
       font-weight: bold;
     }
-fsc
+
     /* ❓ MAIN QUESTION CARD */
     .question-card {
       width: 100%;
@@ -296,7 +296,7 @@ fsc
     <div class="subtitle">"The One With the Employee Handbook" ☕</div>
   </div>
 
-  <!-- 🎛️ CONTROL TOOLBAR (WITHOUT LEADERBOARD BUTTON) -->
+  <!-- 🎛️ CONTROL TOOLBAR -->
   <div class="control-toolbar">
     <button class="btn btn-yellow" onclick="playAudio()">🎷 FRIENDS THEME ► Play</button>
     <button class="btn btn-red" onclick="stopAudio()">⏹ Stop All</button>
@@ -309,7 +309,7 @@ fsc
     <button class="btn btn-yellow" onclick="nextQuestion()">Next Question ➡️</button>
   </div>
 
-  <!-- 1️⃣ START / WELCOME SCREEN VIEW -->
+  <!-- 1️⃣ WELCOME SCREEN -->
   <div id="welcome-screen" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
     <div class="pill-badge">WELCOME TO CENTRAL PERK ☕</div>
 
@@ -332,7 +332,7 @@ fsc
     </div>
   </div>
 
-  <!-- 2️⃣ GAME SCREEN VIEW (HIDDEN INITIALLY) -->
+  <!-- 2️⃣ GAME SCREEN -->
   <div id="game-screen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
     <div class="pill-badge" id="round-title">
       ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY
@@ -357,7 +357,6 @@ fsc
     </div>
   </div>
 
-  <!-- 🎵 AUDIO ENGINE -->
   <audio id="audio-player" preload="auto"></audio>
 
   <script>
@@ -366,11 +365,10 @@ fsc
 
     let gameQuestions = [];
     let rawCategoriesData = [];
-    let currentIndex = -1; // -1 represents Welcome Screen
+    let currentIndex = -1;
     let timerInterval = null;
     let secondsElapsed = 0;
 
-    // 📥 FETCH DATASET ON LOAD
     async function initDataset() {
       try {
         const response = await fetch(JSON_PATH);
@@ -383,7 +381,6 @@ fsc
       }
     }
 
-    // 🎲 PICK ONE RANDOM QUESTION PER CATEGORY
     function buildRandomizedGame() {
       if (!rawCategoriesData.length) return;
 
@@ -401,10 +398,8 @@ fsc
       });
     }
 
-    // ➡️ ADVANCE QUESTION / START GAME
     function nextQuestion() {
       if (currentIndex === -1) {
-        // Transition from Welcome Screen to Round 1
         currentIndex = 0;
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('game-screen').style.display = 'flex';
@@ -417,7 +412,6 @@ fsc
       }
     }
 
-    // ❓ DISPLAY CURRENT QUESTION
     function loadQuestion(index) {
       if (!gameQuestions.length) return;
 
@@ -439,7 +433,6 @@ fsc
       startTimer();
     }
 
-    // 💡 REVEAL CORRECT ANSWER
     function revealAnswer() {
       if (currentIndex < 0 || !gameQuestions.length) return;
       const qData = gameQuestions[currentIndex];
@@ -449,7 +442,6 @@ fsc
       }
     }
 
-    // 🔄 RESTART ROUND / GAME
     function restartRound() {
       if (currentIndex >= 0) loadQuestion(currentIndex);
     }
@@ -466,7 +458,6 @@ fsc
       }
     }
 
-    // ⏱️ TIMER
     function startTimer() {
       clearInterval(timerInterval);
       secondsElapsed = 0;
@@ -483,7 +474,6 @@ fsc
       document.getElementById('timer-display').innerText = "0";
     }
 
-    // 🔊 AUDIO ENGINE
     function playAudio() {
       const audio = document.getElementById('audio-player');
       const status = document.getElementById('audio-status');
@@ -509,7 +499,6 @@ fsc
       status.innerText = "🎭 Central Perk Audio Engine Active";
     }
 
-    // INITIALIZE ON LOAD
     window.onload = () => {
       initDataset();
     };
