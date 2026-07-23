@@ -14,6 +14,16 @@
 </head>
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 md:p-8 font-sans select-none" onclick="unlockAudioEngine()">
 
+  <!-- AUDIO ELEMENTS (ROOT FOLDER PRELOAD) -->
+  <audio id="snd-theme" src="friends.mp3" preload="auto"></audio>
+  <audio id="snd-timer" src="30secondfriendsintro.mp3" preload="auto"></audio>
+  <audio id="snd-timer-stop" src="enough-already.mp3" preload="auto"></audio>
+  <audio id="snd-reveal" src="claps.mp3" preload="auto"></audio>
+  <audio id="snd-question" src="i-got-a-question.mp3" preload="auto"></audio>
+  <audio id="snd-leaderboard" src="how-dumb-are-you.mp3" preload="auto"></audio>
+  <audio id="snd-restart-round" src="how-come-you-re-working-here.mp3" preload="auto"></audio>
+  <audio id="snd-restart-game" src="don-t-be-so-negative.mp3" preload="auto"></audio>
+
   <!-- FRIENDS-STYLE HEADER -->
   <header class="text-center my-2">
     <h1 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
@@ -26,12 +36,12 @@
     <p class="text-yellow-400 italic text-sm font-bold tracking-widest mt-1">"The One With the Employee Handbook" ☕</p>
   </header>
 
-  <!-- TOP CONTROL BAR (WITH MARGIN BELOW) -->
+  <!-- TOP CONTROL BAR -->
   <div class="max-w-6xl w-full mx-auto bg-purple-950/90 p-3.5 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3 mb-6">
     
     <!-- FRIENDS THEME & STOP ALL -->
     <div class="flex items-center space-x-2">
-      <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="playAudio('snd-theme', 'friends.mp3', 'theme')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
         ☕ FRIENDS THEME ▶ Play
       </button>
       <button onclick="stopAllAudio()" class="bg-red-500 hover:bg-red-400 text-white font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95">
@@ -76,7 +86,7 @@
     </div>
   </div>
 
-  <!-- MAIN CARD CONTAINER (WITH VERTICAL MARGIN) -->
+  <!-- MAIN CARD CONTAINER -->
   <main class="max-w-4xl w-full mx-auto my-auto py-4 space-y-6">
 
     <!-- ROUND BADGE -->
@@ -86,7 +96,7 @@
       </span>
     </div>
 
-    <!-- WELCOME / HOLDING CARD (START SCREEN) -->
+    <!-- WELCOME / HOLDING CARD -->
     <div id="welcome-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-yellow-300">
         Could this BE any more exciting? ☕
@@ -112,7 +122,7 @@
       </p>
     </div>
 
-    <!-- QUESTION CARD (HIDDEN UNTIL GAME STARTS) -->
+    <!-- QUESTION CARD -->
     <div id="question-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 hidden">
       <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
         Loading Question...
@@ -140,7 +150,7 @@
 
   </main>
 
-  <!-- BOTTOM FOOTER (WITH TOP MARGIN TO PREVENT OVERLAP) -->
+  <!-- BOTTOM FOOTER -->
   <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-3 mt-8 pt-4">
     <div class="flex items-center space-x-2">
       <span class="bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold shadow">
@@ -148,7 +158,7 @@
       </span>
     </div>
     <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow">
-      <span>🔊</span> <span id="status-text">Central Perk Audio Engine Active</span>
+      <span>🔊</span> <span id="status-text">Central Perk Audio Engine Ready</span>
     </div>
   </footer>
 
@@ -175,49 +185,124 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    // AUDIO MANAGEMENT SYSTEM
-    const activeAudioMap = {};
+    const audioIds = [
+      'snd-theme', 'snd-timer', 'snd-timer-stop', 'snd-reveal', 
+      'snd-question', 'snd-leaderboard', 'snd-restart-round', 'snd-restart-game'
+    ];
+
     let isUnlocked = false;
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
 
     function unlockAudioEngine() {
       if (isUnlocked) return;
       isUnlocked = true;
-      document.getElementById('status-text').innerText = "Central Perk Audio Engine Active";
+      getAudioContext();
+
+      // Pre-flight play & pause on DOM audio elements to unlock iOS/Chrome restrictions
+      audioIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.play().then(() => {
+            el.pause();
+            el.currentTime = 0;
+          }).catch(() => {});
+        }
+      });
+
+      document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked";
     }
 
-    function playSound(filename) {
+    function playSynthFallback(soundType) {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (soundType === 'question' || soundType === 'next') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.2);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (soundType === 'reveal' || soundType === 'claps') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g);
+            g.connect(ctx.destination);
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0.2, now + (idx * 0.08));
+            g.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.08) + 0.3);
+            o.start(now + (idx * 0.08));
+            o.stop(now + (idx * 0.08) + 0.3);
+          });
+        } else if (soundType === 'timer_stop') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(110, now + 0.4);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+          osc.start(now);
+          osc.stop(now + 0.4);
+        } else {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, now);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        }
+      } catch(e) {
+        console.error("Synth playback error:", e);
+      }
+    }
+
+    function playAudio(elementId, filename, synthType = 'default') {
       unlockAudioEngine();
       stopAllAudio();
 
-      try {
-        if (!activeAudioMap[filename]) {
-          activeAudioMap[filename] = new Audio('./' + filename);
-        }
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.currentTime = 0;
+        const promise = el.play();
 
-        const audio = activeAudioMap[filename];
-        audio.currentTime = 0;
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
+        if (promise !== undefined) {
+          promise.then(() => {
             document.getElementById('status-text').innerText = `Playing: ${filename}`;
             document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
-          }).catch(error => {
-            console.error(`Error playing ${filename}:`, error);
-            document.getElementById('status-text').innerText = `⚠️ Audio file '${filename}' not found or blocked`;
+          }).catch(err => {
+            console.warn(`File ${filename} failed to play from root. Playing synth.`, err);
+            document.getElementById('status-text').innerText = `🔊 Playing Synth Sound (${filename} missing/blocked)`;
             document.getElementById('status-indicator').className = "text-yellow-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-500/40 shadow";
+            playSynthFallback(synthType);
           });
         }
-      } catch (err) {
-        console.error("Audio engine failure:", err);
+      } else {
+        playSynthFallback(synthType);
       }
     }
 
     function stopAllAudio() {
-      Object.keys(activeAudioMap).forEach(key => {
-        if (activeAudioMap[key]) {
-          activeAudioMap[key].pause();
-          activeAudioMap[key].currentTime = 0;
+      audioIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.pause();
+          el.currentTime = 0;
         }
       });
     }
@@ -337,7 +422,7 @@
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
       musicDelayTimeout = setTimeout(() => {
-        playSound('30secondfriendsintro.mp3');
+        playAudio('snd-timer', '30secondfriendsintro.mp3', 'timer');
       }, delayMusicMs);
 
       timerInterval = setInterval(() => {
@@ -348,13 +433,13 @@
         }
         if (timer <= 0) {
           clearInterval(timerInterval);
-          playSound('enough-already.mp3');
+          playAudio('snd-timer-stop', 'enough-already.mp3', 'timer_stop');
         }
       }, 1000);
     }
 
     function nextQuestion() {
-      playSound('i-got-a-question.mp3');
+      playAudio('snd-question', 'i-got-a-question.mp3', 'question');
 
       if (currentQIndex === -1) {
         currentQIndex = 0;
@@ -367,12 +452,12 @@
 
     function restartRound() {
       if (currentQIndex === -1) return;
-      playSound('how-come-you-re-working-here.mp3');
+      playAudio('snd-restart-round', 'how-come-you-re-working-here.mp3', 'next');
       loadQuestion(currentQIndex, 1800);
     }
 
     function restartGame() {
-      playSound('don-t-be-so-negative.mp3');
+      playAudio('snd-restart-game', 'don-t-be-so-negative.mp3', 'next');
 
       if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
         initializeGameQueue();
@@ -384,7 +469,7 @@
     function revealAnswer() {
       if (currentQIndex === -1) return;
       clearTimeout(musicDelayTimeout);
-      playSound('claps.mp3');
+      playAudio('snd-reveal', 'claps.mp3', 'reveal');
 
       const q = activeGameQuestions[currentQIndex];
       if (!q) return;
@@ -398,7 +483,7 @@
     }
 
     async function openLeaderboard() {
-      playSound('how-dumb-are-you.mp3');
+      playAudio('snd-leaderboard', 'how-dumb-are-you.mp3', 'reveal');
 
       document.getElementById('leaderboard-modal').classList.remove('hidden');
       const listContainer = document.getElementById('leaderboard-list');
