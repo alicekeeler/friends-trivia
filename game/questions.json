@@ -3,11 +3,13 @@
     "category": "Clocking in/out",
     "questions": [
       {
+        "id": "q101",
         "q": "Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?",
         "options": ["A) Allowed if you are good friends", "B) Strictly prohibited and considered payroll fraud", "C) Allowed twice per month", "D) Only permitted during coffee breaks"],
         "answer": 1
       },
       {
+        "id": "q102",
         "q": "Monica insists on clocking in at exactly 7:59:59 AM down to the millisecond. What is the rule for non-exempt employee timekeeping?",
         "options": ["A) Employees must record all actual time worked accurately", "B) Rounding up by 30 minutes is required", "C) Only managers can edit time cards", "D) Clocking in 1 hour early is automatic overtime"],
         "answer": 0
@@ -18,11 +20,13 @@
     "category": "Dress Code",
     "questions": [
       {
+        "id": "q201",
         "q": "Joey walks into the office wearing ALL of Chandler's clothes at once ('Could I BE wearing any more clothes?'). Is this compliant with workplace attire policy?",
         "options": ["A) Yes, if it's Friday", "B) No, attire must be neat, clean, and appropriate for business casual", "C) Yes, as long as he doesn't do lunges", "D) Only if HR approves the brand"],
         "answer": 1
       },
       {
+        "id": "q202",
         "q": "Rachel wears an extreme high-fashion runway outfit with flip-flops to a client meeting. What is the safety/professionalism dress rule?",
         "options": ["A) Footwear must be safe and professional for the work environment", "B) Runway fashion is always encouraged", "C) Flip-flops are mandatory in summer", "D) Accessories must match office furniture"],
         "answer": 0
@@ -33,11 +37,13 @@
     "category": "Sexual Harassment",
     "questions": [
       {
+        "id": "q301",
         "q": "Joey winks and asks a coworker 'How YOU doin'?' repeatedly after being asked to stop. What should the coworker do?",
         "options": ["A) Ignore it forever", "B) Report it to HR, a supervisor, or Compliance Coordinator immediately", "C) Challenge Joey to an arm wrestling match", "D) Post about it on social media"],
         "answer": 1
       },
       {
+        "id": "q302",
         "q": "Chandler feels uncomfortable because inappropriate jokes are being shared near his desk. What defines workplace harassment?",
         "options": ["A) Unwelcome conduct based on protected characteristics that creates a hostile work environment", "B) Any joke that isn't funny", "C) Only physical interactions count", "D) Disagreeing about sports teams"],
         "answer": 0
@@ -48,11 +54,13 @@
     "category": "Bereavement Leave (Updated)",
     "questions": [
       {
+        "id": "q401",
         "q": "Phoebe's beloved grandmother passes away. Under the updated policy, how is bereavement leave requested?",
         "options": ["A) Send a pigeon", "B) Notify HR and supervisor as soon as possible to receive designated paid leave", "C) Take 3 weeks off without telling anyone", "D) Trade shifts with Monica"],
         "answer": 1
       },
       {
+        "id": "q402",
         "q": "Ross experiences a loss in his immediate family. What determines the number of paid bereavement days granted?",
         "options": ["A) Relationship to the deceased according to updated handbook guidelines", "B) How long Ross has lived in his apartment", "C) Ross's favorite dinosaur", "D) A vote by all six friends"],
         "answer": 0
@@ -63,11 +71,13 @@
     "category": "Inclement Weather",
     "questions": [
       {
+        "id": "q501",
         "q": "A massive snowstorm hits, and Monica's apartment is snowed in. How do employees learn about official office closures?",
         "options": ["A) Wait for Phoebe to sing a song", "B) Check official company notification channels / emergency alerts", "C) Assume office is closed if temperature is under 30°F", "D) Call Central Perk"],
         "answer": 1
       },
       {
+        "id": "q502",
         "q": "Phoebe's taxi won't start in freezing rain, but the office is open. What should she do?",
         "options": ["A) Stay home without telling anyone", "B) Contact supervisor directly to report inability to safely travel and use PTO", "C) Walk 15 miles in snow boots", "D) Blame the weather on Ross"],
         "answer": 1
@@ -78,11 +88,13 @@
     "category": "Drug Free Workplace",
     "questions": [
       {
+        "id": "q601",
         "q": "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
         "options": ["A) Strictly drug-free workplace; prohibited on premises or while performing duties", "B) Allowed during lunch hours", "C) Allowed if brought in a Tupperware container", "D) Only prohibited on Mondays"],
         "answer": 0
       },
       {
+        "id": "q602",
         "q": "Chandler brings an unopened bottle of wine to his desk as a gift. Can alcohol be consumed during standard work hours?",
         "options": ["A) Yes, if shared with the team", "B) No, alcohol consumption during work duty/hours is prohibited unless officially authorized", "C) Yes, after 2 PM", "D) Only if it pairs with pizza"],
         "answer": 1
@@ -93,11 +105,13 @@
     "category": "Lunch Breaks",
     "questions": [
       {
+        "id": "q701",
         "q": "Ross screams 'MY SANDWICH?!' after someone takes his Moist Maker from the fridge. What is the breakroom fridge policy?",
         "options": ["A) Label your food; items left at end of week will be cleaned out", "B) Bosses can eat any sandwich they want", "C) No food allowed in fridge", "D) Joey owns all fridge food"],
         "answer": 0
       },
       {
+        "id": "q702",
         "q": "Joey orders 2 pizzas for lunch ('The Joey Special'). How long is the standard unpaid meal break for shifts over 6 hours?",
         "options": ["A) 15 minutes", "B) 30 to 60 minutes uninterrupted", "C) 3 hours", "D) As long as it takes to finish 2 pizzas"],
         "answer": 1
@@ -108,11 +122,13 @@
     "category": "FMLA",
     "questions": [
       {
+        "id": "q801",
         "q": "Rachel needs extended leave after giving birth to Emma. What is the eligibility requirement for FMLA?",
         "options": ["A) 12 months of service & at least 1,250 hours worked in past 12 months", "B) 1 month of service", "C) 5 years of service", "D) Must live in Apartment 20"],
         "answer": 0
       },
       {
+        "id": "q802",
         "q": "Monica needs to care for Chandler during a serious health condition. How much job-protected leave does FMLA provide per 12-month period?",
         "options": ["A) 2 weeks", "B) Up to 12 workweeks", "C) 6 months", "D) Unlimited"],
         "answer": 1
@@ -123,11 +139,13 @@
     "category": "Payroll Dates",
     "questions": [
       {
+        "id": "q901",
         "q": "Chandler asks 'When do we actually get paid?'. Where can employees find official payroll schedule dates?",
         "options": ["A) On the breakroom bulletin board and employee portal schedule", "B) By asking Gunther at Central Perk", "C) Every day at 5 PM", "D) Whenever Chandler asks"],
         "answer": 0
       },
       {
+        "id": "q902",
         "q": "Joey wants a paper check instead of direct deposit. Where can employees view their electronic pay stubs?",
         "options": ["A) On the self-service employee payroll portal", "B) Mailed via postcard", "C) Taped to Monica's door", "D) Written on a napkin"],
         "answer": 0
@@ -138,11 +156,13 @@
     "category": "KPERS & KPERS 457",
     "questions": [
       {
+        "id": "q1001",
         "q": "Phoebe asks if KPERS retirement participation is optional or mandatory for eligible positions. What is the rule?",
         "options": ["A) Mandatory for covered eligible employees from day one", "B) Optional after 10 years", "C) Only for paleontologists", "D) Replaced by Central Perk coffee vouchers"],
         "answer": 0
       },
       {
+        "id": "q1002",
         "q": "Chandler wants to contribute additional tax-deferred retirement savings. What is KPERS 457?",
         "options": ["A) Voluntary supplemental retirement savings plan", "B) A mandatory health plan", "C) A type of apartment lease", "D) Joey's apartment number"],
         "answer": 0
@@ -153,11 +173,13 @@
     "category": "Work Comp",
     "questions": [
       {
+        "id": "q1101",
         "q": "Ross injures his shoulder shouting 'PIVOT!' while lifting office furniture. When must a workplace injury be reported?",
         "options": ["A) Immediately to your supervisor/HR", "B) Next month", "C) Only if you need surgery", "D) After telling Chandler"],
         "answer": 0
       },
       {
+        "id": "q1102",
         "q": "Joey stubs his toe in the breakroom and needs medical care. Who must authorize Workers' Compensation treatment locations?",
         "options": ["A) Designated company medical providers / HR reporting process", "B) Dr. Drake Ramoray on TV", "C) Any urgent care on Google", "D) Monica with a band-aid"],
         "answer": 0
