@@ -185,18 +185,51 @@
     const audioPool = {};
     let isUnlocked = false;
 
-    // PRE-PRIME ALL AUDIO OBJECTS
+    // Build audio pool with fallbacks for root, game/, and relative paths
+    function getCandidateUrls(file) {
+      return [
+        file,
+        `game/${file}`,
+        `./${file}`,
+        `./game/${file}`,
+        `../${file}`
+      ];
+    }
+
+    // Initialize Audio Objects
     audioFiles.forEach(file => {
-      const audio = new Audio(file);
+      const candidates = getCandidateUrls(file);
+      let currentIdx = 0;
+      const audio = new Audio(candidates[0]);
+
+      audio.addEventListener('error', () => {
+        currentIdx++;
+        if (currentIdx < candidates.length) {
+          audio.src = candidates[currentIdx];
+          audio.load();
+        }
+      });
+
       audioPool[file] = audio;
     });
 
+    // Browser Autoplay Engine Unlocking Strategy
     function unlockAudioEngine() {
       if (isUnlocked) return;
       isUnlocked = true;
 
+      // Force play & immediate pause on user click to grant browser playback permission
       Object.keys(audioPool).forEach(key => {
-        audioPool[key].load();
+        const audio = audioPool[key];
+        const promise = audio.play();
+        if (promise !== undefined) {
+          promise.then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          }).catch(() => {
+            // Silence initial browser priming error
+          });
+        }
       });
 
       document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked";
@@ -221,7 +254,8 @@
           document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
         }).catch(err => {
           console.warn(`Audio play blocked: ${filename}`, err);
-          document.getElementById('status-text').innerText = `⚠️ Audio blocked: ${filename}`;
+          document.getElementById('status-text').innerText = `⚠️ Audio blocked or missing: ${filename}`;
+          document.getElementById('status-indicator').className = "text-yellow-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-500/40 shadow";
         });
       }
     }
@@ -479,7 +513,6 @@
     }
 
     function nextQuestion() {
-      // Plays 30s music directly without vocal intro interruption
       if (currentQIndex === -1) {
         currentQIndex = 0;
       } else {
