@@ -15,7 +15,7 @@
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans">
 
   <!-- HEADER -->
-  <header class="text-center my-4">
+  <header class="text-center my-2">
     <h1 class="text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
       <span>O</span><span class="friends-dot-red">•</span>
       <span>R</span><span class="friends-dot-blue">•</span>
@@ -23,69 +23,124 @@
       <span>O</span><span class="friends-dot-red">•</span>
       <span>N</span>
     </h1>
-    <p class="text-yellow-400 text-sm font-bold italic mt-1">Player Pad ☕</p>
+    <p class="text-yellow-400 text-xs font-bold italic mt-0.5">Player Pad ☕</p>
   </header>
 
-  <main class="w-full max-w-md mx-auto my-auto space-y-6">
+  <main class="w-full max-w-md mx-auto space-y-4 my-auto">
 
-    <!-- TEAM NAME INPUT -->
-    <div class="bg-purple-900/90 p-5 rounded-2xl border-2 border-yellow-400 shadow-xl text-center">
-      <label for="team-name" class="block text-yellow-300 font-bold mb-2 uppercase text-sm tracking-wider">
-        Enter Team / Player Name:
+    <!-- FUN FRIENDS TEAM DROPDOWN -->
+    <div class="bg-purple-900/90 p-4 rounded-2xl border-2 border-yellow-400 shadow-xl text-center">
+      <label for="team-select" class="block text-yellow-300 font-bold mb-2 uppercase text-xs tracking-wider">
+        Select Your Team:
       </label>
-      <input 
-        type="text" 
-        id="team-name" 
-        placeholder="e.g. The Chan-Chan Mans" 
-        class="w-full p-3 rounded-xl bg-purple-950 border border-yellow-400 text-white font-bold text-center text-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-      />
+      <select 
+        id="team-select" 
+        class="w-full p-3 rounded-xl bg-purple-950 border border-yellow-400 text-yellow-300 font-bold text-center text-base focus:outline-none focus:ring-2 focus:ring-yellow-300"
+      >
+        <option value="">-- Choose Your Team --</option>
+        <option value="The Chan-Chan Mans">The Chan-Chan Mans</option>
+        <option value="The Transponsters">The Transponsters</option>
+        <option value="The Smelly Cats">The Smelly Cats</option>
+        <option value="The Holiday Armadillos">The Holiday Armadillos</option>
+        <option value="Princess Consuela & The Banana Hammocks">Princess Consuela & The Banana Hammocks</option>
+        <option value="The Regina Phalanges">The Regina Phalanges</option>
+        <option value="The Routine">The Routine</option>
+        <option value="Crap Bag & The Chicks">Crap Bag & The Chicks</option>
+        <option value="Team Unagi">Team Unagi</option>
+        <option value="The Remorays">The Remorays</option>
+        <option value="Central Perk Regulars">Central Perk Regulars</option>
+        <option value="The Ugly Naked Guys">The Ugly Naked Guys</option>
+      </select>
     </div>
 
     <!-- ANSWER BUTTONS -->
-    <div class="bg-purple-900/90 p-5 rounded-2xl border-2 border-yellow-400 shadow-xl">
-      <p class="text-center text-purple-200 text-sm font-semibold mb-4">Select your answer for the active question:</p>
+    <div class="bg-purple-900/90 p-4 rounded-2xl border-2 border-yellow-400 shadow-xl space-y-2.5">
+      <p class="text-center text-purple-200 text-xs font-semibold">Tap your team's answer choice:</p>
 
-      <div class="grid grid-cols-2 gap-4">
-        <button onclick="submitAnswer(0)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
-          A
+      <button onclick="submitAnswer(0)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-3 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
+        <span class="bg-yellow-400 text-purple-950 px-3 py-1 rounded-lg font-black text-lg">A</span>
+        <span id="label-0" class="text-sm">Option A</span>
+      </button>
+
+      <button onclick="submitAnswer(1)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-3 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
+        <span class="bg-yellow-400 text-purple-950 px-3 py-1 rounded-lg font-black text-lg">B</span>
+        <span id="label-1" class="text-sm">Option B</span>
+      </button>
+
+      <button onclick="submitAnswer(2)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-3 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
+        <span class="bg-yellow-400 text-purple-950 px-3 py-1 rounded-lg font-black text-lg">C</span>
+        <span id="label-2" class="text-sm">Option C</span>
+      </button>
+
+      <button onclick="submitAnswer(3)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-3 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
+        <span class="bg-yellow-400 text-purple-950 px-3 py-1 rounded-lg font-black text-lg">D</span>
+        <span id="label-3" class="text-sm">Option D</span>
+      </button>
+    </div>
+
+    <!-- SUBMISSION STATUS -->
+    <div id="status-msg" class="text-center font-bold text-sm min-h-[20px] text-yellow-300"></div>
+
+    <!-- 🔊 FUN PLAYER SOUNDBOARD -->
+    <div class="bg-purple-950/80 p-3.5 rounded-2xl border border-yellow-400/40 text-center shadow-lg">
+      <p class="text-yellow-300 font-bold text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1">
+        <span>🔊</span> Friends Soundboard (Just For Fun)
+      </p>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="playSound('howYouDoin')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          😏 How You Doin'?
         </button>
-        <button onclick="submitAnswer(1)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
-          B
+        <button onclick="playSound('pivot')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          🛋️ PIVOT!
         </button>
-        <button onclick="submitAnswer(2)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
-          C
+        <button onclick="playSound('ohMyGod')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          😱 OH. MY. GOD.
         </button>
-        <button onclick="submitAnswer(3)" class="opt-btn bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-black text-3xl py-6 rounded-2xl transition-all active:scale-95 cursor-pointer">
-          D
+        <button onclick="playSound('onABreak')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          💔 ON A BREAK!
         </button>
       </div>
     </div>
 
-    <!-- STATUS MESSAGE -->
-    <div id="status-msg" class="text-center font-bold text-lg min-h-[30px] text-yellow-300"></div>
-
   </main>
 
-  <footer class="text-center text-xs text-purple-300 my-2">
+  <footer class="text-center text-[10px] text-purple-300 my-1">
     Orion Handbook Trivia • Powered by Central Perk
   </footer>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxZPWY8Tjkc5vkik0sVLLciZHw5VMrkUoTb2APTwOZk7IZRzPkSVSkN0WLlFzXaOSoI/exec";
 
+    // AUDIO FILES FOR PLAYER SOUNDBOARD
+    const playerSounds = {
+      howYouDoin: new Audio('../howyoudoin.mp3'),
+      pivot: new Audio('../pivot.mp3'),
+      ohMyGod: new Audio('../oh-my-god.mp3'),
+      onABreak: new Audio('../we-were-on-a-break.mp3')
+    };
+
+    function playSound(key) {
+      if (playerSounds[key]) {
+        playerSounds[key].currentTime = 0;
+        playerSounds[key].play().catch(err => {
+          console.warn("Audio play blocked by browser rules:", err);
+        });
+      }
+    }
+
     async function submitAnswer(index) {
-      const teamName = document.getElementById('team-name').value.trim();
+      const teamName = document.getElementById('team-select').value;
       const statusMsg = document.getElementById('status-msg');
 
       if (!teamName) {
-        alert("Please enter a Team Name first!");
+        alert("Please select your Team Name first!");
         return;
       }
 
       const options = ['A', 'B', 'C', 'D'];
       const chosenOption = options[index];
 
-      statusMsg.className = "text-center font-bold text-lg text-yellow-400 animate-pulse";
+      statusMsg.className = "text-center font-bold text-sm text-yellow-400 animate-pulse";
       statusMsg.innerText = `Submitting choice ${chosenOption}...`;
 
       try {
@@ -96,17 +151,17 @@
           body: JSON.stringify({
             action: 'submitVote',
             team: teamName,
-            round: window.currentActiveRound || 1,
+            round: 1,
             answer: index
           })
         });
 
-        statusMsg.className = "text-center font-bold text-lg text-green-400";
-        statusMsg.innerText = `✅ Locked in choice ${chosenOption} for team "${teamName}"!`;
+        statusMsg.className = "text-center font-bold text-sm text-green-400";
+        statusMsg.innerText = `✅ Choice ${chosenOption} locked in for "${teamName}"!`;
       } catch (err) {
         console.error(err);
-        statusMsg.className = "text-center font-bold text-lg text-red-400";
-        statusMsg.innerText = "❌ Failed to submit answer. Try again.";
+        statusMsg.className = "text-center font-bold text-sm text-red-400";
+        statusMsg.innerText = "❌ Submission failed. Try again.";
       }
     }
   </script>
