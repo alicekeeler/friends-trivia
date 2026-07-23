@@ -1,634 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Friends Trivia - Host Control Panel</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orion Friends - Host Control Panel</title>
   <style>
-    .purple-door { background-color: #2D0A3E; }
-    .friends-dot-red { color: #E11D48; }
-    .friends-dot-blue { color: #2563EB; }
-    .friends-dot-yellow { color: #F59E0B; }
+    :root {
+      --bg-color: #1a0f2b;
+      --card-bg: #281740;
+      --accent-yellow: #ffc72c;
+      --accent-green: #00e676;
+      --accent-red: #ff5252;
+      --text-main: #ffffff;
+      --text-muted: #b3a5c9;
+      --border-gold: #e5a919;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--text-main);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .logo span {
+      color: var(--accent-yellow);
+    }
+
+    .badge-lounge {
+      background: #3c2063;
+      color: var(--accent-yellow);
+      border: 1px solid var(--border-gold);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    /* Status Bar & Action Bar */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 199, 44, 0.3);
+      margin-bottom: 25px;
+    }
+
+    .live-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn-refresh {
+      background: var(--accent-yellow);
+      color: #000;
+      margin-right: 10px;
+    }
+
+    .btn-refresh:hover {
+      background: #e0ac24;
+    }
+
+    .btn-reset {
+      background: var(--accent-red);
+      color: #fff;
+    }
+
+    .btn-reset:hover {
+      background: #d32f2f;
+    }
+
+    /* Leaderboard Table */
+    .leaderboard-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      color: var(--accent-yellow);
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .leaderboard-table th {
+      padding: 12px;
+      color: var(--text-muted);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .leaderboard-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 1rem;
+    }
+
+    .rank-cell {
+      font-weight: bold;
+      width: 60px;
+      text-align: center;
+    }
+
+    .rank-1 { color: #ffd700; font-size: 1.3rem; }
+    .rank-2 { color: #c0c0c0; font-size: 1.2rem; }
+    .rank-3 { color: #cd7f32; font-size: 1.1rem; }
+
+    .team-cell {
+      font-weight: 600;
+    }
+
+    .score-cell {
+      font-weight: bold;
+      color: var(--accent-green);
+      font-size: 1.1rem;
+    }
+
+    .answered-cell {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 md:p-8 font-sans select-none" onclick="unlockAudioEngine()">
+<body>
 
-  <!-- FRIENDS-STYLE HEADER -->
-  <header class="text-center my-2">
-    <h1 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
-      <span>O</span><span class="friends-dot-red">•</span>
-      <span>R</span><span class="friends-dot-blue">•</span>
-      <span>I</span><span class="friends-dot-yellow">•</span>
-      <span>O</span><span class="friends-dot-red">•</span>
-      <span>N</span>
-    </h1>
-    <p class="text-yellow-400 italic text-sm font-bold tracking-widest mt-1">"The One With the Employee Handbook" ☕</p>
-  </header>
+  <div class="container">
+    <header>
+      <div class="logo">O·R·I·O·N <span>F·R·I·E·N·D·S</span></div>
+      <div class="badge-lounge">☕ Host Dashboard & Control Center ☕</div>
+    </header>
 
-  <!-- TOP CONTROL BAR -->
-  <div class="max-w-6xl w-full mx-auto bg-purple-950/90 p-3.5 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3 mb-6">
-    
-    <!-- FRIENDS THEME & STOP ALL -->
-    <div class="flex items-center space-x-2">
-      <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
-        ☕ FRIENDS THEME ▶ Play
-      </button>
-      <button onclick="stopAllAudio()" class="bg-red-500 hover:bg-red-400 text-white font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95">
-        ⏹ Stop All
-      </button>
-    </div>
-
-    <!-- TIMER DISPLAY -->
-    <div class="flex items-center space-x-2">
-      <div id="timer-box" class="bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner">
-        30
+    <div class="controls-bar">
+      <div class="live-status">
+        <div class="pulse-dot"></div>
+        <span id="sync-text">Live Auto-Sync Active</span>
+      </div>
+      <div>
+        <button class="btn btn-refresh" onclick="fetchLeaderboard()">🔄 Refresh Now</button>
+        <button class="btn btn-reset" onclick="confirmReset()">🧹 Reset Game</button>
       </div>
     </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="flex items-center gap-2 flex-wrap">
-      <button onclick="restartGame()" class="bg-red-600 hover:bg-red-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-red-300 shadow transition-all active:scale-95 flex items-center gap-1">
-        ⏮️ Restart Game
-      </button>
-
-      <button onclick="restartRound()" class="bg-yellow-500 hover:bg-yellow-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-yellow-300 shadow transition-all active:scale-95 flex items-center gap-1">
-        🔄 Restart Round
-      </button>
-
-      <button onclick="revealAnswer()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-green-300 shadow transition-all active:scale-95 flex items-center gap-1">
-        💡 Reveal Answer
-      </button>
-
-      <button onclick="openLeaderboard()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-blue-300 shadow transition-all active:scale-95 flex items-center gap-1">
-        🏆 Leaderboard
-      </button>
-
-      <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-4 py-2 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95 flex items-center gap-1">
-        Next Question ➡️
-      </button>
+    <div class="leaderboard-card">
+      <div class="card-title">🏆 LIVE LEADERBOARD 🏆</div>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th class="rank-cell">Rank</th>
+            <th>Team Name</th>
+            <th>Score</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <tr>
+            <td colspan="4" class="empty-state">Loading team scores...</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- MAIN CARD CONTAINER -->
-  <main class="max-w-4xl w-full mx-auto my-auto py-4 space-y-6">
-
-    <!-- ROUND BADGE -->
-    <div class="text-center py-2">
-      <span id="round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-5 py-2 rounded-full border-2 border-yellow-200 tracking-wider shadow-md">
-        WELCOME TO CENTRAL PERK ☕
-      </span>
-    </div>
-
-    <!-- WELCOME / HOLDING CARD -->
-    <div id="welcome-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
-      <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-yellow-300">
-        Could this BE any more exciting? ☕
-      </h2>
-
-      <div class="bg-purple-950/80 border-2 border-yellow-400/50 rounded-2xl p-6 text-left space-y-4 max-w-2xl mx-auto shadow-inner">
-        <p class="font-bold text-base sm:text-lg text-purple-100 flex items-start gap-2">
-          <span class="text-yellow-400">1.</span> Gather your crew and form a team! (Pivot those chairs!)
-        </p>
-        <p class="font-bold text-base sm:text-lg text-purple-100 flex items-start gap-2">
-          <span class="text-yellow-400">2.</span> Pick ONE device per team and go to:
-        </p>
-        <div class="bg-purple-900 border-2 border-yellow-400 p-3 rounded-xl text-center text-yellow-300 font-mono font-bold text-sm sm:text-base break-all shadow">
-          https://alicekeeler.github.io/friends-trivia/game/
-        </div>
-        <p class="font-bold text-base sm:text-lg text-purple-100 flex items-start gap-2">
-          <span class="text-yellow-400">3.</span> Select your Team Name from the drop down and get locked in.
-        </p>
-      </div>
-
-      <p class="text-xs sm:text-sm italic text-yellow-400 font-semibold pt-2">
-        👉 Host: Click "Next Question ➡️" above when all teams are ready to start Round 1!
-      </p>
-    </div>
-
-    <!-- QUESTION CARD -->
-    <div id="question-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 hidden">
-      <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
-        Loading Question...
-      </h2>
-
-      <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div id="option-card-0" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
-          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">A</span>
-          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
-        </div>
-        <div id="option-card-1" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
-          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">B</span>
-          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
-        </div>
-        <div id="option-card-2" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
-          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">C</span>
-          <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
-        </div>
-        <div id="option-card-3" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
-          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">D</span>
-          <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- BOTTOM FOOTER -->
-  <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-3 mt-8 pt-4">
-    <div class="flex items-center space-x-2">
-      <span class="bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold shadow">
-        📲 Players Join: <span class="text-white underline">alicekeeler.github.io/friends-trivia/game/</span>
-      </span>
-    </div>
-    <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow">
-      <span>🔊</span> <span id="status-text">Central Perk Audio Engine Active</span>
-    </div>
-  </footer>
-
-  <!-- LEADERBOARD MODAL -->
-  <div id="leaderboard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-purple-950 border-4 border-yellow-400 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative space-y-4">
-      <div class="flex items-center justify-between border-b border-yellow-400/30 pb-3">
-        <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
-          🏆 Live Round Votes
-        </h3>
-        <button onclick="closeLeaderboard()" class="text-yellow-400 hover:text-white font-black text-xl px-2">✕</button>
-      </div>
-
-      <div id="leaderboard-list" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
-        <p class="text-center text-purple-300 italic py-4">Loading team scores...</p>
-      </div>
-
-      <button onclick="closeLeaderboard()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl transition-all">
-        Close Leaderboard
-      </button>
-    </div>
-  </div>
+  <div id="toast" class="toast"></div>
 
   <script>
+    // Official Web App Deployment URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz08vGfsrNTY_HS49tLrvJoFmOcm6BolsohKubIwQ2hkCi1FJ_bCk5WpTshywU5zKBy/exec";
 
-    // AUDIO REGISTRY
-    const audioFiles = [
-      'friends.mp3',
-      '30secondfriendsintro.mp3',
-      'i-got-a-question.mp3',
-      'hello-you.mp3',
-      'claps.mp3',
-      'how-dumb-are-you.mp3',
-      'don-t-be-so-negative.mp3',
-      'don-t-blame-the-questions.mp3',
-      'enough-already.mp3'
-    ];
+    let autoSyncInterval = null;
 
-    const audioPool = {};
-    let isUnlocked = false;
+    // Fetch and render the leaderboard from Apps Script
+    async function fetchLeaderboard() {
+      const syncText = document.getElementById('sync-text');
+      syncText.innerText = "Updating...";
 
-    // Build audio pool with fallbacks for root, game/, and relative paths
-    function getCandidateUrls(file) {
-      return [
-        file,
-        `game/${file}`,
-        `./${file}`,
-        `./game/${file}`,
-        `../${file}`
-      ];
-    }
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=leaderboard`);
+        const data = await response.json();
 
-    // Initialize Audio Objects
-    audioFiles.forEach(file => {
-      const candidates = getCandidateUrls(file);
-      let currentIdx = 0;
-      const audio = new Audio(candidates[0]);
-
-      audio.addEventListener('error', () => {
-        currentIdx++;
-        if (currentIdx < candidates.length) {
-          audio.src = candidates[currentIdx];
-          audio.load();
+        if (data.status === "success") {
+          renderLeaderboard(data.leaderboard);
+          syncText.innerText = `Live Auto-Sync Active (${new Date().toLocaleTimeString()})`;
+        } else {
+          showToast("⚠️ Error loading scores: " + data.message);
         }
-      });
-
-      audioPool[file] = audio;
-    });
-
-    // Browser Autoplay Engine Unlocking Strategy
-    function unlockAudioEngine() {
-      if (isUnlocked) return;
-      isUnlocked = true;
-
-      // Force play & immediate pause on user click to grant browser playback permission
-      Object.keys(audioPool).forEach(key => {
-        const audio = audioPool[key];
-        const promise = audio.play();
-        if (promise !== undefined) {
-          promise.then(() => {
-            audio.pause();
-            audio.currentTime = 0;
-          }).catch(() => {
-            // Silence initial browser priming error
-          });
-        }
-      });
-
-      document.getElementById('status-text').innerText = "Central Perk Audio Engine Unlocked";
-    }
-
-    function playSound(filename) {
-      unlockAudioEngine();
-      stopAllAudio();
-
-      let audio = audioPool[filename];
-      if (!audio) {
-        audio = new Audio(filename);
-        audioPool[filename] = audio;
-      }
-
-      audio.currentTime = 0;
-      const playPromise = audio.play();
-
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          document.getElementById('status-text').innerText = `Playing: ${filename}`;
-          document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
-        }).catch(err => {
-          console.warn(`Audio play blocked: ${filename}`, err);
-          document.getElementById('status-text').innerText = `⚠️ Audio blocked or missing: ${filename}`;
-          document.getElementById('status-indicator').className = "text-yellow-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-500/40 shadow";
-        });
+      } catch (err) {
+        console.error("Leaderboard error:", err);
+        syncText.innerText = "Connection error. Retrying...";
       }
     }
 
-    function stopAllAudio() {
-      Object.keys(audioPool).forEach(key => {
-        if (audioPool[key]) {
-          audioPool[key].pause();
-          audioPool[key].currentTime = 0;
-        }
-      });
-    }
+    // Render leaderboard rows
+    function renderLeaderboard(teams) {
+      const tbody = document.getElementById('leaderboard-body');
 
-    // COMPLETE 11-ROUND TOPIC POOL
-    const topicPool = [
-      {
-        roundNumber: 1,
-        badge: "ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY",
-        questions: [
-          {
-            id: "q1_a",
-            question: "Monica is obsessed with being on time. What is Orion's policy regarding tardiness?",
-            options: ["Notify supervisor as soon as possible if arriving late", "Hide under your desk until noon", "Blame Chandler", "Tardiness is strictly allowed on Tuesdays"],
-            correctText: "Notify supervisor as soon as possible if arriving late"
-          },
-          {
-            id: "q1_b",
-            question: "If Joey oversleeps for his shift, what is the required protocol?",
-            options: ["Notify supervisor immediately prior to shift start", "Send Joey's twin Carl to cover", "Blame daylight saving time", "Eat a sandwich and show up at 2 PM"],
-            correctText: "Notify supervisor immediately prior to shift start"
-          }
-        ]
-      },
-      {
-        roundNumber: 2,
-        badge: "ROUND 2 OF 11: DRESS CODE & PROFESSIONAL IMAGE",
-        questions: [
-          {
-            id: "q2_a",
-            question: "Chandler shows up in leather pants. What is Orion's policy on business appropriate attire?",
-            options: ["Employees must maintain clean, professional dress standard", "Leather pants are mandatory on Thursdays", "Sweatpants are preferred attire", "Costumes are required daily"],
-            correctText: "Employees must maintain clean, professional dress standard"
-          },
-          {
-            id: "q2_b",
-            question: "Rachel wants to know: what is considered acceptable workplace footwear?",
-            options: ["Neat, safe, and professional footwear suitable for the job", "Barefoot at all times", "Flip-flops only", "Roller skates"],
-            correctText: "Neat, safe, and professional footwear suitable for the job"
-          }
-        ]
-      },
-      {
-        roundNumber: 3,
-        badge: "ROUND 3 OF 11: WORKPLACE SAFETY & HEALTH",
-        questions: [
-          {
-            id: "q3_a",
-            question: "Ross yells 'PIVOT!' on the stairs. What is the official Orion procedure for reporting workplace hazards?",
-            options: ["Report any unsafe condition to management immediately", "Yell louder until someone else fixes it", "Ignore it and pivot around it", "Post a meme on Slack"],
-            correctText: "Report any unsafe condition to management immediately"
-          }
-        ]
-      },
-      {
-        roundNumber: 4,
-        badge: "ROUND 4 OF 11: USE OF COMPANY EQUIPMENT",
-        questions: [
-          {
-            id: "q4_a",
-            question: "Joey uses the company laptop to stream Baywatch. Is personal use of company equipment permitted?",
-            options: ["Incidental personal use allowed if it does not interfere with work", "Strictly prohibited at all times", "Encouraged during staff meetings", "Only allowed if streaming sitcoms"],
-            correctText: "Incidental personal use allowed if it does not interfere with work"
-          }
-        ]
-      },
-      {
-        roundNumber: 5,
-        badge: "ROUND 5 OF 11: CONFIDENTIALITY & DATA PRIVACY",
-        questions: [
-          {
-            id: "q5_a",
-            question: "Phoebe accidentally mentions sensitive student records. What is Orion's stance on confidential data?",
-            options: ["Confidential information must be protected and never disclosed without authorization", "Share it if it's really interesting", "Post it in Central Perk", "Only disclose to family members"],
-            correctText: "Confidential information must be protected and never disclosed without authorization"
-          }
-        ]
-      },
-      {
-        roundNumber: 6,
-        badge: "ROUND 6 OF 11: DRUG FREE WORKPLACE",
-        questions: [
-          {
-            id: "q6_a",
-            question: "Ross accidentally eats a 'special' brownie before work. What is Orion's policy on controlled substances?",
-            options: ["Strictly drug-free workplace; prohibited on premises or while performing duties", "Allowed during lunch hours", "Allowed if brought in a Tupperware container", "Only prohibited on Mondays"],
-            correctText: "Strictly drug-free workplace; prohibited on premises or while performing duties"
-          }
-        ]
-      },
-      {
-        roundNumber: 7,
-        badge: "ROUND 7 OF 11: HARASSMENT & DISCRIMINATION",
-        questions: [
-          {
-            id: "q7_a",
-            question: "Joey uses his line 'How YOU doin'?' inappropriately. How does Orion handle workplace harassment?",
-            options: ["Zero-tolerance policy; all complaints are investigated promptly", "Allowed if said with a smile", "Handled via arm wrestling", "Ignored if it happens at coffee breaks"],
-            correctText: "Zero-tolerance policy; all complaints are investigated promptly"
-          }
-        ]
-      },
-      {
-        roundNumber: 8,
-        badge: "ROUND 8 OF 11: TIMEKEEPING & PAYROLL",
-        questions: [
-          {
-            id: "q8_a",
-            question: "Chandler forgets what his actual job is ('transponster'). How must employees record worked hours?",
-            options: ["Accurately log all actual hours worked using official timekeeping tools", "Estimate based on vibes", "Have Joey log your time", "Log 40 hours regardless of attendance"],
-            correctText: "Accurately log all actual hours worked using official timekeeping tools"
-          }
-        ]
-      },
-      {
-        roundNumber: 9,
-        badge: "ROUND 9 OF 11: LEAVE POLICIES & PTO",
-        questions: [
-          {
-            id: "q9_a",
-            question: "Monica takes 'WE WERE ON A BREAK' literally. How far in advance should PTO be requested?",
-            options: ["Submit requests as early as possible according to supervisor guidelines", "No notice required, just don't show up", "Shout it out in the hallway", "Send a postcard after you leave"],
-            correctText: "Submit requests as early as possible according to supervisor guidelines"
-          }
-        ]
-      },
-      {
-        roundNumber: 10,
-        badge: "ROUND 10 OF 11: PERFORMANCE & DEVELOPMENT",
-        questions: [
-          {
-            id: "q10_a",
-            question: "Rachel receives feedback on her performance evaluation. What is the main goal of Orion reviews?",
-            options: ["Encourage professional growth, goal setting, and constructive feedback", "To rank the gang in order of favorite Friends", "To eliminate coffee breaks", "To assign seating arrangements"],
-            correctText: "Encourage professional growth, goal setting, and constructive feedback"
-          }
-        ]
-      },
-      {
-        roundNumber: 11,
-        badge: "ROUND 11 OF 11: COMPANY VALUES & CULTURE",
-        questions: [
-          {
-            id: "q11_a",
-            question: "What core value defines the Orion team spirit?",
-            options: ["Collaboration, integrity, dedication, and supporting student success", "Unagi (total state of awareness)", "Never sharing food", "Singing Smelly Cat at meetings"],
-            correctText: "Collaboration, integrity, dedication, and supporting student success"
-          }
-        ]
-      }
-    ];
-
-    let activeGameQuestions = [];
-    let currentQIndex = -1; // -1 = Welcome Screen
-    let timer = 30;
-    let timerInterval = null;
-    let musicDelayTimeout = null;
-
-    function shuffleArray(arr) {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
-
-    function initializeGameQueue() {
-      activeGameQuestions = topicPool.map(topic => {
-        const rawQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
-        const shuffledOpts = shuffleArray(rawQ.options);
-        const newCorrectIndex = shuffledOpts.indexOf(rawQ.correctText);
-
-        return {
-          id: rawQ.id,
-          roundNumber: topic.roundNumber,
-          badge: topic.badge,
-          question: rawQ.question,
-          options: shuffledOpts,
-          correct: newCorrectIndex
-        };
-      });
-    }
-
-    function showWelcomeScreen() {
-      currentQIndex = -1;
-      clearInterval(timerInterval);
-      clearTimeout(musicDelayTimeout);
-      stopAllAudio();
-
-      document.getElementById('timer-box').innerText = "30";
-      document.getElementById('round-badge').innerText = "WELCOME TO CENTRAL PERK ☕";
-      document.getElementById('welcome-card').classList.remove('hidden');
-      document.getElementById('question-card').classList.add('hidden');
-    }
-
-    function loadQuestion(index, delayMusicMs = 0) {
-      if (activeGameQuestions.length === 0) initializeGameQueue();
-
-      const q = activeGameQuestions[index];
-      if (!q) return;
-
-      document.getElementById('welcome-card').classList.add('hidden');
-      document.getElementById('question-card').classList.remove('hidden');
-
-      document.getElementById('round-badge').innerText = q.badge;
-      document.getElementById('question-text').innerText = q.question;
-
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`opt-${i}-text`).innerText = q.options[i];
-        const card = document.getElementById(`option-card-${i}`);
-        card.className = "option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all";
-      }
-
-      broadcastQuestionToPlayers(q);
-      startTimer(delayMusicMs);
-    }
-
-    function startTimer(delayMusicMs = 0) {
-      clearInterval(timerInterval);
-      clearTimeout(musicDelayTimeout);
-
-      timer = 30;
-      document.getElementById('timer-box').innerText = timer;
-      document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
-
-      if (delayMusicMs === 0) {
-        playSound('30secondfriendsintro.mp3');
-      } else {
-        musicDelayTimeout = setTimeout(() => {
-          playSound('30secondfriendsintro.mp3');
-        }, delayMusicMs);
-      }
-
-      timerInterval = setInterval(() => {
-        timer--;
-        document.getElementById('timer-box').innerText = timer;
-        if (timer <= 5) {
-          document.getElementById('timer-box').className = "bg-red-900 border-2 border-red-400 text-red-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner animate-pulse";
-        }
-        if (timer <= 0) {
-          clearInterval(timerInterval);
-          playSound('enough-already.mp3');
-        }
-      }, 1000);
-    }
-
-    function nextQuestion() {
-      if (currentQIndex === -1) {
-        currentQIndex = 0;
-      } else {
-        currentQIndex = (currentQIndex + 1) % activeGameQuestions.length;
-      }
-
-      loadQuestion(currentQIndex, 0);
-    }
-
-    function restartRound() {
-      if (currentQIndex === -1) return;
-      playSound('don-t-blame-the-questions.mp3');
-      loadQuestion(currentQIndex, 1800);
-    }
-
-    function restartGame() {
-      playSound('don-t-be-so-negative.mp3');
-
-      if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
-        initializeGameQueue();
-        showWelcomeScreen();
-        fetch(`${SCRIPT_URL}?action=reset`).catch(() => {});
-      }
-    }
-
-    function revealAnswer() {
-      if (currentQIndex === -1) return;
-      clearTimeout(musicDelayTimeout);
-      playSound('claps.mp3');
-
-      const q = activeGameQuestions[currentQIndex];
-      if (!q) return;
-
-      const correctIndex = q.correct;
-      const correctCard = document.getElementById(`option-card-${correctIndex}`);
-
-      if (correctCard) {
-        correctCard.className = "option-card bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
-      }
-    }
-
-    async function openLeaderboard() {
-      playSound('how-dumb-are-you.mp3');
-
-      document.getElementById('leaderboard-modal').classList.remove('hidden');
-      const listContainer = document.getElementById('leaderboard-list');
-
-      if (currentQIndex === -1) {
-        listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">Game has not started yet.</p>`;
+      if (!teams || teams.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="empty-state">No answers submitted yet. Waiting for players...</td>
+          </tr>
+        `;
         return;
       }
 
-      listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores...</p>`;
-      const currentQ = activeGameQuestions[currentQIndex];
+      tbody.innerHTML = teams.map((team, index) => {
+        const rank = index + 1;
+        let rankClass = "";
+        let rankDisplay = `#${rank}`;
+
+        if (rank === 1) { rankClass = "rank-1"; rankDisplay = "🥇 1st"; }
+        else if (rank === 2) { rankClass = "rank-2"; rankDisplay = "🥈 2nd"; }
+        else if (rank === 3) { rankClass = "rank-3"; rankDisplay = "🥉 3rd"; }
+
+        return `
+          <tr>
+            <td class="rank-cell ${rankClass}">${rankDisplay}</td>
+            <td class="team-cell">${escapeHtml(team.team)}</td>
+            <td class="score-cell">${team.score} pts</td>
+            <td class="answered-cell">${team.answered} of 11 answered</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Reset game handler
+    async function confirmReset() {
+      const confirmed = confirm("⚠️ ARE YOU SURE?\n\nThis will wipe all player responses from the Google Sheet and reset the game leaderboard.");
+      if (!confirmed) return;
+
+      showToast("Wiping scores sheet...");
 
       try {
-        const response = await fetch(`${SCRIPT_URL}?action=getVotes&round=${currentQ.roundNumber}`);
+        const response = await fetch(`${SCRIPT_URL}?action=reset`);
         const data = await response.json();
 
-        if (data && data.votes) {
-          const votes = data.votes;
-          const teams = Object.keys(votes);
-
-          if (teams.length === 0) {
-            listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">No answers submitted yet for Round ${currentQ.roundNumber}.</p>`;
-            return;
-          }
-
-          let html = '';
-          teams.forEach(team => {
-            const chosenAnswer = votes[team];
-            const isCorrect = chosenAnswer == currentQ.correct;
-            
-            html += `
-              <div class="flex items-center justify-between bg-purple-900/80 p-3 rounded-xl border border-yellow-400/40">
-                <span class="font-bold text-white text-sm">${team}</span>
-                <span class="font-bold text-xs ${isCorrect ? 'text-green-400 bg-green-950 px-2.5 py-1 rounded-lg border border-green-500' : 'text-red-400 bg-red-950 px-2.5 py-1 rounded-lg border border-red-500'}">
-                  ${isCorrect ? '100 PTS (Correct)' : '0 PTS'}
-                </span>
-              </div>
-            `;
-          });
-
-          listContainer.innerHTML = html;
+        if (data.status === "success") {
+          showToast("✓ Game reset! Scores cleared.");
+          fetchLeaderboard();
+        } else {
+          showToast("❌ Failed to reset: " + data.message);
         }
       } catch (err) {
-        listContainer.innerHTML = `<p class="text-center text-red-400 font-bold py-4">Unable to load scores.</p>`;
+        showToast("❌ Reset failed. Check connection.");
+        console.error("Reset error:", err);
       }
     }
 
-    function closeLeaderboard() {
-      document.getElementById('leaderboard-modal').classList.add('hidden');
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    async function broadcastQuestionToPlayers(q) {
-      try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'setActiveQuestion',
-            id: q.id,
-            number: q.roundNumber,
-            question: q.question,
-            options: q.options
-          })
-        });
-      } catch (err) {
-        console.error("Broadcast failed:", err);
-      }
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
     }
 
-    // INITIALIZE QUEUE & SHOW WELCOME SCREEN
-    initializeGameQueue();
-    showWelcomeScreen();
+    // Initialize & set auto-refresh every 4 seconds
+    fetchLeaderboard();
+    autoSyncInterval = setInterval(fetchLeaderboard, 4000);
   </script>
 </body>
 </html>
