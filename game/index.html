@@ -16,7 +16,6 @@
     .friends-dot-red { color: #E11D48; }
     .friends-dot-blue { color: #2563EB; }
     .friends-dot-yellow { color: #F59E0B; }
-    
     .gold-border { border: 2px solid #d4af37; }
     .gold-pill {
       background: linear-gradient(180deg, #eab308 0%, #ca8a04 100%);
@@ -26,19 +25,7 @@
 </head>
 <body class="text-white min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none relative">
 
-  <!-- PRE-LOADED AUDIO ELEMENTS -->
-  <audio id="snd-claps" src="audio/claps.mp3" preload="auto"></audio>
-  <audio id="snd-howdoin" src="audio/howdoin.mp3" preload="auto"></audio>
-  <audio id="snd-allright" src="audio/allright.mp3" preload="auto"></audio>
-  <audio id="snd-bing" src="audio/bing.mp3" preload="auto"></audio>
-  <audio id="snd-excellent" src="audio/excellent.mp3" preload="auto"></audio>
-  <audio id="snd-verygood" src="audio/verygood.mp3" preload="auto"></audio>
-  <audio id="snd-helloyou" src="audio/helloyou.mp3" preload="auto"></audio>
-  <audio id="snd-decision" src="audio/decision.mp3" preload="auto"></audio>
-  <audio id="snd-dontknow" src="audio/dontknow.mp3" preload="auto"></audio>
-  <audio id="snd-iknow" src="audio/iknow.mp3" preload="auto"></audio>
-
-  <!-- TOP HEADER -->
+  <!-- HEADER -->
   <header class="text-center my-2 relative max-w-2xl mx-auto w-full">
     <div class="absolute top-0 right-0 flex items-center gap-2">
       <span class="bg-black/60 border border-green-500 text-green-400 text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
@@ -46,7 +33,6 @@
       </span>
     </div>
 
-    <!-- LOGO -->
     <h1 class="text-2xl sm:text-3xl font-bold tracking-widest text-white uppercase flex items-center justify-center space-x-1">
       <span>O</span><span class="friends-dot-red">•</span>
       <span>R</span><span class="friends-dot-blue">•</span>
@@ -73,7 +59,7 @@
   <!-- MAIN CONTAINER -->
   <main class="max-w-2xl w-full mx-auto my-auto space-y-5">
 
-    <!-- STEP 1: TEAM SELECTION CARD (ALWAYS SHOWN FIRST) -->
+    <!-- SCREEN 1: TEAM SELECTION (DEFAULT VISIBLE) -->
     <div id="login-card" class="bg-[#23123d] gold-border rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
       <h2 class="text-2xl sm:text-3xl font-bold text-amber-400">
         Choose Your Team! ☕
@@ -119,10 +105,9 @@
       </button>
     </div>
 
-    <!-- STEP 2: MAIN TRIVIA DASHBOARD -->
+    <!-- SCREEN 2: GAME DASHBOARD (HIDDEN BY DEFAULT) -->
     <div id="play-dashboard" class="space-y-4 hidden">
 
-      <!-- CURRENT TEAM HEADER BANNER -->
       <div class="bg-[#1e0f35] border border-amber-500/40 rounded-2xl p-3 px-4 flex items-center justify-between shadow-md">
         <div class="flex items-center space-x-2">
           <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">Reserved Table:</span>
@@ -133,17 +118,14 @@
         </button>
       </div>
 
-      <!-- QUESTION SELECTION GRID CARD -->
       <div class="bg-[#23123d] gold-border rounded-2xl p-4 shadow-xl space-y-3">
         <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-amber-400 uppercase tracking-wider">
           <span>SELECT QUESTION:</span>
           <span id="answered-count-text" class="text-purple-200">0 of 11 Answered</span>
         </div>
-
         <div id="questions-grid" class="grid grid-cols-4 sm:grid-cols-6 gap-2"></div>
       </div>
 
-      <!-- ACTIVE QUESTION CARD -->
       <div class="bg-[#23123d] gold-border rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
         <div class="flex items-center justify-between border-b border-purple-900/80 pb-3">
           <span id="active-question-label" class="text-lg sm:text-xl font-black text-amber-400 uppercase tracking-wider">
@@ -189,22 +171,18 @@
         </div>
       </div>
 
-      <!-- FINISH GAME BUTTON -->
       <div class="text-center pt-2">
         <button onclick="revealFinalScore()" class="w-full gold-pill font-black text-lg py-4 rounded-2xl border-2 border-amber-200 shadow-2xl active:scale-95 transition-all cursor-pointer">
           🏆 Submit Answers & View Final Score
         </button>
       </div>
 
-      <!-- PHOEBE'S SOUNDBOARD -->
+      <!-- SOUNDBOARD -->
       <div class="bg-[#23123d] gold-border rounded-2xl p-4 shadow-xl space-y-3">
         <div class="flex items-center justify-between border-b border-purple-900/80 pb-2">
           <span class="text-xs sm:text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
             🎸 PHOEBE'S CENTRAL PERK SOUNDBOARD
           </span>
-          <button onclick="stopAudio()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] sm:text-xs px-3 py-1 rounded-md uppercase tracking-wider cursor-pointer">
-            ■ STOP AUDIO
-          </button>
         </div>
 
         <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
@@ -225,32 +203,25 @@
     </div>
   </main>
 
-  <!-- ENDGAME FINAL SCORE POPUP MODAL -->
+  <!-- RESULTS MODAL -->
   <div id="results-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-[#23123d] gold-border rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
       <h2 class="text-3xl font-black text-amber-400">🎉 Game Complete! 🎉</h2>
-      
       <p id="modal-team-title" class="text-purple-200 font-bold text-base">Table Reserved: Team Name</p>
-
-      <!-- BIG SCORE BADGE -->
       <div class="bg-[#150a26] gold-border rounded-2xl p-6 max-w-xs mx-auto space-y-1">
         <span class="text-xs uppercase font-bold text-amber-400 tracking-widest">Final Team Score</span>
         <div id="modal-score-display" class="text-5xl font-black text-white">0 / 11</div>
       </div>
-
-      <!-- DETAILED BREAKDOWN LIST -->
       <div class="text-left space-y-2 pt-2">
         <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Question Breakdown</h3>
         <div id="breakdown-list" class="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-1"></div>
       </div>
-
       <button onclick="closeModal()" class="w-full bg-purple-950 hover:bg-purple-900 border border-amber-400/60 text-amber-300 font-bold py-3 rounded-xl cursor-pointer">
         Close Results
       </button>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer class="text-center text-xs text-amber-400 font-bold pt-4">
     <div id="footer-team-display" class="hidden">
       Table Reserved: <span id="current-team-name" class="text-white font-black">--</span>
@@ -259,22 +230,25 @@
   </footer>
 
   <script>
-    // Updated with your current deployment URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzacdjniSjy9ND6EE2Nq0wjqNrITQNtbKUVo5-WLrvqm6jZDulvIpHwH879RSf4MQd4/exec";
 
     let currentTeam = "";
     let activeQIndex = 1;
     let teamAnswers = {};
-    let currentPlayingAudio = null;
+    let audioCtx = null;
 
-    // Web Audio Synthesizer Fallback (plays sound chime if MP3 file is missing)
-    function playFallbackSynth(key) {
+    function playSound(key) {
       try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
 
         const freqs = {
           'claps': 440, 'howdoin': 523.25, 'allright': 659.25,
@@ -282,56 +256,29 @@
           'helloyou': 698.46, 'decision': 493.88, 'dontknow': 349.23, 'iknow': 987.77
         };
 
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freqs[key] || 440, ctx.currentTime);
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freqs[key] || 440, audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
 
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.4);
-      } catch(e) { console.warn(e); }
-    }
-
-    function playSound(key) {
-      stopAudio();
-      const el = document.getElementById(`snd-${key}`);
-      if (el) {
-        el.currentTime = 0;
-        currentPlayingAudio = el;
-        el.play().catch(err => {
-          playFallbackSynth(key);
-        });
-      } else {
-        playFallbackSynth(key);
+        osc.stop(audioCtx.currentTime + 0.4);
+      } catch(e) {
+        console.warn("Sound error:", e);
       }
-    }
-
-    function stopAudio() {
-      if (currentPlayingAudio) {
-        currentPlayingAudio.pause();
-        currentPlayingAudio.currentTime = 0;
-        currentPlayingAudio = null;
-      }
-      document.querySelectorAll('audio').forEach(a => {
-        a.pause();
-        a.currentTime = 0;
-      });
-    }
-
-    // Initialize: Always show the Team Dropdown screen on page load
-    function init() {
-      showLogin();
     }
 
     function lockInTeam() {
-      const sel = document.getElementById('team-select').value;
-      const custom = document.getElementById('custom-team-input').value.trim();
+      const sel = document.getElementById('team-select')?.value;
+      const custom = document.getElementById('custom-team-input')?.value.trim();
       const chosen = custom !== "" ? custom : sel;
 
       if (!chosen) {
-        document.getElementById('login-error').classList.remove('hidden');
+        document.getElementById('login-error')?.classList.remove('hidden');
         return;
       }
 
@@ -347,20 +294,25 @@
     function showLogin() {
       currentTeam = "";
       teamAnswers = {};
-      document.getElementById('login-card').classList.remove('hidden');
-      document.getElementById('play-dashboard').classList.add('hidden');
-      document.getElementById('footer-team-display').classList.add('hidden');
-      document.getElementById('team-select').value = "";
-      document.getElementById('custom-team-input').value = "";
-      document.getElementById('login-error').classList.add('hidden');
+      document.getElementById('login-card')?.classList.remove('hidden');
+      document.getElementById('play-dashboard')?.classList.add('hidden');
+      document.getElementById('footer-team-display')?.classList.add('hidden');
+      if (document.getElementById('team-select')) document.getElementById('team-select').value = "";
+      if (document.getElementById('custom-team-input')) document.getElementById('custom-team-input').value = "";
+      document.getElementById('login-error')?.classList.add('hidden');
     }
 
     function showDashboard() {
-      document.getElementById('login-card').classList.add('hidden');
-      document.getElementById('play-dashboard').classList.remove('hidden');
-      document.getElementById('footer-team-display').classList.remove('hidden');
-      document.getElementById('active-team-display').innerText = currentTeam;
-      document.getElementById('current-team-name').innerText = currentTeam;
+      document.getElementById('login-card')?.classList.add('hidden');
+      document.getElementById('play-dashboard')?.classList.remove('hidden');
+      document.getElementById('footer-team-display')?.classList.remove('hidden');
+      
+      if (document.getElementById('active-team-display')) {
+        document.getElementById('active-team-display').innerText = currentTeam;
+      }
+      if (document.getElementById('current-team-name')) {
+        document.getElementById('current-team-name').innerText = currentTeam;
+      }
 
       renderQuestionGrid();
       updateOptionsUI();
@@ -369,6 +321,7 @@
 
     function renderQuestionGrid() {
       const container = document.getElementById('questions-grid');
+      if (!container) return;
       container.innerHTML = '';
 
       let answeredCount = 0;
@@ -396,12 +349,14 @@
         container.appendChild(btn);
       }
 
-      document.getElementById('answered-count-text').innerText = `${answeredCount} of 11 Answered`;
+      const countEl = document.getElementById('answered-count-text');
+      if (countEl) countEl.innerText = `${answeredCount} of 11 Answered`;
     }
 
     function selectQuestion(qNum) {
       activeQIndex = qNum;
-      document.getElementById('active-question-label').innerText = `QUESTION ${qNum}`;
+      const lbl = document.getElementById('active-question-label');
+      if (lbl) lbl.innerText = `QUESTION ${qNum}`;
       renderQuestionGrid();
       updateOptionsUI();
     }
@@ -411,25 +366,28 @@
       const userAns = teamAnswers[qKey] || null;
 
       const badge = document.getElementById('selected-badge');
-      if (userAns) {
-        badge.innerText = `Selected: (${userAns})`;
-        badge.className = "bg-amber-400 text-purple-950 border border-amber-200 text-xs font-black px-3 py-1 rounded-full shadow";
-      } else {
-        badge.innerText = `Selected: None`;
-        badge.className = "bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full";
+      if (badge) {
+        if (userAns) {
+          badge.innerText = `Selected: (${userAns})`;
+          badge.className = "bg-amber-400 text-purple-950 border border-amber-200 text-xs font-black px-3 py-1 rounded-full shadow";
+        } else {
+          badge.innerText = `Selected: None`;
+          badge.className = "bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full";
+        }
       }
 
-      const letters = ['A', 'B', 'C', 'D'];
-      letters.forEach(letter => {
+      ['A', 'B', 'C', 'D'].forEach(letter => {
         const btn = document.getElementById(`opt-btn-${letter}`);
         const check = document.getElementById(`opt-${letter}-check`);
 
-        if (userAns === letter) {
-          btn.className = "opt-btn gold-pill border-2 border-amber-200 p-3.5 rounded-2xl flex items-center justify-between transition-all scale-[1.02] shadow-lg font-black cursor-pointer";
-          check.classList.remove('hidden');
-        } else {
-          btn.className = "opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer";
-          check.classList.add('hidden');
+        if (btn) {
+          if (userAns === letter) {
+            btn.className = "opt-btn gold-pill border-2 border-amber-200 p-3.5 rounded-2xl flex items-center justify-between transition-all scale-[1.02] shadow-lg font-black cursor-pointer";
+            if (check) check.classList.remove('hidden');
+          } else {
+            btn.className = "opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer";
+            if (check) check.classList.add('hidden');
+          }
         }
       });
     }
@@ -528,7 +486,8 @@
       document.getElementById('results-modal').classList.add('hidden');
     }
 
-    init();
+    // Explicitly show the team select login card
+    showLogin();
   </script>
 </body>
 </html>
