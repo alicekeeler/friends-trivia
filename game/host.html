@@ -7,8 +7,12 @@
   <style>
     :root {
       --bg-color: #1a0826;
-      --card-bg: #2b113e;
+      --card-bg: #351254;
+      --inner-box-bg: rgba(15, 3, 25, 0.35);
       --border-gold: #ffd000;
+      --border-purple: #6b359c;
+      --option-border: #5a2e82;
+      --option-bg: #180526;
       --text-white: #ffffff;
       --dot-red: #ff2a2a;
       --dot-blue: #00a2ff;
@@ -33,7 +37,7 @@
       justify-content: space-between;
     }
 
-    /* 🔴🔵🟡 HEADER */
+    /* 🔴🔵🟡 LOGO HEADER */
     .friends-header {
       text-align: center;
       margin-bottom: 15px;
@@ -120,17 +124,17 @@
       flex-shrink: 0;
     }
 
-    /* 🏷️ PILL BADGES */
+    /* 🏷️ PILL BADGE */
     .pill-badge {
       background-color: var(--border-gold);
       color: #000;
       font-weight: 900;
-      padding: 6px 22px;
+      padding: 8px 24px;
       border-radius: 20px;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       box-shadow: 0 0 15px rgba(255, 208, 0, 0.3);
       display: inline-block;
     }
@@ -138,14 +142,14 @@
     /* 🚀 WELCOME CARD */
     .welcome-card {
       width: 100%;
-      max-width: 850px;
+      max-width: 900px;
       border: 3px solid var(--border-gold);
       background-color: var(--card-bg);
-      border-radius: 24px;
+      border-radius: 28px;
       padding: 35px 30px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .welcome-title {
@@ -156,10 +160,10 @@
     }
 
     .instructions-container {
-      border: 2px solid var(--border-gold);
+      border: 2px solid var(--border-purple);
       border-radius: 18px;
       padding: 25px;
-      background: rgba(0, 0, 0, 0.2);
+      background: var(--inner-box-bg);
       text-align: left;
       font-size: 1.15rem;
       line-height: 1.8;
@@ -200,21 +204,31 @@
     /* ❓ MAIN QUESTION CARD */
     .question-card {
       width: 100%;
-      max-width: 850px;
+      max-width: 900px;
       border: 3px solid var(--border-gold);
       background-color: var(--card-bg);
-      border-radius: 24px;
-      padding: 35px 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border-radius: 28px;
+      padding: 40px 35px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .question-text {
-      font-size: 1.6rem;
-      font-weight: 800;
-      line-height: 1.4;
+      font-size: 1.8rem;
+      font-weight: 900;
+      line-height: 1.35;
+      color: #ffffff;
       margin-bottom: 30px;
+      padding: 0 10px;
+    }
+
+    /* 📦 INNER OPTIONS CONTAINER BOX */
+    .options-wrapper {
+      border: 2px solid var(--border-purple);
+      border-radius: 20px;
+      padding: 20px;
+      background: var(--inner-box-bg);
     }
 
     /* 🔲 2x2 OPTIONS GRID */
@@ -225,39 +239,39 @@
     }
 
     .option-btn {
-      background: #1e0b2e;
-      border: 2px solid #5a2e82;
-      border-radius: 16px;
-      padding: 12px 16px;
+      background: var(--option-bg);
+      border: 2px solid var(--option-border);
+      border-radius: 14px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-align: left;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
     }
 
     .option-badge {
       background-color: var(--border-gold);
-      color: #000;
+      color: #000000;
       font-weight: 900;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
 
     .option-btn.correct {
-      background-color: rgba(46, 196, 182, 0.25);
+      background-color: rgba(46, 196, 182, 0.3);
       border-color: var(--btn-green);
-      color: #2ec4b6;
-      box-shadow: 0 0 15px rgba(46, 196, 182, 0.4);
+      color: var(--btn-green);
+      box-shadow: 0 0 18px rgba(46, 196, 182, 0.5);
     }
 
     /* 🦶 BOTTOM STATUS FOOTER */
@@ -271,8 +285,8 @@
     }
 
     .footer-pill {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       padding: 6px 16px;
       border-radius: 20px;
       color: var(--border-gold);
@@ -309,7 +323,7 @@
     <button class="btn btn-yellow" onclick="nextQuestion()">Next Question ➡️</button>
   </div>
 
-  <!-- 1️⃣ WELCOME SCREEN -->
+  <!-- 1️⃣ WELCOME SCREEN VIEW -->
   <div id="welcome-screen" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
     <div class="pill-badge">WELCOME TO CENTRAL PERK ☕</div>
 
@@ -332,7 +346,7 @@
     </div>
   </div>
 
-  <!-- 2️⃣ GAME SCREEN -->
+  <!-- 2️⃣ GAME SCREEN VIEW -->
   <div id="game-screen" style="display: none; width: 100%; flex-direction: column; align-items: center;">
     <div class="pill-badge" id="round-title">
       ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY
@@ -343,7 +357,9 @@
         Loading game dataset...
       </div>
 
-      <div class="options-grid" id="options-container"></div>
+      <div class="options-wrapper">
+        <div class="options-grid" id="options-container"></div>
+      </div>
     </div>
   </div>
 
@@ -357,11 +373,11 @@
     </div>
   </div>
 
-  <audio id="audio-player" preload="auto"></audio>
+  <audio id="audio-player" crossorigin="anonymous" preload="auto"></audio>
 
   <script>
     const JSON_PATH = "questions.json";
-    const THEME_AUDIO_URL = "https://ia800501.us.archive.org/33/items/TvThemeSongs-friends/Friends.mp3";
+    const THEME_AUDIO_URL = "https://archive.org/download/TvThemeSongs-friends/Friends.mp3";
 
     let gameQuestions = [];
     let rawCategoriesData = [];
@@ -478,16 +494,22 @@
       const audio = document.getElementById('audio-player');
       const status = document.getElementById('audio-status');
 
-      if (!audio.src || audio.src === "") {
+      if (!audio.src || audio.src === "" || audio.src !== THEME_AUDIO_URL) {
         audio.src = THEME_AUDIO_URL;
+        audio.load();
       }
 
-      audio.play().then(() => {
-        status.innerText = "🔊 Playing: Friends Theme";
-      }).catch(err => {
-        console.error("Audio playback error:", err);
-        status.innerText = "⚠️ Audio Error / Blocked";
-      });
+      status.innerText = "⏳ Loading Theme Song...";
+
+      const promise = audio.play();
+      if (promise !== undefined) {
+        promise.then(() => {
+          status.innerText = "🔊 Playing: Friends Theme";
+        }).catch(err => {
+          console.error("Audio playback error:", err);
+          status.innerText = "⚠️ Audio Blocked - Click play once more!";
+        });
+      }
     }
 
     function stopAudio() {
