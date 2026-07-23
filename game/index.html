@@ -12,10 +12,10 @@
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans select-none">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-3 font-sans select-none" onclick="unlockAudioEngine()">
 
   <!-- HEADER -->
-  <header class="text-center my-2">
+  <header class="text-center my-1">
     <h1 class="text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
       <span>O</span><span class="friends-dot-red">•</span>
       <span>R</span><span class="friends-dot-blue">•</span>
@@ -27,10 +27,10 @@
   </header>
 
   <!-- MAIN PLAYER CONTAINER -->
-  <main class="max-w-md w-full mx-auto my-auto space-y-4">
+  <main class="max-w-md w-full mx-auto my-auto space-y-3">
 
     <!-- TEAM SELECTION CARD -->
-    <div id="team-card" class="bg-purple-900/90 border-2 border-yellow-400 rounded-2xl p-5 shadow-xl space-y-3">
+    <div id="team-card" class="bg-purple-900/90 border-2 border-yellow-400 rounded-2xl p-4 shadow-xl space-y-3">
       <label class="block text-xs font-black text-yellow-300 uppercase tracking-wider text-center">
         Step 1: Choose or Enter Your Team
       </label>
@@ -48,53 +48,100 @@
 
       <input id="custom-team-input" type="text" placeholder="Enter Custom Team Name..." class="w-full bg-purple-950 border-2 border-yellow-400/60 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400 hidden" />
 
-      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-3 rounded-xl shadow transition-all active:scale-95 text-sm uppercase tracking-wider">
+      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl shadow transition-all active:scale-95 text-xs uppercase tracking-wider">
         Lock In Team Name 🔒
       </button>
     </div>
 
     <!-- ACTIVE ROUND STATUS -->
-    <div id="round-banner" class="text-center bg-purple-950 border border-yellow-400/40 py-2 px-4 rounded-xl shadow">
+    <div id="round-banner" class="text-center bg-purple-950 border border-yellow-400/40 py-1.5 px-3 rounded-xl shadow">
       <span id="round-status-text" class="text-xs font-black text-yellow-400 uppercase tracking-wider">
         Waiting for host to start...
       </span>
     </div>
 
     <!-- ANSWER BUTTONS GRID (KAHOOT STYLE) -->
-    <div id="buzzer-grid" class="grid grid-cols-2 gap-3 opacity-50 pointer-events-none transition-all">
+    <div id="buzzer-grid" class="grid grid-cols-2 gap-2.5 opacity-50 pointer-events-none transition-all">
       
       <!-- OPTION A -->
-      <button onclick="submitAnswer(0)" id="btn-0" class="buzzer-btn bg-red-600 hover:bg-red-500 active:scale-95 text-white font-black text-4xl p-8 rounded-2xl border-4 border-red-300 shadow-xl flex items-center justify-center transition-all">
+      <button onclick="submitAnswer(0)" id="btn-0" class="buzzer-btn bg-red-600 hover:bg-red-500 active:scale-95 text-white font-black text-4xl p-6 rounded-2xl border-4 border-red-300 shadow-xl flex items-center justify-center transition-all">
         A
       </button>
 
       <!-- OPTION B -->
-      <button onclick="submitAnswer(1)" id="btn-1" class="buzzer-btn bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-black text-4xl p-8 rounded-2xl border-4 border-blue-300 shadow-xl flex items-center justify-center transition-all">
+      <button onclick="submitAnswer(1)" id="btn-1" class="buzzer-btn bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-black text-4xl p-6 rounded-2xl border-4 border-blue-300 shadow-xl flex items-center justify-center transition-all">
         B
       </button>
 
       <!-- OPTION C -->
-      <button onclick="submitAnswer(2)" id="btn-2" class="buzzer-btn bg-yellow-500 hover:bg-yellow-400 active:scale-95 text-purple-950 font-black text-4xl p-8 rounded-2xl border-4 border-yellow-200 shadow-xl flex items-center justify-center transition-all">
+      <button onclick="submitAnswer(2)" id="btn-2" class="buzzer-btn bg-yellow-500 hover:bg-yellow-400 active:scale-95 text-purple-950 font-black text-4xl p-6 rounded-2xl border-4 border-yellow-200 shadow-xl flex items-center justify-center transition-all">
         C
       </button>
 
       <!-- OPTION D -->
-      <button onclick="submitAnswer(3)" id="btn-3" class="buzzer-btn bg-green-600 hover:bg-green-500 active:scale-95 text-white font-black text-4xl p-8 rounded-2xl border-4 border-green-300 shadow-xl flex items-center justify-center transition-all">
+      <button onclick="submitAnswer(3)" id="btn-3" class="buzzer-btn bg-green-600 hover:bg-green-500 active:scale-95 text-white font-black text-4xl p-6 rounded-2xl border-4 border-green-300 shadow-xl flex items-center justify-center transition-all">
         D
       </button>
 
     </div>
 
     <!-- VOTE FEEDBACK CARD -->
-    <div id="feedback-card" class="hidden text-center bg-green-950/90 border-2 border-green-400 p-4 rounded-2xl shadow-xl space-y-1">
-      <p class="text-lg font-black text-green-300">Answer Locked In! ☕</p>
-      <p id="feedback-subtext" class="text-xs text-green-200 font-semibold">Waiting for host to reveal answer...</p>
+    <div id="feedback-card" class="hidden text-center bg-green-950/90 border-2 border-green-400 p-2.5 rounded-2xl shadow-xl space-y-0.5">
+      <p class="text-sm font-black text-green-300">Answer Locked In! ☕</p>
+      <p id="feedback-subtext" class="text-[11px] text-green-200 font-semibold">Waiting for host to reveal answer...</p>
     </div>
 
   </main>
 
+  <!-- CUSTOM SOUNDBOARD SECTION -->
+  <section class="max-w-md w-full mx-auto bg-purple-950/90 border-2 border-yellow-400/80 rounded-2xl p-2.5 shadow-2xl my-2">
+    <div class="flex items-center justify-between border-b border-yellow-400/30 pb-1 mb-2 px-1">
+      <h3 class="text-[11px] font-black text-yellow-400 uppercase tracking-widest flex items-center gap-1">
+        🔊 Soundboard
+      </h3>
+      <button onclick="stopAllAudio()" class="bg-red-600 hover:bg-red-500 text-white font-black text-[9px] px-2 py-0.5 rounded shadow active:scale-95 uppercase">
+        ⏹ Stop
+      </button>
+    </div>
+
+    <!-- 10 SOUND BUTTONS GRID (5x2 Layout) -->
+    <div class="grid grid-cols-5 gap-1.5 text-center">
+      <button onclick="playSound('claps.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        👏 Claps
+      </button>
+      <button onclick="playSound('how-you-doing.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        😏 How Doin'?
+      </button>
+      <button onclick="playSound('all-right.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        👍 All Right
+      </button>
+      <button onclick="playSound('bing.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        🔔 Bing!
+      </button>
+      <button onclick="playSound('excellent.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        ✨ Excellent
+      </button>
+
+      <button onclick="playSound('good-very-good.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        👌 Very Good
+      </button>
+      <button onclick="playSound('hello-you.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        👋 Hello You
+      </button>
+      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        🤯 Decision!
+      </button>
+      <button onclick="playSound('game/i-don-t-know.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        🤷 Don't Know
+      </button>
+      <button onclick="playSound('game/i-know.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+        💡 I Know!
+      </button>
+    </div>
+  </section>
+
   <!-- FOOTER -->
-  <footer class="text-center text-[10px] text-purple-300 mt-4">
+  <footer class="text-center text-[10px] text-purple-300 mt-1">
     <span id="active-team-label" class="font-bold text-yellow-300">Team: Not Selected</span>
   </footer>
 
@@ -106,6 +153,90 @@
     let activeRoundNumber = null;
     let hasVotedCurrentRound = false;
 
+    // AUDIO LIST
+    const audioFiles = [
+      'claps.mp3',
+      'how-you-doing.mp3',
+      'all-right.mp3',
+      'bing.mp3',
+      'excellent.mp3',
+      'good-very-good.mp3',
+      'hello-you.mp3',
+      'game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3',
+      'game/i-don-t-know.mp3',
+      'game/i-know.mp3'
+    ];
+
+    const audioPool = {};
+    let isUnlocked = false;
+
+    function getCandidateUrls(file) {
+      const cleanFile = file.replace(/^game\//, '');
+      return [
+        file,
+        cleanFile,
+        `./${cleanFile}`,
+        `../${cleanFile}`,
+        `game/${cleanFile}`
+      ];
+    }
+
+    audioFiles.forEach(file => {
+      const candidates = getCandidateUrls(file);
+      let currentIdx = 0;
+      const audio = new Audio(candidates[0]);
+
+      audio.addEventListener('error', () => {
+        currentIdx++;
+        if (currentIdx < candidates.length) {
+          audio.src = candidates[currentIdx];
+          audio.load();
+        }
+      });
+
+      audioPool[file] = audio;
+    });
+
+    function unlockAudioEngine() {
+      if (isUnlocked) return;
+      isUnlocked = true;
+
+      Object.keys(audioPool).forEach(key => {
+        const audio = audioPool[key];
+        const promise = audio.play();
+        if (promise !== undefined) {
+          promise.then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          }).catch(() => {});
+        }
+      });
+    }
+
+    function playSound(filename) {
+      unlockAudioEngine();
+      stopAllAudio();
+
+      let audio = audioPool[filename];
+      if (!audio) {
+        audio = new Audio(filename);
+        audioPool[filename] = audio;
+      }
+
+      audio.currentTime = 0;
+      audio.play().catch(err => console.warn("Audio blocked:", err));
+    }
+
+    function stopAllAudio() {
+      Object.keys(audioPool).forEach(key => {
+        if (audioPool[key]) {
+          audioPool[key].pause();
+          audioPool[key].currentTime = 0;
+        }
+      });
+    }
+
+    // GAME LOGIC
     function handleTeamSelect() {
       const select = document.getElementById('team-dropdown');
       const customInput = document.getElementById('custom-team-input');
@@ -118,6 +249,7 @@
     }
 
     function lockInTeam() {
+      unlockAudioEngine();
       const select = document.getElementById('team-dropdown');
       const customInput = document.getElementById('custom-team-input');
 
@@ -168,6 +300,7 @@
     }
 
     async function submitAnswer(optionIndex) {
+      unlockAudioEngine();
       if (!selectedTeam) {
         alert("Please lock in your team name first!");
         return;
@@ -178,7 +311,6 @@
       hasVotedCurrentRound = true;
       disableBuzzers();
 
-      // Visual feedback on selected button
       const letterMap = ["A", "B", "C", "D"];
       for (let i = 0; i < 4; i++) {
         const btn = document.getElementById(`btn-${i}`);
@@ -192,7 +324,6 @@
       document.getElementById('feedback-subtext').innerText = `You voted for (${letterMap[optionIndex]}). Waiting for host...`;
       document.getElementById('feedback-card').classList.remove('hidden');
 
-      // Send vote to Google Apps Script
       try {
         await fetch(SCRIPT_URL, {
           method: 'POST',
@@ -200,7 +331,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'submitVote',
-            actionAlt: 'vote', // Fallback key
+            actionAlt: 'vote',
             team: selectedTeam,
             round: activeRoundNumber,
             answer: optionIndex
@@ -211,7 +342,6 @@
       }
     }
 
-    // POLL GOOGLE APPS SCRIPT FOR ACTIVE QUESTION/ROUND CHANGES
     async function pollActiveQuestion() {
       try {
         const response = await fetch(`${SCRIPT_URL}?action=getActiveQuestion`);
@@ -220,7 +350,6 @@
         if (data && data.activeQuestion) {
           const q = data.activeQuestion;
 
-          // If host moves to a new question/round
           if (q.id !== activeQuestionId) {
             activeQuestionId = q.id;
             activeRoundNumber = q.number;
@@ -235,11 +364,10 @@
           disableBuzzers();
         }
       } catch (err) {
-        // Silent catch during periodic polling
+        // Silent catch during polling
       }
     }
 
-    // Poll every 1.5 seconds
     setInterval(pollActiveQuestion, 1500);
     pollActiveQuestion();
   </script>
