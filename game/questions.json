@@ -1,101 +1,541 @@
-const QUESTION_DATA = [
+[
   {
-    category: "Clocking in/out",
-    questions: [
-      { id: "q101", q: "Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?", options: ["A) Allowed if you are good friends", "B) Strictly prohibited and considered payroll fraud", "C) Allowed twice per month", "D) Only permitted during coffee breaks"], answer: 1 },
-      { id: "q102", q: "Monica insists on clocking in at exactly 7:59:59 AM down to the millisecond. What is the rule for non-exempt employee timekeeping?", options: ["A) Employees must record all actual time worked accurately", "B) Rounding up by 30 minutes is required", "C) Only managers can edit time cards", "D) Clocking in 1 hour early is automatic overtime"], answer: 0 },
-      { id: "q103", q: "Joey forgets to clock out before heading to Central Perk for a muffin. What is the required procedure for a missed time punch?", options: ["A) Ignore it and hope nobody notices", "B) Guess the time tomorrow", "C) Submit a time adjustment request to your supervisor/payroll", "D) Work unpaid extra hours to compensate"], answer: 2 },
-      { id: "q104", q: "Ross works straight through his lunch hour without logging it on his timesheet. What is the policy regarding unrecorded work time?", options: ["A) Permitted if researching dinosaurs", "B) Encouraged during busy quarters", "C) Only allowed for remote workers", "D) All hours worked must be accurately recorded on the timesheet"], answer: 3 }
+    "category": "Clocking in/out",
+    "questions": [
+      {
+        "id": "q101",
+        "q": "Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?",
+        "options": [
+          "A) Allowed if you are good friends",
+          "B) Strictly prohibited and considered payroll fraud",
+          "C) Allowed twice per month",
+          "D) Only permitted during coffee breaks"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q102",
+        "q": "Monica insists on clocking in at exactly 7:59:59 AM down to the millisecond. What is the rule for non-exempt employee timekeeping?",
+        "options": [
+          "A) Employees must record all actual time worked accurately",
+          "B) Rounding up by 30 minutes is required",
+          "C) Only managers can edit time cards",
+          "D) Clocking in 1 hour early is automatic overtime"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q103",
+        "q": "Joey forgets to clock out before heading to Central Perk for a muffin. What is the required procedure for a missed time punch?",
+        "options": [
+          "A) Ignore it and hope nobody notices",
+          "B) Guess the time tomorrow",
+          "C) Submit a time adjustment request to your supervisor/payroll",
+          "D) Work unpaid extra hours to compensate"
+        ],
+        "answer": 2
+      },
+      {
+        "id": "q104",
+        "q": "Ross works straight through his lunch hour without logging it on his timesheet. What is the policy regarding unrecorded work time?",
+        "options": [
+          "A) Permitted if researching dinosaurs",
+          "B) Encouraged during busy quarters",
+          "C) Only allowed for remote workers",
+          "D) All hours worked must be accurately recorded on the timesheet"
+        ],
+        "answer": 3
+      }
     ]
   },
   {
-    category: "Dress Code",
-    questions: [
-      { id: "q201", q: "Joey walks into the office wearing ALL of Chandler's clothes at once ('Could I BE wearing any more clothes?'). Is this compliant with workplace attire policy?", options: ["A) Yes, if it's Friday", "B) No, attire must be neat, clean, and appropriate for business casual", "C) Yes, as long as he doesn't do lunges", "D) Only if HR approves the brand"], answer: 1 },
-      { id: "q202", q: "Rachel wears an extreme high-fashion runway outfit with flip-flops to a client meeting. What is the safety/professionalism dress rule?", options: ["A) Footwear must be safe and professional for the work environment", "B) Runway fashion is always encouraged", "C) Flip-flops are mandatory in summer", "D) Accessories must match office furniture"], answer: 0 },
-      { id: "q203", q: "Phoebe attaches a giant decorative ribbon over her outfit to hide a hummus stain. Is decorative outerwear allowed if it violates safety or dress standards?", options: ["A) Allowed if it covers hummus", "B) Allowed during holiday season", "C) Required for all staff", "D) Attire must maintain a professional appearance without safety hazards"], answer: 3 },
-      { id: "q204", q: "Chandler wears sweatpants to a corporate board presentation. What is the standard office dress code expectation?", options: ["A) Athletic wear is standard daily attire", "B) Costumes are mandatory", "C) Professional business casual or role-appropriate attire", "D) Formal black-tie tuxedos only"], answer: 2 }
+    "category": "Dress Code",
+    "questions": [
+      {
+        "id": "q201",
+        "q": "Joey walks into the office wearing ALL of Chandler's clothes at once ('Could I BE wearing any more clothes?'). Is this compliant with workplace attire policy?",
+        "options": [
+          "A) Yes, if it's Friday",
+          "B) No, attire must be neat, clean, and appropriate for business casual",
+          "C) Yes, as long as he doesn't do lunges",
+          "D) Only if HR approves the brand"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q202",
+        "q": "Rachel wears an extreme high-fashion runway outfit with flip-flops to a client meeting. What is the safety/professionalism dress rule?",
+        "options": [
+          "A) Footwear must be safe and professional for the work environment",
+          "B) Runway fashion is always encouraged",
+          "C) Flip-flops are mandatory in summer",
+          "D) Accessories must match office furniture"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q203",
+        "q": "Phoebe attaches a giant decorative ribbon over her outfit to hide a hummus stain. Is decorative outerwear allowed if it violates safety or dress standards?",
+        "options": [
+          "A) Allowed if it covers hummus",
+          "B) Allowed during holiday season",
+          "C) Required for all staff",
+          "D) Attire must maintain a professional appearance without safety hazards"
+        ],
+        "answer": 3
+      },
+      {
+        "id": "q204",
+        "q": "Chandler wears sweatpants to a corporate board presentation. What is the standard office dress code expectation?",
+        "options": [
+          "A) Athletic wear is standard daily attire",
+          "B) Costumes are mandatory",
+          "C) Professional business casual or role-appropriate attire",
+          "D) Formal black-tie tuxedos only"
+        ],
+        "answer": 2
+      }
     ]
   },
   {
-    category: "Sexual Harassment",
-    questions: [
-      { id: "q301", q: "Joey winks and asks a coworker 'How YOU doin'?' repeatedly after being asked to stop. What should the coworker do?", options: ["A) Ignore it forever", "B) Report it to HR, a supervisor, or Compliance Coordinator immediately", "C) Challenge Joey to an arm wrestling match", "D) Post about it on social media"], answer: 1 },
-      { id: "q302", q: "Chandler feels uncomfortable because inappropriate jokes are being shared near his desk. What defines workplace harassment?", options: ["A) Unwelcome conduct based on protected characteristics that creates a hostile work environment", "B) Any joke that isn't funny", "C) Only physical interactions count", "D) Disagreeing about sports teams"], answer: 0 },
-      { id: "q303", q: "Rachel's manager gives her an unwanted kiss on the cheek during a performance review. How does the handbook address non-consensual physical conduct?", options: ["A) It is considered acceptable networking", "B) Only counts if witnessed by three people", "C) Strictly prohibited as sexual harassment and must be reported", "D) Handled by switching desks"], answer: 2 },
-      { id: "q304", q: "Monica fears retaliation after submitting a harassment report regarding a supervisor. What protection does company policy offer?", options: ["A) No protections exist", "B) Employee must transfer departments", "C) Retaliation is allowed during probation", "D) Retaliation is strictly prohibited against good-faith reporting"], answer: 3 }
+    "category": "Sexual Harassment",
+    "questions": [
+      {
+        "id": "q301",
+        "q": "Joey winks and asks a coworker 'How YOU doin'?' repeatedly after being asked to stop. What should the coworker do?",
+        "options": [
+          "A) Ignore it forever",
+          "B) Report it to HR, a supervisor, or Compliance Coordinator immediately",
+          "C) Challenge Joey to an arm wrestling match",
+          "D) Post about it on social media"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q302",
+        "q": "Chandler feels uncomfortable because inappropriate jokes are being shared near his desk. What defines workplace harassment?",
+        "options": [
+          "A) Unwelcome conduct based on protected characteristics that creates a hostile work environment",
+          "B) Any joke that isn't funny",
+          "C) Only physical interactions count",
+          "D) Disagreeing about sports teams"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q303",
+        "q": "Rachel's manager gives her an unwanted kiss on the cheek during a performance review. How does the handbook address non-consensual physical conduct?",
+        "options": [
+          "A) It is considered acceptable networking",
+          "B) Only counts if witnessed by three people",
+          "C) Strictly prohibited as sexual harassment and must be reported",
+          "D) Handled by switching desks"
+        ],
+        "answer": 2
+      },
+      {
+        "id": "q304",
+        "q": "Monica fears retaliation after submitting a harassment report regarding a supervisor. What protection does company policy offer?",
+        "options": [
+          "A) No protections exist",
+          "B) Employee must transfer departments",
+          "C) Retaliation is allowed during probation",
+          "D) Retaliation is strictly prohibited against good-faith reporting"
+        ],
+        "answer": 3
+      }
     ]
   },
   {
-    category: "Bereavement Leave",
-    questions: [
-      { id: "q401", q: "Phoebe's beloved grandmother passes away. Under the updated policy, how is bereavement leave requested?", options: ["A) Send a pigeon", "B) Notify HR and supervisor as soon as possible to receive designated paid leave", "C) Take 3 weeks off without telling anyone", "D) Trade shifts with Monica"], answer: 1 },
-      { id: "q402", q: "Ross experiences a loss in his immediate family. What determines the number of paid bereavement days granted?", options: ["A) Relationship to the deceased according to updated handbook guidelines", "B) How long Ross has lived in his apartment", "C) Ross's favorite dinosaur", "D) A vote by all six friends"], answer: 0 },
-      { id: "q403", q: "Joey requests 5 days of paid bereavement leave after his childhood goldfish passes away. Does pet loss qualify under standard bereavement leave?", options: ["A) Yes, up to 10 days", "B) Yes, if approved by Central Perk", "C) Mandatory 2 weeks", "D) No, but accrued PTO or unpaid personal time may be requested"], answer: 3 },
-      { id: "q404", q: "Rachel needs additional travel time beyond standard bereavement leave days. What option is available to her?", options: ["A) Unannounced absence", "B) Resigning and reapplying", "C) Requesting additional unpaid leave or using accrued PTO with supervisor approval", "D) Taking sick leave without notice"], answer: 2 }
+    "category": "Bereavement Leave",
+    "questions": [
+      {
+        "id": "q401",
+        "q": "Phoebe's beloved grandmother passes away. Under the updated policy, how is bereavement leave requested?",
+        "options": [
+          "A) Send a pigeon",
+          "B) Notify HR and supervisor as soon as possible to receive designated paid leave",
+          "C) Take 3 weeks off without telling anyone",
+          "D) Trade shifts with Monica"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q402",
+        "q": "Ross experiences a loss in his immediate family. What determines the number of paid bereavement days granted?",
+        "options": [
+          "A) Relationship to the deceased according to updated handbook guidelines",
+          "B) How long Ross has lived in his apartment",
+          "C) Ross's favorite dinosaur",
+          "D) A vote by all six friends"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q403",
+        "q": "Joey requests 5 days of paid bereavement leave after his childhood goldfish passes away. Does pet loss qualify under standard bereavement leave?",
+        "options": [
+          "A) Yes, up to 10 days",
+          "B) Yes, if approved by Central Perk",
+          "C) Mandatory 2 weeks",
+          "D) No, but accrued PTO or unpaid personal time may be requested"
+        ],
+        "answer": 3
+      },
+      {
+        "id": "q404",
+        "q": "Rachel needs additional travel time beyond standard bereavement leave days. What option is available to her?",
+        "options": [
+          "A) Unannounced absence",
+          "B) Resigning and reapplying",
+          "C) Requesting additional unpaid leave or using accrued PTO with supervisor approval",
+          "D) Taking sick leave without notice"
+        ],
+        "answer": 2
+      }
     ]
   },
   {
-    category: "Inclement Weather",
-    questions: [
-      { id: "q501", q: "A massive snowstorm hits, and Monica's apartment is snowed in. How do employees learn about official office closures?", options: ["A) Wait for Phoebe to sing a song", "B) Check official company notification channels / emergency alerts", "C) Assume office is closed if temperature is under 30°F", "D) Call Central Perk"], answer: 1 },
-      { id: "q502", q: "Phoebe's taxi won't start in freezing rain, but the office is open. What should she do?", options: ["A) Stay home without telling anyone", "B) Contact supervisor directly to report inability to safely travel and use PTO", "C) Walk 15 miles in snow boots", "D) Blame the weather on Ross"], answer: 1 },
-      { id: "q503", q: "Ross attempts to drive through a blizzard when the facility is officially closed. Should employees report to the physical building during an official closure?", options: ["A) No, employee safety is the priority; work remotely if authorized or take designated closure status", "B) Yes, facility keyholders must report regardless of danger", "C) Only if bringing coffee", "D) Yes, closures are optional"], answer: 0 },
-      { id: "q504", q: "Chandler loses internet power while working remotely during a severe thunderstorm. Who must he contact promptly?", options: ["A) The local weather reporter", "B) Joey", "C) His supervisor to report power interruption and coordinate options", "D) Nobody until next week"], answer: 2 }
+    "category": "Inclement Weather",
+    "questions": [
+      {
+        "id": "q501",
+        "q": "A massive snowstorm hits, and Monica's apartment is snowed in. How do employees learn about official office closures?",
+        "options": [
+          "A) Wait for Phoebe to sing a song",
+          "B) Check official company notification channels / emergency alerts",
+          "C) Assume office is closed if temperature is under 30°F",
+          "D) Call Central Perk"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q502",
+        "q": "Phoebe's taxi won't start in freezing rain, but the office is open. What should she do?",
+        "options": [
+          "A) Stay home without telling anyone",
+          "B) Contact supervisor directly to report inability to safely travel and use PTO",
+          "C) Walk 15 miles in snow boots",
+          "D) Blame the weather on Ross"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q503",
+        "q": "Ross attempts to drive through a blizzard when the facility is officially closed. Should employees report to the physical building during an official closure?",
+        "options": [
+          "A) No, employee safety is the priority; work remotely if authorized or take designated closure status",
+          "B) Yes, facility keyholders must report regardless of danger",
+          "C) Only if bringing coffee",
+          "D) Yes, closures are optional"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q504",
+        "q": "Chandler loses internet power while working remotely during a severe thunderstorm. Who must he contact promptly?",
+        "options": [
+          "A) The local weather reporter",
+          "B) Joey",
+          "C) His supervisor to report power interruption and coordinate options",
+          "D) Nobody until next week"
+        ],
+        "answer": 2
+      }
     ]
   },
   {
-    category: "Drug Free Workplace",
-    questions: [
-      { id: "q601", q: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?", options: ["A) Strictly drug-free workplace; prohibited on premises or while performing duties", "B) Allowed during lunch hours", "C) Allowed if brought in a Tupperware container", "D) Only prohibited on Mondays"], answer: 0 },
-      { id: "q602", q: "Chandler brings an unopened bottle of wine to his desk as a gift. Can alcohol be consumed during standard work hours?", options: ["A) Yes, if shared with the team", "B) No, alcohol consumption during work duty/hours is prohibited unless officially authorized", "C) Yes, after 2 PM", "D) Only if it pairs with pizza"], answer: 1 },
-      { id: "q603", q: "Phoebe is taking prescription medication that causes extreme drowsiness. What should she do before operating heavy machinery?", options: ["A) Drink 4 espressos", "B) Ignore the warning label", "C) Notify her supervisor of safety restrictions prior to performing safety-sensitive duties", "D) Ask Joey to operate it for her"], answer: 2 },
-      { id: "q604", q: "Joey suspects a team member is impaired on duty. What is the appropriate action under safety protocol?", options: ["A) Challenge them to a duel", "B) Ignore it completely", "C) Tell all coworkers", "D) Report reasonable suspicions confidentially to management or HR"], answer: 3 }
+    "category": "Drug Free Workplace",
+    "questions": [
+      {
+        "id": "q601",
+        "q": "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
+        "options": [
+          "A) Strictly drug-free workplace; prohibited on premises or while performing duties",
+          "B) Allowed during lunch hours",
+          "C) Allowed if brought in a Tupperware container",
+          "D) Only prohibited on Mondays"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q602",
+        "q": "Chandler brings an unopened bottle of wine to his desk as a gift. Can alcohol be consumed during standard work hours?",
+        "options": [
+          "A) Yes, if shared with the team",
+          "B) No, alcohol consumption during work duty/hours is prohibited unless officially authorized",
+          "C) Yes, after 2 PM",
+          "D) Only if it pairs with pizza"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q603",
+        "q": "Phoebe is taking prescription medication that causes extreme drowsiness. What should she do before operating heavy machinery?",
+        "options": [
+          "A) Drink 4 espressos",
+          "B) Ignore the warning label",
+          "C) Notify her supervisor of safety restrictions prior to performing safety-sensitive duties",
+          "D) Ask Joey to operate it for her"
+        ],
+        "answer": 2
+      },
+      {
+        "id": "q604",
+        "q": "Joey suspects a team member is impaired on duty. What is the appropriate action under safety protocol?",
+        "options": [
+          "A) Challenge them to a duel",
+          "B) Ignore it completely",
+          "C) Tell all coworkers",
+          "D) Report reasonable suspicions confidentially to management or HR"
+        ],
+        "answer": 3
+      }
     ]
   },
   {
-    category: "Lunch Breaks",
-    questions: [
-      { id: "q701", q: "Ross screams 'MY SANDWICH?!' after someone takes his Moist Maker from the fridge. What is the breakroom fridge policy?", options: ["A) Label your food; items left at end of week will be cleaned out", "B) Bosses can eat any sandwich they want", "C) No food allowed in fridge", "D) Joey owns all fridge food"], answer: 0 },
-      { id: "q702", q: "Joey orders 2 pizzas for lunch ('The Joey Special'). How long is the standard unpaid meal break for shifts over 6 hours?", options: ["A) 15 minutes", "B) 30 to 60 minutes uninterrupted", "C) 3 hours", "D) As long as it takes to finish 2 pizzas"], answer: 1 },
-      { id: "q703", q: "Rachel skips her meal break so she can leave 30 minutes early at the end of the day. Is skipping mandatory lunch to alter shift hours allowed?", options: ["A) Allowed every day automatically", "B) Allowed if approved by Central Perk", "C) Required for all staff", "D) Meal breaks cannot be skipped to alter shift start/end times without advance management approval"], answer: 3 },
-      { id: "q704", q: "Chandler is required to answer client calls during his 30-minute unpaid meal break. How must interrupted breaks be handled?", options: ["A) Unpaid time stands regardless", "B) Chandler loses his break entirely", "C) Time spent working must be paid or the break rescheduled", "D) Chandler gets a gift card"], answer: 2 }
+    "category": "Lunch Breaks",
+    "questions": [
+      {
+        "id": "q701",
+        "q": "Ross screams 'MY SANDWICH?!' after someone takes his Moist Maker from the fridge. What is the breakroom fridge policy?",
+        "options": [
+          "A) Label your food; items left at end of week will be cleaned out",
+          "B) Bosses can eat any sandwich they want",
+          "C) No food allowed in fridge",
+          "D) Joey owns all fridge food"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q702",
+        "q": "Joey orders 2 pizzas for lunch ('The Joey Special'). How long is the standard unpaid meal break for shifts over 6 hours?",
+        "options": [
+          "A) 15 minutes",
+          "B) 30 to 60 minutes uninterrupted",
+          "C) 3 hours",
+          "D) As long as it takes to finish 2 pizzas"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q703",
+        "q": "Rachel skips her meal break so she can leave 30 minutes early at the end of the day. Is skipping mandatory lunch to alter shift hours allowed?",
+        "options": [
+          "A) Allowed every day automatically",
+          "B) Allowed if approved by Central Perk",
+          "C) Required for all staff",
+          "D) Meal breaks cannot be skipped to alter shift start/end times without advance management approval"
+        ],
+        "answer": 3
+      },
+      {
+        "id": "q704",
+        "q": "Chandler is required to answer client calls during his 30-minute unpaid meal break. How must interrupted breaks be handled?",
+        "options": [
+          "A) Unpaid time stands regardless",
+          "B) Chandler loses his break entirely",
+          "C) Time spent working must be paid or the break rescheduled",
+          "D) Chandler gets a gift card"
+        ],
+        "answer": 2
+      }
     ]
   },
   {
-    category: "FMLA",
-    questions: [
-      { id: "q801", q: "Rachel needs extended leave after giving birth to Emma. What is the eligibility requirement for FMLA?", options: ["A) 12 months of service & at least 1,250 hours worked in past 12 months", "B) 1 month of service", "C) 5 years of service", "D) Must live in Apartment 20"], answer: 0 },
-      { id: "q802", q: "Monica needs to care for Chandler during a serious health condition. How much job-protected leave does FMLA provide per 12-month period?", options: ["A) 2 weeks", "B) Up to 12 workweeks", "C) 6 months", "D) Unlimited"], answer: 1 },
-      { id: "q803", q: "Phoebe returns to work following an approved 8-week FMLA leave. What position entitlement does FMLA guarantee upon return?", options: ["A) Automatic demotion", "B) Must re-interview for position", "C) Reinstatement to the same or an equivalent position", "D) Mandatory location transfer"], answer: 2 },
-      { id: "q804", q: "Joey asks whether group health coverage continues while on FMLA leave. How are health benefits maintained?", options: ["A) Benefits are canceled immediately", "B) Joey must pay 500% premium", "C) Coverage pauses until return", "D) Coverage continues under the same conditions as if actively working"], answer: 3 }
+    "category": "FMLA",
+    "questions": [
+      {
+        "id": "q801",
+        "q": "Rachel needs extended leave after giving birth to Emma. What is the eligibility requirement for FMLA?",
+        "options": [
+          "A) 12 months of service & at least 1,250 hours worked in past 12 months",
+          "B) 1 month of service",
+          "C) 5 years of service",
+          "D) Must live in Apartment 20"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q802",
+        "q": "Monica needs to care for Chandler during a serious health condition. How much job-protected leave does FMLA provide per 12-month period?",
+        "options": [
+          "A) 2 weeks",
+          "B) Up to 12 workweeks",
+          "C) 6 months",
+          "D) Unlimited"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q803",
+        "q": "Phoebe returns to work following an approved 8-week FMLA leave. What position entitlement does FMLA guarantee upon return?",
+        "options": [
+          "A) Automatic demotion",
+          "B) Must re-interview for position",
+          "C) Reinstatement to the same or an equivalent position",
+          "D) Mandatory location transfer"
+        ],
+        "answer": 2
+      },
+      {
+        "id": "q804",
+        "q": "Joey asks whether group health coverage continues while on FMLA leave. How are health benefits maintained?",
+        "options": [
+          "A) Benefits are canceled immediately",
+          "B) Joey must pay 500% premium",
+          "C) Coverage pauses until return",
+          "D) Coverage continues under the same conditions as if actively working"
+        ],
+        "answer": 3
+      }
     ]
   },
   {
-    category: "Payroll Dates",
-    questions: [
-      { id: "q901", q: "Chandler asks 'When do we actually get paid?'. Where can employees find official payroll schedule dates?", options: ["A) On the breakroom bulletin board and employee portal schedule", "B) By asking Gunther at Central Perk", "C) Every day at 5 PM", "D) Whenever Chandler asks"], answer: 0 },
-      { id: "q902", q: "Joey wants to review his digital pay stub details. Where can employees access electronic pay statements?", options: ["A) On the self-service employee payroll portal", "B) Mailed via postcard", "C) Taped to Monica's door", "D) Written on a napkin"], answer: 0 },
-      { id: "q903", q: "Monica notices a discrepancy in her direct deposit pay calculation. Who should she contact to resolve payroll errors?", options: ["A) Joey", "B) Local bank teller", "C) Payroll / HR department", "D) Department of Transportation"], answer: 2 },
-      { id: "q904", q: "Ross changes his direct deposit bank account. How far in advance of pay day should account update forms be submitted?", options: ["A) 10 minutes before midnight", "B) After pay day occurs", "C) No advance notice needed", "D) At least 5-7 business days prior to payroll processing"], answer: 3 }
+    "category": "Payroll Dates",
+    "questions": [
+      {
+        "id": "q901",
+        "q": "Chandler asks 'When do we actually get paid?'. Where can employees find official payroll schedule dates?",
+        "options": [
+          "A) On the breakroom bulletin board and employee portal schedule",
+          "B) By asking Gunther at Central Perk",
+          "C) Every day at 5 PM",
+          "D) Whenever Chandler asks"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q902",
+        "q": "Joey wants to review his digital pay stub details. Where can employees access electronic pay statements?",
+        "options": [
+          "A) On the self-service employee payroll portal",
+          "B) Mailed via postcard",
+          "C) Taped to Monica's door",
+          "D) Written on a napkin"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q903",
+        "q": "Monica notices a discrepancy in her direct deposit pay calculation. Who should she contact to resolve payroll errors?",
+        "options": [
+          "A) Joey",
+          "B) Local bank teller",
+          "C) Payroll / HR department",
+          "D) Department of Transportation"
+        ],
+        "answer": 2
+      },
+      {
+        "id": "q904",
+        "q": "Ross changes his direct deposit bank account. How far in advance of pay day should account update forms be submitted?",
+        "options": [
+          "A) 10 minutes before midnight",
+          "B) After pay day occurs",
+          "C) No advance notice needed",
+          "D) At least 5-7 business days prior to payroll processing"
+        ],
+        "answer": 3
+      }
     ]
   },
   {
-    category: "KPERS & KPERS 457",
-    questions: [
-      { id: "q1001", q: "Phoebe asks if KPERS retirement participation is optional or mandatory for eligible positions. What is the rule?", options: ["A) Mandatory for covered eligible employees from day one", "B) Optional after 10 years", "C) Only for paleontologists", "D) Replaced by Central Perk coffee vouchers"], answer: 0 },
-      { id: "q1002", q: "Chandler wants to contribute additional tax-deferred retirement savings. What is KPERS 457?", options: ["A) Voluntary supplemental retirement savings plan", "B) A mandatory health plan", "C) A type of apartment lease", "D) Joey's apartment number"], answer: 0 },
-      { id: "q1003", q: "Joey asks how standard employee KPERS contributions are deducted from earnings. How are they processed?", options: ["A) In physical cash only", "B) Deducted post-tax with 50% penalty", "C) Paid directly to Monica", "D) Deducted pre-tax from gross qualifying wages"], answer: 3 },
-      { id: "q1004", q: "Monica wants to adjust her monthly KPERS 457 contribution amount. When can plan contribution changes be submitted?", options: ["A) Only during leap years", "B) Never after initial signup", "C) At any time according to portal processing schedules", "D) Only on employee birthdays"], answer: 2 }
+    "category": "KPERS & KPERS 457",
+    "questions": [
+      {
+        "id": "q1001",
+        "q": "Phoebe asks if KPERS retirement participation is optional or mandatory for eligible positions. What is the rule?",
+        "options": [
+          "A) Mandatory for covered eligible employees from day one",
+          "B) Optional after 10 years",
+          "C) Only for paleontologists",
+          "D) Replaced by Central Perk coffee vouchers"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q1002",
+        "q": "Chandler wants to contribute additional tax-deferred retirement savings. What is KPERS 457?",
+        "options": [
+          "A) Voluntary supplemental retirement savings plan",
+          "B) A mandatory health plan",
+          "C) A type of apartment lease",
+          "D) Joey's apartment number"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q1003",
+        "q": "Joey asks how standard employee KPERS contributions are deducted from earnings. How are they processed?",
+        "options": [
+          "A) In physical cash only",
+          "B) Deducted post-tax with 50% penalty",
+          "C) Paid directly to Monica",
+          "D) Deducted pre-tax from gross qualifying wages"
+        ],
+        "answer": 3
+      },
+      {
+        "id": "q1004",
+        "q": "Monica wants to adjust her monthly KPERS 457 contribution amount. When can plan contribution changes be submitted?",
+        "options": [
+          "A) Only during leap years",
+          "B) Never after initial signup",
+          "C) At any time according to portal processing schedules",
+          "D) Only on employee birthdays"
+        ],
+        "answer": 2
+      }
     ]
   },
   {
-    category: "Work Comp",
-    questions: [
-      { id: "q1101", q: "Ross injures his shoulder shouting 'PIVOT!' while lifting office furniture. When must a workplace injury be reported?", options: ["A) Immediately to your supervisor/HR", "B) Next month", "C) Only if you need surgery", "D) After telling Chandler"], answer: 0 },
-      { id: "q1102", q: "Joey stubs his toe in the breakroom and needs medical care. Who must authorize Workers' Compensation treatment locations?", options: ["A) Designated company medical providers / HR reporting process", "B) Dr. Drake Ramoray on TV", "C) Any urgent care on Google", "D) Monica with a band-aid"], answer: 0 },
-      { id: "q1103", q: "Chandler slips on a wet floor in the hallway. What document must be completed following any workplace incident?", options: ["A) A song lyric sheet", "B) Employee Incident / Injury Report form", "C) A letter to Santa", "D) Apartment lease renewal"], answer: 1 },
-      { id: "q1104", q: "Phoebe is cleared for light-duty work following an injury. Who establishes medical restrictions and work modifications?", options: ["A) Phoebe's twin sister Ursula", "B) Joey", "C) The breakroom bulletin board", "D) The authorized treating physician and HR/Safety coordinator"], answer: 3 }
+    "category": "Work Comp",
+    "questions": [
+      {
+        "id": "q1101",
+        "q": "Ross injures his shoulder shouting 'PIVOT!' while lifting office furniture. When must a workplace injury be reported?",
+        "options": [
+          "A) Immediately to your supervisor/HR",
+          "B) Next month",
+          "C) Only if you need surgery",
+          "D) After telling Chandler"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q1102",
+        "q": "Joey stubs his toe in the breakroom and needs medical care. Who must authorize Workers' Compensation treatment locations?",
+        "options": [
+          "A) Designated company medical providers / HR reporting process",
+          "B) Dr. Drake Ramoray on TV",
+          "C) Any urgent care on Google",
+          "D) Monica with a band-aid"
+        ],
+        "answer": 0
+      },
+      {
+        "id": "q1103",
+        "q": "Chandler slips on a wet floor in the hallway. What document must be completed following any workplace incident?",
+        "options": [
+          "A) A song lyric sheet",
+          "B) Employee Incident / Injury Report form",
+          "C) A letter to Santa",
+          "D) Apartment lease renewal"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "q1104",
+        "q": "Phoebe is cleared for light-duty work following an injury. Who establishes medical restrictions and work modifications?",
+        "options": [
+          "A) Phoebe's twin sister Ursula",
+          "B) Joey",
+          "C) The breakroom bulletin board",
+          "D) The authorized treating physician and HR/Safety coordinator"
+        ],
+        "answer": 3
+      }
     ]
   }
-];
+]
