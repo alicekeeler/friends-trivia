@@ -14,7 +14,7 @@
 </head>
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 md:p-6 font-sans select-none" onclick="unlockAudioEngine()">
 
-  <!-- FRIENDS-STYLE HEADER sound -->
+  <!-- FRIENDS-STYLE HEADER -->
   <header class="text-center my-2">
     <h1 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
       <span>O</span><span class="friends-dot-red">•</span>
@@ -182,7 +182,7 @@
     <div class="bg-purple-950 border-4 border-yellow-400 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative space-y-4">
       <div class="flex items-center justify-between border-b border-yellow-400/30 pb-3">
         <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
-          🏆 Live Round Votes
+          🏆 Live Round Scores
         </h3>
         <button onclick="closeLeaderboard()" class="text-yellow-400 hover:text-white font-black text-xl px-2">✕</button>
       </div>
@@ -244,7 +244,6 @@
     function unlockAudioEngine() {
       if (isUnlocked) return;
       isUnlocked = true;
-
       Object.keys(audioPool).forEach(key => {
         const audio = audioPool[key];
         const promise = audio.play();
@@ -255,29 +254,24 @@
           }).catch(() => {});
         }
       });
-
       document.getElementById('status-text').innerText = "Audio Engine Active";
     }
 
     function playSound(filename) {
       unlockAudioEngine();
       stopAllAudio();
-
       let audio = audioPool[filename];
       if (!audio) {
         audio = new Audio(filename);
         audioPool[filename] = audio;
       }
-
       audio.currentTime = 0;
       const playPromise = audio.play();
-
       if (playPromise !== undefined) {
         playPromise.then(() => {
           document.getElementById('status-text').innerText = `Playing: ${filename}`;
           document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1 rounded-lg border border-green-500/40 shadow text-[11px]";
         }).catch(err => {
-          console.warn(`Audio blocked: ${filename}`, err);
           document.getElementById('status-text').innerText = `⚠️ Audio blocked/missing: ${filename}`;
           document.getElementById('status-indicator').className = "text-yellow-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1 rounded-lg border border-yellow-500/40 shadow text-[11px]";
         });
@@ -293,17 +287,35 @@
       });
     }
 
-    // COMPLETE 11-ROUND TOPIC POOL
+    // 4 QUESTIONS PER ROUND. THE 'correct' VALUE IS THE INDEX OF THE RIGHT ANSWER (0=A, 1=B, 2=C, 3=D)
     const topicPool = [
       {
         roundNumber: 1,
         badge: "ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY",
         questions: [
           {
-            id: "q1_a",
+            id: "q1_1",
             question: "Monica is obsessed with being on time. What is Orion's policy regarding tardiness?",
-            options: ["Notify supervisor as soon as possible if arriving late", "Hide under your desk until noon", "Blame Chandler", "Tardiness is strictly allowed on Tuesdays"],
-            correctText: "Notify supervisor as soon as possible if arriving late"
+            options: ["Notify supervisor ASAP if arriving late", "Hide under your desk until noon", "Blame Chandler", "Tardiness is strictly allowed on Tuesdays"],
+            correct: 0 // Index 0 (A)
+          },
+          {
+            id: "q1_2",
+            question: "Ross is running late because of his leather pants. What is the grace period for clocking in?",
+            options: ["There is no grace period, be on time", "5 minutes", "15 minutes", "Whenever your pants dry"],
+            correct: 1 // Index 1 (B)
+          },
+          {
+            id: "q1_3",
+            question: "Chandler is stuck in an ATM vestibule. Who should he call first according to Orion policy?",
+            options: ["Jill Goodacre", "His direct supervisor", "Joey", "Human Resources"],
+            correct: 1 // Index 1 (B)
+          },
+          {
+            id: "q1_4",
+            question: "Joey loses track of time at an audition. How many unexcused tardies lead to a write-up?",
+            options: ["One", "Two", "Three", "It depends on the audition"],
+            correct: 2 // Index 2 (C)
           }
         ]
       },
@@ -311,120 +323,100 @@
         roundNumber: 2,
         badge: "ROUND 2 OF 11: DRESS CODE & PROFESSIONAL IMAGE",
         questions: [
-          {
-            id: "q2_a",
-            question: "Chandler shows up in leather pants. What is Orion's policy on business appropriate attire?",
-            options: ["Employees must maintain clean, professional dress standard", "Leather pants are mandatory on Thursdays", "Sweatpants are preferred attire", "Costumes are required daily"],
-            correctText: "Employees must maintain clean, professional dress standard"
-          }
+          { id: "q2_1", question: "Dress Code Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q2_2", question: "Dress Code Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q2_3", question: "Dress Code Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q2_4", question: "Dress Code Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 3,
         badge: "ROUND 3 OF 11: WORKPLACE SAFETY & HEALTH",
         questions: [
-          {
-            id: "q3_a",
-            question: "Ross yells 'PIVOT!' on the stairs. What is the official Orion procedure for reporting workplace hazards?",
-            options: ["Report any unsafe condition to management immediately", "Yell louder until someone else fixes it", "Ignore it and pivot around it", "Post a meme on Slack"],
-            correctText: "Report any unsafe condition to management immediately"
-          }
+          { id: "q3_1", question: "Safety Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q3_2", question: "Safety Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q3_3", question: "Safety Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q3_4", question: "Safety Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 4,
         badge: "ROUND 4 OF 11: USE OF COMPANY EQUIPMENT",
         questions: [
-          {
-            id: "q4_a",
-            question: "Joey uses the company laptop to stream Baywatch. Is personal use of company equipment permitted?",
-            options: ["Incidental personal use allowed if it does not interfere with work", "Strictly prohibited at all times", "Encouraged during staff meetings", "Only allowed if streaming sitcoms"],
-            correctText: "Incidental personal use allowed if it does not interfere with work"
-          }
+          { id: "q4_1", question: "Equipment Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q4_2", question: "Equipment Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q4_3", question: "Equipment Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q4_4", question: "Equipment Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 5,
         badge: "ROUND 5 OF 11: CONFIDENTIALITY & DATA PRIVACY",
         questions: [
-          {
-            id: "q5_a",
-            question: "Phoebe accidentally mentions sensitive student records. What is Orion's stance on confidential data?",
-            options: ["Confidential information must be protected and never disclosed without authorization", "Share it if it's really interesting", "Post it in Central Perk", "Only disclose to family members"],
-            correctText: "Confidential information must be protected and never disclosed without authorization"
-          }
+          { id: "q5_1", question: "Privacy Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q5_2", question: "Privacy Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q5_3", question: "Privacy Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q5_4", question: "Privacy Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 6,
         badge: "ROUND 6 OF 11: DRUG FREE WORKPLACE",
         questions: [
-          {
-            id: "q6_a",
-            question: "Ross accidentally eats a 'special' brownie before work. What is Orion's policy on controlled substances?",
-            options: ["Strictly drug-free workplace; prohibited on premises or while performing duties", "Allowed during lunch hours", "Allowed if brought in a Tupperware container", "Only prohibited on Mondays"],
-            correctText: "Strictly drug-free workplace; prohibited on premises or while performing duties"
-          }
+          { id: "q6_1", question: "Drug Free Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q6_2", question: "Drug Free Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q6_3", question: "Drug Free Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q6_4", question: "Drug Free Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 7,
         badge: "ROUND 7 OF 11: HARASSMENT & DISCRIMINATION",
         questions: [
-          {
-            id: "q7_a",
-            question: "Joey uses his line 'How YOU doin'?' inappropriately. How does Orion handle workplace harassment?",
-            options: ["Zero-tolerance policy; all complaints are investigated promptly", "Allowed if said with a smile", "Handled via arm wrestling", "Ignored if it happens at coffee breaks"],
-            correctText: "Zero-tolerance policy; all complaints are investigated promptly"
-          }
+          { id: "q7_1", question: "Harassment Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q7_2", question: "Harassment Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q7_3", question: "Harassment Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q7_4", question: "Harassment Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 8,
         badge: "ROUND 8 OF 11: TIMEKEEPING & PAYROLL",
         questions: [
-          {
-            id: "q8_a",
-            question: "Chandler forgets what his actual job is ('transponster'). How must employees record worked hours?",
-            options: ["Accurately log all actual hours worked using official timekeeping tools", "Estimate based on vibes", "Have Joey log your time", "Log 40 hours regardless of attendance"],
-            correctText: "Accurately log all actual hours worked using official timekeeping tools"
-          }
+          { id: "q8_1", question: "Payroll Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q8_2", question: "Payroll Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q8_3", question: "Payroll Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q8_4", question: "Payroll Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 9,
         badge: "ROUND 9 OF 11: LEAVE POLICIES & PTO",
         questions: [
-          {
-            id: "q9_a",
-            question: "Monica takes 'WE WERE ON A BREAK' literally. How far in advance should PTO be requested?",
-            options: ["Submit requests as early as possible according to supervisor guidelines", "No notice required, just don't show up", "Shout it out in the hallway", "Send a postcard after you leave"],
-            correctText: "Submit requests as early as possible according to supervisor guidelines"
-          }
+          { id: "q9_1", question: "PTO Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q9_2", question: "PTO Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q9_3", question: "PTO Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q9_4", question: "PTO Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 10,
         badge: "ROUND 10 OF 11: PERFORMANCE & DEVELOPMENT",
         questions: [
-          {
-            id: "q10_a",
-            question: "Rachel receives feedback on her performance evaluation. What is the main goal of Orion reviews?",
-            options: ["Encourage professional growth, goal setting, and constructive feedback", "To rank the gang in order of favorite Friends", "To eliminate coffee breaks", "To assign seating arrangements"],
-            correctText: "Encourage professional growth, goal setting, and constructive feedback"
-          }
+          { id: "q10_1", question: "Performance Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q10_2", question: "Performance Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q10_3", question: "Performance Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q10_4", question: "Performance Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       },
       {
         roundNumber: 11,
         badge: "ROUND 11 OF 11: COMPANY VALUES & CULTURE",
         questions: [
-          {
-            id: "q11_a",
-            question: "What core value defines the Orion team spirit?",
-            options: ["Collaboration, integrity, dedication, and supporting student success", "Unagi (total state of awareness)", "Never sharing food", "Singing Smelly Cat at meetings"],
-            correctText: "Collaboration, integrity, dedication, and supporting student success"
-          }
+          { id: "q11_1", question: "Culture Question 1 here", options: ["A", "B", "C", "D"], correct: 0 },
+          { id: "q11_2", question: "Culture Question 2 here", options: ["A", "B", "C", "D"], correct: 1 },
+          { id: "q11_3", question: "Culture Question 3 here", options: ["A", "B", "C", "D"], correct: 2 },
+          { id: "q11_4", question: "Culture Question 4 here", options: ["A", "B", "C", "D"], correct: 3 }
         ]
       }
     ];
@@ -435,34 +427,20 @@
     let timerInterval = null;
     let musicDelayTimeout = null;
 
-    function shuffleArray(arr) {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
-
     function initializeGameQueue() {
-      // Create a linear array of questions
-      const unShuffledQuestions = topicPool.map(topic => {
-        const rawQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
-        const shuffledOpts = shuffleArray(rawQ.options);
-        const newCorrectIndex = shuffledOpts.indexOf(rawQ.correctText);
+      // Loop through all 11 rounds in order, picking ONE random question per round
+      activeGameQuestions = topicPool.map(topic => {
+        const randomQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
 
         return {
-          id: rawQ.id,
+          id: randomQ.id,
           roundNumber: topic.roundNumber,
           badge: topic.badge,
-          question: rawQ.question,
-          options: shuffledOpts,
-          correct: newCorrectIndex
+          question: randomQ.question,
+          options: randomQ.options, // Options stay exactly as written in the array
+          correct: randomQ.correct
         };
       });
-      
-      // Shuffle the order of the actual questions/rounds!
-      activeGameQuestions = shuffleArray(unShuffledQuestions);
     }
 
     function showWelcomeScreen() {
@@ -519,7 +497,6 @@
         timer--;
         document.getElementById('timer-box').innerText = timer;
         
-        // Triggers at 5 seconds and pulses
         if (timer === 5) {
           document.getElementById('timer-box').className = "bg-red-900 border-2 border-red-400 text-red-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner animate-pulse";
         }
@@ -537,7 +514,6 @@
       } else {
         currentQIndex = (currentQIndex + 1) % activeGameQuestions.length;
       }
-
       loadQuestion(currentQIndex, 0);
     }
 
@@ -549,13 +525,10 @@
 
     function restartGame() {
       playSound('don-t-be-so-negative.mp3');
-
-      if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
+      if (confirm("Restart game back to Welcome Screen? This will clear all scores and pick a new set of random questions.")) {
         initializeGameQueue();
         showWelcomeScreen();
         
-        // Changed to POST request with JSON body. This matches exactly how your broadcast works, 
-        // which guarantees Google Apps Script will properly receive and process the reset command.
         fetch(SCRIPT_URL, { 
           method: 'POST',
           mode: 'no-cors',
@@ -583,7 +556,6 @@
 
     async function openLeaderboard() {
       playSound('how-dumb-are-you.mp3');
-
       document.getElementById('leaderboard-modal').classList.remove('hidden');
       const listContainer = document.getElementById('leaderboard-list');
 
@@ -592,32 +564,33 @@
         return;
       }
 
-      listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores...</p>`;
+      listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores from spreadsheet...</p>`;
       const currentQ = activeGameQuestions[currentQIndex];
 
       try {
-        const response = await fetch(`${SCRIPT_URL}?action=getVotes&round=${currentQ.roundNumber}`);
+        // We are now asking the server specifically for 'getScores' instead of 'getVotes'
+        const response = await fetch(`${SCRIPT_URL}?action=getScores&round=${currentQ.roundNumber}`);
         const data = await response.json();
 
-        if (data && data.votes) {
-          const votes = data.votes;
-          const teams = Object.keys(votes);
+        if (data && data.scores) {
+          const scores = data.scores;
+          const teams = Object.keys(scores);
 
           if (teams.length === 0) {
-            listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">No answers submitted yet for Round ${currentQ.roundNumber}.</p>`;
+            listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">No teams have scored yet.</p>`;
             return;
           }
 
+          // Sort teams by highest score
+          teams.sort((a, b) => scores[b] - scores[a]);
+
           let html = '';
           teams.forEach(team => {
-            const chosenAnswer = votes[team];
-            const isCorrect = chosenAnswer == currentQ.correct;
-            
             html += `
               <div class="flex items-center justify-between bg-purple-900/80 p-3 rounded-xl border border-yellow-400/40">
                 <span class="font-bold text-white text-sm">${team}</span>
-                <span class="font-bold text-xs ${isCorrect ? 'text-green-400 bg-green-950 px-2.5 py-1 rounded-lg border border-green-500' : 'text-red-400 bg-red-950 px-2.5 py-1 rounded-lg border border-red-500'}">
-                  ${isCorrect ? '100 PTS (Correct)' : '0 PTS'}
+                <span class="font-bold text-xs text-green-400 bg-green-950 px-2.5 py-1 rounded-lg border border-green-500">
+                  ${scores[team]} PTS
                 </span>
               </div>
             `;
@@ -645,7 +618,8 @@
             id: q.id,
             number: q.roundNumber,
             question: q.question,
-            options: q.options
+            options: q.options,
+            correctAnswer: q.correct // THIS TELLS THE GOOGLE SHEET WHAT THE RIGHT ANSWER IS
           })
         });
       } catch (err) {
