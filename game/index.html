@@ -3,18 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Friends Trivia - Player Buzzer</title>
+  <title>Friends Trivia - Player Screen</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .purple-door { background-color: #2D0A3E; }
+    .central-perk-green { background-color: #0F382C; }
     .friends-dot-red { color: #E11D48; }
     .friends-dot-blue { color: #2563EB; }
     .friends-dot-yellow { color: #F59E0B; }
+    
+    .yellow-peephole-frame {
+      border: 3px solid #F59E0B;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+    }
   </style>
 </head>
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-3 font-sans select-none" onclick="unlockAudioEngine()">
 
-  <!-- HEADER -->
+  <!-- FRIENDS LOGO HEADER -->
   <header class="text-center my-1">
     <h1 class="text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
       <span>O</span><span class="friends-dot-red">•</span>
@@ -23,19 +29,22 @@
       <span>O</span><span class="friends-dot-red">•</span>
       <span>N</span>
     </h1>
-    <p class="text-yellow-400 italic text-xs font-bold tracking-widest mt-0.5">Player Buzzer ☕</p>
+    <p class="text-yellow-400 italic text-xs font-bold tracking-widest mt-0.5">Central Perk Player Lounge ☕</p>
   </header>
 
   <!-- MAIN PLAYER CONTAINER -->
   <main class="max-w-md w-full mx-auto my-auto space-y-3">
 
-    <!-- TEAM SELECTION CARD -->
-    <div id="team-card" class="bg-purple-900/90 border-2 border-yellow-400 rounded-2xl p-4 shadow-xl space-y-3">
-      <label class="block text-xs font-black text-yellow-300 uppercase tracking-wider text-center">
-        Step 1: Choose or Enter Your Team
-      </label>
+    <!-- STEP 1: TEAM SELECTION CARD -->
+    <div id="team-card" class="bg-purple-950/90 yellow-peephole-frame rounded-2xl p-4 shadow-2xl space-y-3 text-center">
+      <div class="inline-block bg-yellow-400 text-purple-950 text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider">
+        Step 1
+      </div>
+      <h2 class="text-sm font-black text-yellow-300 uppercase tracking-wider">
+        Choose or Enter Your Team
+      </h2>
 
-      <select id="team-dropdown" onchange="handleTeamSelect()" class="w-full bg-purple-950 border-2 border-yellow-400/60 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400">
+      <select id="team-dropdown" onchange="handleTeamSelect()" class="w-full bg-purple-900 border-2 border-yellow-400/60 rounded-xl p-3 text-white font-bold text-xs focus:outline-none focus:border-yellow-400">
         <option value="">-- Select Your Team --</option>
         <option value="Team Central Perk">Team Central Perk ☕</option>
         <option value="Team Pivot!">Team Pivot! 🛋️</option>
@@ -46,95 +55,111 @@
         <option value="CUSTOM">-- Type Custom Team Name --</option>
       </select>
 
-      <input id="custom-team-input" type="text" placeholder="Enter Custom Team Name..." class="w-full bg-purple-950 border-2 border-yellow-400/60 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400 hidden" />
+      <input id="custom-team-input" type="text" placeholder="Enter Custom Team Name..." class="w-full bg-purple-900 border-2 border-yellow-400/60 rounded-xl p-3 text-white font-bold text-xs focus:outline-none focus:border-yellow-400 hidden" />
 
-      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl shadow transition-all active:scale-95 text-xs uppercase tracking-wider">
+      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl shadow-lg transition-all active:scale-95 text-xs uppercase tracking-wider">
         Lock In Team Name 🔒
       </button>
     </div>
 
-    <!-- ACTIVE ROUND STATUS -->
-    <div id="round-banner" class="text-center bg-purple-950 border border-yellow-400/40 py-1.5 px-3 rounded-xl shadow">
-      <span id="round-status-text" class="text-xs font-black text-yellow-400 uppercase tracking-wider">
-        Waiting for host to start...
+    <!-- LIVE GAME STATUS BADGE -->
+    <div id="round-banner" class="text-center bg-purple-950/80 border border-yellow-400/40 py-2 px-3 rounded-xl shadow-md">
+      <span id="round-status-text" class="text-xs font-bold text-yellow-300 tracking-wide">
+        ☕ Select team above to enter Central Perk...
       </span>
     </div>
 
-    <!-- ANSWER BUTTONS GRID (KAHOOT STYLE) -->
-    <div id="buzzer-grid" class="grid grid-cols-2 gap-2.5 opacity-50 pointer-events-none transition-all">
+    <!-- STEP 2: CENTRAL PERK ANSWER CARDS (REPLACES KAHOOT BLOCKS) -->
+    <div id="buzzer-grid" class="grid grid-cols-1 gap-2.5 opacity-40 pointer-events-none transition-all">
       
       <!-- OPTION A -->
-      <button onclick="submitAnswer(0)" id="btn-0" class="buzzer-btn bg-red-600 hover:bg-red-500 active:scale-95 text-white font-black text-4xl p-6 rounded-2xl border-4 border-red-300 shadow-xl flex items-center justify-center transition-all">
-        A
+      <button onclick="submitAnswer(0)" id="btn-0" class="buzzer-btn bg-purple-900/90 hover:bg-purple-800 border-2 border-yellow-400/60 active:scale-95 text-white p-3.5 rounded-xl shadow-md flex items-center justify-between transition-all">
+        <div class="flex items-center space-x-3">
+          <span class="bg-yellow-400 text-purple-950 font-black w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow">A</span>
+          <span class="text-xs font-bold text-purple-100">Option A</span>
+        </div>
+        <span class="text-yellow-400 text-xs font-black opacity-0 check-icon">✓</span>
       </button>
 
       <!-- OPTION B -->
-      <button onclick="submitAnswer(1)" id="btn-1" class="buzzer-btn bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-black text-4xl p-6 rounded-2xl border-4 border-blue-300 shadow-xl flex items-center justify-center transition-all">
-        B
+      <button onclick="submitAnswer(1)" id="btn-1" class="buzzer-btn bg-purple-900/90 hover:bg-purple-800 border-2 border-yellow-400/60 active:scale-95 text-white p-3.5 rounded-xl shadow-md flex items-center justify-between transition-all">
+        <div class="flex items-center space-x-3">
+          <span class="bg-yellow-400 text-purple-950 font-black w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow">B</span>
+          <span class="text-xs font-bold text-purple-100">Option B</span>
+        </div>
+        <span class="text-yellow-400 text-xs font-black opacity-0 check-icon">✓</span>
       </button>
 
       <!-- OPTION C -->
-      <button onclick="submitAnswer(2)" id="btn-2" class="buzzer-btn bg-yellow-500 hover:bg-yellow-400 active:scale-95 text-purple-950 font-black text-4xl p-6 rounded-2xl border-4 border-yellow-200 shadow-xl flex items-center justify-center transition-all">
-        C
+      <button onclick="submitAnswer(2)" id="btn-2" class="buzzer-btn bg-purple-900/90 hover:bg-purple-800 border-2 border-yellow-400/60 active:scale-95 text-white p-3.5 rounded-xl shadow-md flex items-center justify-between transition-all">
+        <div class="flex items-center space-x-3">
+          <span class="bg-yellow-400 text-purple-950 font-black w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow">C</span>
+          <span class="text-xs font-bold text-purple-100">Option C</span>
+        </div>
+        <span class="text-yellow-400 text-xs font-black opacity-0 check-icon">✓</span>
       </button>
 
       <!-- OPTION D -->
-      <button onclick="submitAnswer(3)" id="btn-3" class="buzzer-btn bg-green-600 hover:bg-green-500 active:scale-95 text-white font-black text-4xl p-6 rounded-2xl border-4 border-green-300 shadow-xl flex items-center justify-center transition-all">
-        D
+      <button onclick="submitAnswer(3)" id="btn-3" class="buzzer-btn bg-purple-900/90 hover:bg-purple-800 border-2 border-yellow-400/60 active:scale-95 text-white p-3.5 rounded-xl shadow-md flex items-center justify-between transition-all">
+        <div class="flex items-center space-x-3">
+          <span class="bg-yellow-400 text-purple-950 font-black w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow">D</span>
+          <span class="text-xs font-bold text-purple-100">Option D</span>
+        </div>
+        <span class="text-yellow-400 text-xs font-black opacity-0 check-icon">✓</span>
       </button>
 
     </div>
 
     <!-- VOTE FEEDBACK CARD -->
-    <div id="feedback-card" class="hidden text-center bg-green-950/90 border-2 border-green-400 p-2.5 rounded-2xl shadow-xl space-y-0.5">
-      <p class="text-sm font-black text-green-300">Answer Locked In! ☕</p>
-      <p id="feedback-subtext" class="text-[11px] text-green-200 font-semibold">Waiting for host to reveal answer...</p>
+    <div id="feedback-card" class="hidden text-center central-perk-green border-2 border-yellow-400/80 p-3 rounded-xl shadow-xl space-y-1">
+      <p class="text-xs font-black text-yellow-300 uppercase tracking-wider">Answer Locked In! ☕</p>
+      <p id="feedback-subtext" class="text-[11px] text-emerald-100 font-semibold">Waiting for host to reveal the answer...</p>
     </div>
 
   </main>
 
-  <!-- CUSTOM SOUNDBOARD SECTION -->
+  <!-- FRIENDS SOUNDBOARD SECTION -->
   <section class="max-w-md w-full mx-auto bg-purple-950/90 border-2 border-yellow-400/80 rounded-2xl p-2.5 shadow-2xl my-2">
     <div class="flex items-center justify-between border-b border-yellow-400/30 pb-1 mb-2 px-1">
       <h3 class="text-[11px] font-black text-yellow-400 uppercase tracking-widest flex items-center gap-1">
-        🔊 Soundboard
+        🔊 Central Perk Soundboard
       </h3>
       <button onclick="stopAllAudio()" class="bg-red-600 hover:bg-red-500 text-white font-black text-[9px] px-2 py-0.5 rounded shadow active:scale-95 uppercase">
         ⏹ Stop
       </button>
     </div>
 
-    <!-- 10 SOUND BUTTONS GRID (5x2 Layout) -->
+    <!-- 10 CUSTOM FRIENDS SOUND BUTTONS GRID -->
     <div class="grid grid-cols-5 gap-1.5 text-center">
-      <button onclick="playSound('claps.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('claps.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         👏 Claps
       </button>
-      <button onclick="playSound('how-you-doing.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('how-you-doing.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         😏 How Doin'?
       </button>
-      <button onclick="playSound('all-right.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('all-right.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         👍 All Right
       </button>
-      <button onclick="playSound('bing.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('bing.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         🔔 Bing!
       </button>
-      <button onclick="playSound('excellent.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('excellent.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         ✨ Excellent
       </button>
 
-      <button onclick="playSound('good-very-good.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('good-very-good.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         👌 Very Good
       </button>
-      <button onclick="playSound('hello-you.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('hello-you.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         👋 Hello You
       </button>
-      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         🤯 Decision!
       </button>
-      <button onclick="playSound('game/i-don-t-know.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('game/i-don-t-know.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         🤷 Don't Know
       </button>
-      <button onclick="playSound('game/i-know.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('game/i-know.mp3')" class="bg-purple-900 hover:bg-purple-800 text-yellow-300 font-bold text-[9px] p-1.5 rounded-lg border border-yellow-400/40 shadow active:scale-95 truncate">
         💡 I Know!
       </button>
     </div>
@@ -153,7 +178,7 @@
     let activeRoundNumber = null;
     let hasVotedCurrentRound = false;
 
-    // AUDIO LIST
+    // AUDIO SYSTEM
     const audioFiles = [
       'claps.mp3',
       'how-you-doing.mp3',
@@ -236,7 +261,7 @@
       });
     }
 
-    // GAME LOGIC
+    // GAME INTERACTION LOGIC
     function handleTeamSelect() {
       const select = document.getElementById('team-dropdown');
       const customInput = document.getElementById('custom-team-input');
@@ -270,19 +295,19 @@
       if (activeRoundNumber) {
         enableBuzzers();
       } else {
-        document.getElementById('round-status-text').innerText = "Team Locked In! Waiting for Question...";
+        document.getElementById('round-status-text').innerText = "☕ Team Locked In! Waiting for Host to start Round 1...";
       }
     }
 
     function enableBuzzers() {
       if (!selectedTeam || hasVotedCurrentRound) return;
       const grid = document.getElementById('buzzer-grid');
-      grid.classList.remove('opacity-50', 'pointer-events-none');
+      grid.classList.remove('opacity-40', 'pointer-events-none');
     }
 
     function disableBuzzers() {
       const grid = document.getElementById('buzzer-grid');
-      grid.classList.add('opacity-50', 'pointer-events-none');
+      grid.classList.add('opacity-40', 'pointer-events-none');
     }
 
     function resetBuzzerUI() {
@@ -291,7 +316,9 @@
 
       for (let i = 0; i < 4; i++) {
         const btn = document.getElementById(`btn-${i}`);
-        btn.classList.remove('ring-4', 'ring-white', 'scale-105', 'opacity-30');
+        btn.className = "buzzer-btn bg-purple-900/90 hover:bg-purple-800 border-2 border-yellow-400/60 active:scale-95 text-white p-3.5 rounded-xl shadow-md flex items-center justify-between transition-all";
+        const check = btn.querySelector('.check-icon');
+        if (check) check.classList.add('opacity-0');
       }
 
       if (selectedTeam && activeRoundNumber) {
@@ -312,16 +339,23 @@
       disableBuzzers();
 
       const letterMap = ["A", "B", "C", "D"];
+
       for (let i = 0; i < 4; i++) {
         const btn = document.getElementById(`btn-${i}`);
+        const check = btn.querySelector('.check-icon');
+
         if (i === optionIndex) {
-          btn.classList.add('ring-4', 'ring-white', 'scale-105');
+          btn.className = "buzzer-btn bg-yellow-400 text-purple-950 border-4 border-yellow-200 p-3.5 rounded-xl shadow-xl flex items-center justify-between transition-all font-black scale-[1.02]";
+          if (check) {
+            check.classList.remove('opacity-0');
+            check.className = "text-purple-950 text-base font-black check-icon";
+          }
         } else {
-          btn.classList.add('opacity-30');
+          btn.className = "buzzer-btn bg-purple-950/40 border border-purple-800 p-3.5 rounded-xl flex items-center justify-between opacity-30";
         }
       }
 
-      document.getElementById('feedback-subtext').innerText = `You voted for (${letterMap[optionIndex]}). Waiting for host...`;
+      document.getElementById('feedback-subtext').innerText = `You submitted Choice (${letterMap[optionIndex]}). Waiting for host to reveal the answer...`;
       document.getElementById('feedback-card').classList.remove('hidden');
 
       try {
@@ -354,21 +388,21 @@
             activeQuestionId = q.id;
             activeRoundNumber = q.number;
 
-            document.getElementById('round-status-text').innerText = `ROUND ${q.number} IS LIVE - VOTE NOW!`;
+            document.getElementById('round-status-text').innerText = `ROUND ${q.number} IS LIVE — TAP YOUR ANSWER BELOW!`;
             resetBuzzerUI();
           }
         } else if (data && data.status === 'welcome') {
           activeQuestionId = null;
           activeRoundNumber = null;
-          document.getElementById('round-status-text').innerText = "Waiting for host to start Round 1...";
+          document.getElementById('round-status-text').innerText = "☕ Waiting for Host to start Round 1...";
           disableBuzzers();
         }
       } catch (err) {
-        // Silent catch during polling
+        // Silent polling catch
       }
     }
 
-    setInterval(pollActiveQuestion, 1500);
+    setInterval(pollActiveQuestion, 1200);
     pollActiveQuestion();
   </script>
 </body>
