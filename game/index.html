@@ -30,11 +30,16 @@
 
   <!-- TOP HEADER -->
   <header class="text-center my-2 relative max-w-2xl mx-auto w-full">
-    <!-- LIVE BADGE -->
-    <div class="absolute top-0 right-0">
+    <!-- LIVE BADGE & LIVE SCORE DISPLAY -->
+    <div class="absolute top-0 right-0 flex flex-col items-end gap-1.5">
       <span class="bg-black/60 border border-green-500 text-green-400 text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Live
       </span>
+
+      <!-- SCORE BADGE -->
+      <div id="header-score-badge" class="bg-amber-500/20 border border-amber-400 text-amber-300 text-[11px] sm:text-xs font-black px-3 py-1 rounded-full shadow hidden">
+        Score: <span id="team-score-val" class="text-white">0</span> Pts
+      </div>
     </div>
 
     <!-- LOGO -->
@@ -109,7 +114,7 @@
       </button>
     </div>
 
-    <!-- STEP 2: MAIN TRIVIA DASHBOARD (MATCHING SCREENSHOT) -->
+    <!-- STEP 2: MAIN TRIVIA DASHBOARD -->
     <div id="play-dashboard" class="space-y-4 hidden">
 
       <!-- QUESTION SELECTION GRID CARD -->
@@ -131,9 +136,11 @@
           <span id="active-question-label" class="text-lg sm:text-xl font-black text-amber-400 uppercase tracking-wider">
             QUESTION 1
           </span>
-          <span id="selected-badge" class="bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full">
-            Selected: None
-          </span>
+          <div class="flex items-center gap-2">
+            <span id="selected-badge" class="bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full">
+              Selected: None
+            </span>
+          </div>
         </div>
 
         <!-- OPTIONS GRID (2x2) -->
@@ -204,17 +211,53 @@
   <!-- FOOTER -->
   <footer class="text-center text-xs text-amber-400 font-bold pt-4">
     <div id="footer-team-display" class="hidden">
-      Table Reserved: <span id="current-team-name" class="text-white underline cursor-pointer" onclick="changeTeam()">Team Unagi</span>
+      Table Reserved: <span id="current-team-name" class="text-white underline cursor-pointer" onclick="changeTeam()">-</span>
     </div>
   </footer>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-TaX6YIZ9mr3fgc-HL-Lcb3nEYLhlrKO9p17btvgmrV8ewcmLkibJU7lHyjm6M0Et/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2spTFExlUe6ktSTGX5Tr22ZCHjymqh19gOwjZSnCHCPTCb7R9Ce5ia8YCFj1sQisT/exec";
 
     let currentTeam = "";
     let activeQIndex = 1; // 1 to 11
     let teamAnswers = {}; // Map of qIndex -> answer letter
-    let audioCtx = null;
+    let currentScore = 0;
+
+    // MP3 MAP: Put your audio files in an `audio/` folder inside your game folder
+    const soundFiles = {
+      'claps': 'audio/claps.mp3',
+      'howdoin': 'audio/howdoin.mp3',
+      'allright': 'audio/allright.mp3',
+      'bing': 'audio/bing.mp3',
+      'excellent': 'audio/excellent.mp3',
+      'verygood': 'audio/verygood.mp3',
+      'helloyou': 'audio/helloyou.mp3',
+      'decision': 'audio/decision.mp3',
+      'dontknow': 'audio/dontknow.mp3',
+      'iknow': 'audio/iknow.mp3'
+    };
+
+    let activeAudioPlayer = null;
+
+    function playSound(key) {
+      stopAudio(); // Stop any currently playing sound
+
+      const fileSrc = soundFiles[key];
+      if (fileSrc) {
+        activeAudioPlayer = new Audio(fileSrc);
+        activeAudioPlayer.play().catch(err => {
+          console.warn("Audio playback issue (file missing or autoplay blocked):", err);
+        });
+      }
+    }
+
+    function stopAudio() {
+      if (activeAudioPlayer) {
+        activeAudioPlayer.pause();
+        activeAudioPlayer.currentTime = 0;
+        activeAudioPlayer = null;
+      }
+    }
 
     function init() {
       const saved = localStorage.getItem('friends_trivia_team');
@@ -253,16 +296,21 @@
       document.getElementById('login-card').classList.remove('hidden');
       document.getElementById('play-dashboard').classList.add('hidden');
       document.getElementById('footer-team-display').classList.add('hidden');
+      document.getElementById('header-score-badge').classList.add('hidden');
     }
 
     function showDashboard() {
       document.getElementById('login-card').classList.add('hidden');
       document.getElementById('play-dashboard').classList.remove('hidden');
       document.getElementById('footer-team-display').classList.remove('hidden');
+      document.getElementById('header-score-badge').classList.remove('hidden');
       document.getElementById('current-team-name').innerText = currentTeam;
 
       renderQuestionGrid();
       syncAnswersFromBackend();
+
+      // Poll score and backend answers every 5 seconds
+      setInterval(syncAnswersFromBackend, 5000);
     }
 
     function renderQuestionGrid() {
@@ -363,61 +411,20 @@
       try {
         const res = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(currentTeam)}`);
         const data = await res.json();
-        if (data.status === 'success' && data.answers) {
-          teamAnswers = data.answers;
+        
+        if (data.status === 'success') {
+          if (data.answers) {
+            teamAnswers = data.answers;
+          }
+          if (typeof data.score !== 'undefined') {
+            currentScore = data.score;
+            document.getElementById('team-score-val').innerText = currentScore;
+          }
           renderQuestionGrid();
           updateOptionsUI();
         }
       } catch (e) {
         console.error("Backend fetch sync failed:", e);
-      }
-    }
-
-    // PHOEBE'S SOUNDBOARD AUDIO SYNTHESIZER
-    function playSound(type) {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      if (type === 'claps') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(400, now);
-        osc.frequency.exponentialRampToValueAtTime(100, now + 0.3);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-      } else if (type === 'howdoin') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.linearRampToValueAtTime(330, now + 0.2);
-        osc.frequency.linearRampToValueAtTime(165, now + 0.5);
-        gain.gain.setValueAtTime(0.4, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-      } else if (type === 'bing') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, now); // D5
-        osc.frequency.setValueAtTime(880, now + 0.1); // A5
-        gain.gain.setValueAtTime(0.5, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-      } else {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-      }
-
-      osc.start(now);
-      osc.stop(now + 0.5);
-    }
-
-    function stopAudio() {
-      if (audioCtx) {
-        audioCtx.close();
-        audioCtx = null;
       }
     }
 
