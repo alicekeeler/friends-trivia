@@ -3,427 +3,469 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ORION FRIENDS - Host Control Center</title>
+  <title>O·R·I·O·N - The One With the Employee Handbook</title>
   <style>
     :root {
-      --bg-color: #1a0f2b;
-      --card-bg: #271740;
-      --accent-yellow: #ffd000;
-      --accent-purple: #7b2cbf;
-      --accent-red: #ff4d4d;
-      --accent-green: #2ec4b6;
-      --text-color: #ffffff;
-      --text-muted: #b8a9c9;
+      --bg-color: #1a0826;
+      --card-bg: #2b113e;
+      --border-gold: #ffd000;
+      --text-white: #ffffff;
+      --dot-red: #ff2a2a;
+      --dot-blue: #00a2ff;
+      --dot-yellow: #ffd000;
+      --btn-red: #ff4d6d;
+      --btn-yellow: #ffd000;
+      --btn-green: #2ec4b6;
+      --btn-blue: #3a86ef;
     }
 
+    * { box-sizing: border-box; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background-color: var(--bg-color);
-      color: var(--text-color);
+      color: var(--text-white);
       margin: 0;
-      padding: 20px;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
+      justify-content: space-between;
     }
 
-    .header {
+    /* 🔴🔵🟡 FRIENDS LOGO HEADER */
+    .friends-header {
       text-align: center;
       margin-bottom: 20px;
     }
 
-    .header h1 {
-      font-size: 2.2rem;
-      letter-spacing: 4px;
-      color: var(--accent-yellow);
-      margin: 0 0 10px 0;
-      text-shadow: 0 0 10px rgba(255, 208, 0, 0.3);
-    }
-
-    /* 🔘 TOP NAVIGATION TABS */
-    .tab-container {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      background: var(--card-bg);
-      color: var(--text-color);
-      border: 2px solid var(--accent-purple);
-      padding: 10px 24px;
-      border-radius: 25px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active {
-      background: var(--accent-yellow);
-      color: #000;
-      border-color: var(--accent-yellow);
-      box-shadow: 0 0 12px rgba(255, 208, 0, 0.4);
-    }
-
-    /* 🛠️ CONTROL TOOLBAR */
-    .toolbar {
-      width: 100%;
-      max-width: 900px;
-      background: var(--card-bg);
-      padding: 15px 20px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-    }
-
-    .status-indicator {
+    .friends-title {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      margin: 0;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
+      justify-content: center;
+      gap: 4px;
     }
 
     .dot {
-      width: 10px;
-      height: 10px;
-      background-color: var(--accent-green);
+      display: inline-block;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent-green);
+      margin: 0 4px;
     }
+    .dot-red { background-color: var(--dot-red); box-shadow: 0 0 8px var(--dot-red); }
+    .dot-blue { background-color: var(--dot-blue); box-shadow: 0 0 8px var(--dot-blue); }
+    .dot-yellow { background-color: var(--dot-yellow); box-shadow: 0 0 8px var(--dot-yellow); }
 
-    .btn-action {
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.1s ease;
-    }
-
-    .btn-action:active { transform: scale(0.96); }
-    .btn-refresh { background: var(--accent-yellow); color: #000; }
-    .btn-reset { background: var(--accent-red); color: #fff; }
-
-    /* 📊 LEADERBOARD CONTAINER */
-    .content-section {
-      width: 100%;
-      max-width: 900px;
-      display: none;
-    }
-
-    .content-section.active {
-      display: block;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    th, td {
-      padding: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    th {
-      color: var(--accent-yellow);
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      letter-spacing: 1px;
-    }
-
-    /* ❓ QUESTION SHEET STYLING */
-    .question-card {
-      background: rgba(255,255,255,0.03);
-      border-left: 4px solid var(--accent-yellow);
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .question-card h3 {
-      margin: 0 0 8px 0;
-      color: var(--accent-yellow);
+    .subtitle {
+      font-style: italic;
+      color: var(--border-gold);
       font-size: 1.1rem;
+      margin-top: 6px;
+      font-weight: bold;
     }
 
-    .question-card p {
-      margin: 0 0 10px 0;
+    /* 🎛️ TOP CONTROL TOOLBAR */
+    .control-toolbar {
+      width: 100%;
+      max-width: 1050px;
+      border: 2px solid var(--border-gold);
+      background-color: rgba(43, 17, 62, 0.7);
+      border-radius: 40px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+
+    .btn:hover { filter: brightness(1.15); }
+    .btn:active { transform: scale(0.95); }
+
+    .btn-yellow { background-color: var(--btn-yellow); color: #000; }
+    .btn-red { background-color: var(--btn-red); color: #fff; }
+    .btn-green { background-color: var(--btn-green); color: #000; }
+    .btn-blue { background-color: var(--btn-blue); color: #fff; }
+
+    .timer-box {
+      background: #14051e;
+      border: 2px solid var(--border-gold);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 6px 18px;
+      border-radius: 12px;
+      min-width: 50px;
+      text-align: center;
+    }
+
+    /* 🏷️ ROUND BADGE */
+    .round-badge {
+      background-color: var(--border-gold);
+      color: #000;
+      font-weight: 900;
+      padding: 8px 24px;
+      border-radius: 20px;
       font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      box-shadow: 0 0 15px rgba(255, 208, 0, 0.3);
     }
 
+    /* ❓ MAIN QUESTION CARD */
+    .question-card {
+      width: 100%;
+      max-width: 850px;
+      border: 3px solid var(--border-gold);
+      background-color: var(--card-bg);
+      border-radius: 24px;
+      padding: 35px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .question-text {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+
+    /* 🔲 2x2 OPTIONS GRID */
     .options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 16px;
     }
 
-    .option-item {
+    .option-btn {
+      background: #1e0b2e;
+      border: 2px solid #5a2e82;
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .option-badge {
+      background-color: var(--border-gold);
+      color: #000;
+      font-weight: 900;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .option-btn.correct {
+      background-color: rgba(46, 196, 182, 0.25);
+      border-color: var(--btn-green);
+      color: #2ec4b6;
+      box-shadow: 0 0 15px rgba(46, 196, 182, 0.4);
+    }
+
+    /* 🦶 BOTTOM STATUS FOOTER */
+    .footer-bar {
+      width: 100%;
+      max-width: 1050px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 0.85rem;
-      padding: 6px 10px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 4px;
     }
 
-    .option-item.correct {
-      background: rgba(46, 196, 182, 0.2);
-      border: 1px solid var(--accent-green);
-      color: var(--accent-green);
-      font-weight: bold;
+    .footer-pill {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 8px 18px;
+      border-radius: 20px;
+      color: var(--border-gold);
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .options-grid { grid-template-columns: 1fr; }
+      .control-toolbar { justify-content: center; }
+      .friends-title { font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>O·R·I·O·N F·R·I·E·N·D·S</h1>
-    <div style="color: var(--accent-yellow); font-weight: bold;">☕ Host Dashboard & Control Center ☕</div>
+  <!-- 🔴🔵🟡 HEADER -->
+  <div class="friends-header">
+    <div class="friends-title">
+      O<span class="dot dot-red"></span>R<span class="dot dot-blue"></span>I<span class="dot dot-yellow"></span>O<span class="dot dot-red"></span>N
+    </div>
+    <div class="subtitle">"The One With the Employee Handbook" ☕</div>
   </div>
 
-  <!-- 🔘 TAB SWITCHER -->
-  <div class="tab-container">
-    <button class="tab-btn active" onclick="switchTab('leaderboard')">🏆 Live Leaderboard</button>
-    <button class="tab-btn" onclick="switchTab('questions')">📚 Question Sheet & Answers</button>
+  <!-- 🎛️ CONTROL TOOLBAR -->
+  <div class="control-toolbar">
+    <button class="btn btn-yellow" onclick="playAudio('theme')">🎷 FRIENDS THEME ► Play</button>
+    <button class="btn btn-red" onclick="stopAudio()">⏹ Stop All</button>
+    
+    <div class="timer-box" id="timer-display">0</div>
+
+    <button class="btn btn-red" onclick="restartGame()">⏮ Restart Game</button>
+    <button class="btn btn-yellow" onclick="restartRound()">🔄 Restart Round</button>
+    <button class="btn btn-green" onclick="revealAnswer()">💡 Reveal Answer</button>
+    <button class="btn btn-blue" onclick="openLeaderboard()">🏆 Leaderboard</button>
+    <button class="btn btn-yellow" onclick="nextQuestion()">Next Question ➡️</button>
   </div>
 
-  <!-- 🛠️ ACTION TOOLBAR -->
-  <div class="toolbar">
-    <div class="status-indicator">
-      <span class="dot"></span>
-      <span id="sync-time">Auto-Sync Active</span>
+  <!-- 🏷️ ROUND INDICATOR -->
+  <div class="round-badge" id="round-title">
+    ROUND 1 OF 11: CLOCKING IN/OUT
+  </div>
+
+  <!-- ❓ QUESTION DISPLAY BOX -->
+  <div class="question-card">
+    <div class="question-text" id="question-text">
+      Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?
     </div>
-    <div style="display: flex; gap: 10px;">
-      <button class="btn-action btn-refresh" onclick="fetchLeaderboard()">🔄 Refresh Now</button>
-      <button class="btn-action btn-reset" onclick="confirmReset()">🧹 Reset Game</button>
+
+    <div class="options-grid" id="options-container">
+      <div class="option-btn" id="opt-0">
+        <div class="option-badge">A</div>
+        <div>Allowed if you are good friends</div>
+      </div>
+      <div class="option-btn" id="opt-1">
+        <div class="option-badge">B</div>
+        <div>Strictly prohibited and considered payroll fraud</div>
+      </div>
+      <div class="option-btn" id="opt-2">
+        <div class="option-badge">C</div>
+        <div>Allowed twice per month</div>
+      </div>
+      <div class="option-btn" id="opt-3">
+        <div class="option-badge">D</div>
+        <div>Only permitted during coffee breaks</div>
+      </div>
     </div>
   </div>
 
-  <!-- 🏆 TAB 1: LIVE LEADERBOARD -->
-  <div id="tab-leaderboard" class="content-section active">
-    <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Team Name</th>
-            <th>Score</th>
-            <th>Progress</th>
-          </tr>
-        </thead>
-        <tbody id="leaderboard-body">
-          <tr>
-            <td colspan="4" style="text-align: center; color: var(--text-muted);">Loading team submissions...</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- 🦶 FOOTER BAR -->
+  <div class="footer-bar">
+    <div class="footer-pill" id="join-url">
+      📲 Players Join: alicekeeler.github.io/friends-trivia/game/
+    </div>
+    <div class="footer-pill" id="audio-status">
+      🔊 Audio: Ready
     </div>
   </div>
 
-  <!-- 📚 TAB 2: QUESTIONS OVERVIEW SHEET -->
-  <div id="tab-questions" class="content-section">
-    <div class="card" id="questions-container">
-      <!-- Generated dynamically by JS -->
-    </div>
-  </div>
+  <!-- 🎵 AUDIO ENGINE -->
+  <audio id="audio-player"></audio>
 
   <script>
-    // 🔗 PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
-    const APPS_SCRIPT_URL = "YOUR_DEPLOYED_WEB_APP_URL_HERE";
+    // 🔗 LEADERBOARD URL (Set this to your separate Leaderboard view file or Google Apps Script URL)
+    const LEADERBOARD_URL = "Leaderboard.html"; 
 
-    // 📋 TRIVIA QUESTION DATASET
-    const QUESTION_DATA = [
+    // 📋 FULL QUESTIONS DATASET (11 ROUNDS / TOPICS)
+    const QUESTIONS = [
       {
-        category: "Clocking in/out",
-        questions: [
-          { id: "q101", q: "Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?", options: ["A) Allowed if you are good friends", "B) Strictly prohibited and considered payroll fraud", "C) Allowed twice per month", "D) Only permitted during coffee breaks"], answer: 1 },
-          { id: "q102", q: "Monica insists on clocking in at exactly 7:59:59 AM down to the millisecond. What is the rule for non-exempt employee timekeeping?", options: ["A) Employees must record all actual time worked accurately", "B) Rounding up by 30 minutes is required", "C) Only managers can edit time cards", "D) Clocking in 1 hour early is automatic overtime"], answer: 0 }
-        ]
+        round: 1,
+        category: "CLOCKING IN/OUT",
+        q: "Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?",
+        options: ["Allowed if you are good friends", "Strictly prohibited and considered payroll fraud", "Allowed twice per month", "Only permitted during coffee breaks"],
+        answer: 1
       },
       {
-        category: "Dress Code",
-        questions: [
-          { id: "q201", q: "Joey walks into the office wearing ALL of Chandler's clothes at once ('Could I BE wearing any more clothes?'). Is this compliant with workplace attire policy?", options: ["A) Yes, if it's Friday", "B) No, attire must be neat, clean, and appropriate for business casual", "C) Yes, as long as he doesn't do lunges", "D) Only if HR approves the brand"], answer: 1 },
-          { id: "q202", q: "Rachel wears an extreme high-fashion runway outfit with flip-flops to a client meeting. What is the safety/professionalism dress rule?", options: ["A) Footwear must be safe and professional for the work environment", "B) Runway fashion is always encouraged", "C) Flip-flops are mandatory in summer", "D) Accessories must match office furniture"], answer: 0 }
-        ]
+        round: 2,
+        category: "DRESS CODE",
+        q: "Joey walks into the office wearing ALL of Chandler's clothes at once ('Could I BE wearing any more clothes?'). Is this compliant with workplace attire policy?",
+        options: ["Yes, if it's Friday", "No, attire must be neat, clean, and appropriate for business casual", "Yes, as long as he doesn't do lunges", "Only if HR approves the brand"],
+        answer: 1
       },
       {
-        category: "Sexual Harassment",
-        questions: [
-          { id: "q301", q: "Joey winks and asks a coworker 'How YOU doin'?' repeatedly after being asked to stop. What should the coworker do?", options: ["A) Ignore it forever", "B) Report it to HR, a supervisor, or Compliance Coordinator immediately", "C) Challenge Joey to an arm wrestling match", "D) Post about it on social media"], answer: 1 },
-          { id: "q302", q: "Chandler feels uncomfortable because inappropriate jokes are being shared near his desk. What defines workplace harassment?", options: ["A) Unwelcome conduct based on protected characteristics that creates a hostile work environment", "B) Any joke that isn't funny", "C) Only physical interactions count", "D) Disagreeing about sports teams"], answer: 0 }
-        ]
+        round: 3,
+        category: "SEXUAL HARASSMENT",
+        q: "Joey winks and asks a coworker 'How YOU doin'?' repeatedly after being asked to stop. What should the coworker do?",
+        options: ["Ignore it forever", "Report it to HR, a supervisor, or Compliance Coordinator immediately", "Challenge Joey to an arm wrestling match", "Post about it on social media"],
+        answer: 1
       },
       {
-        category: "Bereavement Leave (Updated)",
-        questions: [
-          { id: "q401", q: "Phoebe's beloved grandmother passes away. Under the updated policy, how is bereavement leave requested?", options: ["A) Send a pigeon", "B) Notify HR and supervisor as soon as possible to receive designated paid leave", "C) Take 3 weeks off without telling anyone", "D) Trade shifts with Monica"], answer: 1 },
-          { id: "q402", q: "Ross experiences a loss in his immediate family. What determines the number of paid bereavement days granted?", options: ["A) Relationship to the deceased according to updated handbook guidelines", "B) How long Ross has lived in his apartment", "C) Ross's favorite dinosaur", "D) A vote by all six friends"], answer: 0 }
-        ]
+        round: 4,
+        category: "BEREAVEMENT LEAVE",
+        q: "Phoebe's beloved grandmother passes away. Under the updated policy, how is bereavement leave requested?",
+        options: ["Send a pigeon", "Notify HR and supervisor as soon as possible to receive designated paid leave", "Take 3 weeks off without telling anyone", "Trade shifts with Monica"],
+        answer: 1
       },
       {
-        category: "Inclement Weather",
-        questions: [
-          { id: "q501", q: "A massive snowstorm hits, and Monica's apartment is snowed in. How do employees learn about official office closures?", options: ["A) Wait for Phoebe to sing a song", "B) Check official company notification channels / emergency alerts", "C) Assume office is closed if temperature is under 30°F", "D) Call Central Perk"], answer: 1 },
-          { id: "q502", q: "Phoebe's taxi won't start in freezing rain, but the office is open. What should she do?", options: ["A) Stay home without telling anyone", "B) Contact supervisor directly to report inability to safely travel and use PTO", "C) Walk 15 miles in snow boots", "D) Blame the weather on Ross"], answer: 1 }
-        ]
+        round: 5,
+        category: "INCLEMENT WEATHER",
+        q: "A massive snowstorm hits, and Monica's apartment is snowed in. How do employees learn about official office closures?",
+        options: ["Wait for Phoebe to sing a song", "Check official company notification channels / emergency alerts", "Assume office is closed if temperature is under 30°F", "Call Central Perk"],
+        answer: 1
       },
       {
-        category: "Drug Free Workplace",
-        questions: [
-          { id: "q601", q: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?", options: ["A) Strictly drug-free workplace; prohibited on premises or while performing duties", "B) Allowed during lunch hours", "C) Allowed if brought in a Tupperware container", "D) Only prohibited on Mondays"], answer: 0 },
-          { id: "q602", q: "Chandler brings an unopened bottle of wine to his desk as a gift. Can alcohol be consumed during standard work hours?", options: ["A) Yes, if shared with the team", "B) No, alcohol consumption during work duty/hours is prohibited unless officially authorized", "C) Yes, after 2 PM", "D) Only if it pairs with pizza"], answer: 1 }
-        ]
+        round: 6,
+        category: "DRUG FREE WORKPLACE",
+        q: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
+        options: ["Strictly drug-free workplace; prohibited on premises or while performing duties", "Allowed during lunch hours", "Allowed if brought in a Tupperware container", "Only prohibited on Mondays"],
+        answer: 0
       },
       {
-        category: "Lunch Breaks",
-        questions: [
-          { id: "q701", q: "Ross screams 'MY SANDWICH?!' after someone takes his Moist Maker from the fridge. What is the breakroom fridge policy?", options: ["A) Label your food; items left at end of week will be cleaned out", "B) Bosses can eat any sandwich they want", "C) No food allowed in fridge", "D) Joey owns all fridge food"], answer: 0 },
-          { id: "q702", q: "Joey orders 2 pizzas for lunch ('The Joey Special'). How long is the standard unpaid meal break for shifts over 6 hours?", options: ["A) 15 minutes", "B) 30 to 60 minutes uninterrupted", "C) 3 hours", "D) As long as it takes to finish 2 pizzas"], answer: 1 }
-        ]
+        round: 7,
+        category: "LUNCH BREAKS",
+        q: "Ross screams 'MY SANDWICH?!' after someone takes his Moist Maker from the fridge. What is the breakroom fridge policy?",
+        options: ["Label your food; items left at end of week will be cleaned out", "Bosses can eat any sandwich they want", "No food allowed in fridge", "Joey owns all fridge food"],
+        answer: 0
       },
       {
+        round: 8,
         category: "FMLA",
-        questions: [
-          { id: "q801", q: "Rachel needs extended leave after giving birth to Emma. What is the eligibility requirement for FMLA?", options: ["A) 12 months of service & at least 1,250 hours worked in past 12 months", "B) 1 month of service", "C) 5 years of service", "D) Must live in Apartment 20"], answer: 0 },
-          { id: "q802", q: "Monica needs to care for Chandler during a serious health condition. How much job-protected leave does FMLA provide per 12-month period?", options: ["A) 2 weeks", "B) Up to 12 workweeks", "C) 6 months", "D) Unlimited"], answer: 1 }
-        ]
+        q: "Rachel needs extended leave after giving birth to Emma. What is the eligibility requirement for FMLA?",
+        options: ["12 months of service & at least 1,250 hours worked in past 12 months", "1 month of service", "5 years of service", "Must live in Apartment 20"],
+        answer: 0
       },
       {
-        category: "Payroll Dates",
-        questions: [
-          { id: "q901", q: "Chandler asks 'When do we actually get paid?'. Where can employees find official payroll schedule dates?", options: ["A) On the breakroom bulletin board and employee portal schedule", "B) By asking Gunther at Central Perk", "C) Every day at 5 PM", "D) Whenever Chandler asks"], answer: 0 },
-          { id: "q902", q: "Joey wants a paper check instead of direct deposit. Where can employees view their electronic pay stubs?", options: ["A) On the self-service employee payroll portal", "B) Mailed via postcard", "C) Taped to Monica's door", "D) Written on a napkin"], answer: 0 }
-        ]
+        round: 9,
+        category: "PAYROLL DATES",
+        q: "Chandler asks 'When do we actually get paid?'. Where can employees find official payroll schedule dates?",
+        options: ["On the breakroom bulletin board and employee portal schedule", "By asking Gunther at Central Perk", "Every day at 5 PM", "Whenever Chandler asks"],
+        answer: 0
       },
       {
+        round: 10,
         category: "KPERS & KPERS 457",
-        questions: [
-          { id: "q1001", q: "Phoebe asks if KPERS retirement participation is optional or mandatory for eligible positions. What is the rule?", options: ["A) Mandatory for covered eligible employees from day one", "B) Optional after 10 years", "C) Only for paleontologists", "D) Replaced by Central Perk coffee vouchers"], answer: 0 },
-          { id: "q1002", q: "Chandler wants to contribute additional tax-deferred retirement savings. What is KPERS 457?", options: ["A) Voluntary supplemental retirement savings plan", "B) A mandatory health plan", "C) A type of apartment lease", "D) Joey's apartment number"], answer: 0 }
-        ]
+        q: "Phoebe asks if KPERS retirement participation is optional or mandatory for eligible positions. What is the rule?",
+        options: ["Mandatory for covered eligible employees from day one", "Optional after 10 years", "Only for paleontologists", "Replaced by Central Perk coffee vouchers"],
+        answer: 0
       },
       {
-        category: "Work Comp",
-        questions: [
-          { id: "q1101", q: "Ross injures his shoulder shouting 'PIVOT!' while lifting office furniture. When must a workplace injury be reported?", options: ["A) Immediately to your supervisor/HR", "B) Next month", "C) Only if you need surgery", "D) After telling Chandler"], answer: 0 },
-          { id: "q1102", q: "Joey stubs his toe in the breakroom and needs medical care. Who must authorize Workers' Compensation treatment locations?", options: ["A) Designated company medical providers / HR reporting process", "B) Dr. Drake Ramoray on TV", "C) Any urgent care on Google", "D) Monica with a band-aid"], answer: 0 }
-        ]
+        round: 11,
+        category: "WORK COMP",
+        q: "Ross injures his shoulder shouting 'PIVOT!' while lifting office furniture. When must a workplace injury be reported?",
+        options: ["Immediately to your supervisor/HR", "Next month", "Only if you need surgery", "After telling Chandler"],
+        answer: 0
       }
     ];
 
-    // 🔀 SWITCH BETWEEN TABS
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+    let currentIndex = 0;
+    let timerInterval = null;
+    let secondsElapsed = 0;
 
-      if (tabName === 'leaderboard') {
-        document.querySelectorAll('.tab-btn')[0].classList.add('active');
-        document.getElementById('tab-leaderboard').classList.add('active');
-      } else {
-        document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        document.getElementById('tab-questions').classList.add('active');
-      }
-    }
+    // 🚀 INITIALIZE SCREEN
+    function loadQuestion(index) {
+      const qData = QUESTIONS[index];
+      document.getElementById('round-title').innerText = `ROUND ${qData.round} OF ${QUESTIONS.length}: ${qData.category}`;
+      document.getElementById('question-text').innerText = qData.q;
 
-    // 🔄 FETCH LEADERBOARD DATA
-    async function fetchLeaderboard() {
-      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("YOUR_DEPLOYED_WEB_APP_URL_HERE")) {
-        document.getElementById('leaderboard-body').innerHTML = `
-          <tr><td colspan="4" style="color:#ff4d4d; text-align:center;">
-            ⚠️ Please paste your Apps Script Web App URL into line 192 of this file!
-          </td></tr>`;
-        return;
-      }
-
-      try {
-        const response = await fetch(`${APPS_SCRIPT_URL}?action=leaderboard`);
-        const data = await response.json();
-
-        if (data.status === "success") {
-          renderLeaderboard(data.leaderboard);
-          document.getElementById('sync-time').innerText = `Updated ${new Date().toLocaleTimeString()}`;
-        }
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
-    }
-
-    // 📊 RENDER LEADERBOARD TABLE
-    function renderLeaderboard(teams) {
-      const tbody = document.getElementById('leaderboard-body');
-      if (!teams || teams.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No submissions received yet.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = teams.map((t, idx) => `
-        <tr>
-          <td><strong>${idx === 0 ? '🥇 1st' : idx === 1 ? '🥈 2nd' : idx === 2 ? '🥉 3rd' : (idx + 1) + 'th'}</strong></td>
-          <td><strong>${t.team}</strong></td>
-          <td style="color: var(--accent-yellow); font-weight: bold;">${t.score} pts</td>
-          <td style="color: var(--text-muted);">${t.answered} of 22 answered</td>
-        </tr>
+      const letters = ['A', 'B', 'C', 'D'];
+      const container = document.getElementById('options-container');
+      container.innerHTML = qData.options.map((opt, i) => `
+        <div class="option-btn" id="opt-${i}">
+          <div class="option-badge">${letters[i]}</div>
+          <div>${opt}</div>
+        </div>
       `).join('');
+
+      resetTimer();
+      startTimer();
     }
 
-    // 🧹 RESET GAME CONFIRMATION
-    async function confirmReset() {
-      if (confirm("Are you sure you want to wipe all team scores and reset the trivia game?")) {
-        try {
-          const res = await fetch(`${APPS_SCRIPT_URL}?action=reset`);
-          const result = await res.json();
-          alert(result.message || "Scores reset!");
-          fetchLeaderboard();
-        } catch (err) {
-          alert("Reset request failed.");
-        }
+    // 💡 REVEAL CORRECT ANSWER
+    function revealAnswer() {
+      const qData = QUESTIONS[currentIndex];
+      const correctBtn = document.getElementById(`opt-${qData.answer}`);
+      if (correctBtn) {
+        correctBtn.classList.add('correct');
       }
     }
 
-    // 📚 RENDER QUESTIONS OVERVIEW SHEET
-    function renderQuestionSheet() {
-      const container = document.getElementById('questions-container');
-      let html = '';
-
-      QUESTION_DATA.forEach(cat => {
-        html += `<h2 style="color: var(--accent-yellow); margin-top:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">${cat.category}</h2>`;
-        cat.questions.forEach(q => {
-          html += `
-            <div class="question-card">
-              <h3>[${q.id.toUpperCase()}] ${q.q}</h3>
-              <div class="options-grid">
-                ${q.options.map((opt, idx) => `
-                  <div class="option-item ${idx === q.answer ? 'correct' : ''}">
-                    ${opt} ${idx === q.answer ? '✓' : ''}
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        });
-      });
-
-      container.innerHTML = html;
+    // ➡️ NEXT QUESTION
+    function nextQuestion() {
+      if (currentIndex < QUESTIONS.length - 1) {
+        currentIndex++;
+        loadQuestion(currentIndex);
+      } else {
+        alert("You have reached the end of all 11 rounds!");
+      }
     }
 
-    // 🚀 INITIALIZE ON LOAD
+    // 🔄 RESTART ROUND / GAME
+    function restartRound() {
+      loadQuestion(currentIndex);
+    }
+
+    function restartGame() {
+      if (confirm("Restart game back to Round 1?")) {
+        currentIndex = 0;
+        loadQuestion(0);
+      }
+    }
+
+    // 🏆 OPEN LEADERBOARD
+    function openLeaderboard() {
+      window.open(LEADERBOARD_URL, '_blank');
+    }
+
+    // ⏱️ TIMER LOGIC
+    function startTimer() {
+      clearInterval(timerInterval);
+      secondsElapsed = 0;
+      document.getElementById('timer-display').innerText = secondsElapsed;
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        document.getElementById('timer-display').innerText = secondsElapsed;
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      secondsElapsed = 0;
+      document.getElementById('timer-display').innerText = "0";
+    }
+
+    // 🔊 AUDIO CONTROLS
+    function playAudio(type) {
+      const status = document.getElementById('audio-status');
+      status.innerText = "🔊 Playing: Friends Theme.mp3";
+    }
+
+    function stopAudio() {
+      const status = document.getElementById('audio-status');
+      status.innerText = "🔇 Audio: Stopped";
+    }
+
+    // START ON LOAD
     window.onload = () => {
-      renderQuestionSheet();
-      fetchLeaderboard();
-      setInterval(fetchLeaderboard, 5000); // Auto-refresh leaderboard every 5 seconds
+      loadQuestion(0);
     };
   </script>
 </body>
