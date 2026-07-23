@@ -2,462 +2,419 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Friends Trivia - Central Perk Player Lounge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Orion Friends Trivia - Central Perk Lounge</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+  
   <style>
     body {
-      font-family: 'Fredoka', cursive, sans-serif;
-      background-color: #170b28;
-      background-image: radial-gradient(#381c62 1.5px, transparent 1.5px);
+      font-family: 'Fredoka', sans-serif;
+      background: radial-gradient(circle at center, #3B124D 0%, #1A0524 100%);
+    }
+    .chalk-font { font-family: 'Permanent Marker', cursive; }
+    
+    .brick-pattern {
+      background-color: #2a1130;
+      background-image: radial-gradient(#3a1743 1.5px, transparent 0);
       background-size: 18px 18px;
     }
+
+    .central-perk-green { background-color: #0d3b2e; }
+    .couch-orange { background-color: #C85A17; }
+    .door-purple { background-color: #4A154B; }
+    
+    .yellow-frame {
+      border: 4px solid #F2C94C;
+      box-shadow: 0 0 18px rgba(242, 201, 76, 0.4), inset 0 0 8px rgba(242, 201, 76, 0.2);
+    }
+
+    .chalkboard-card {
+      background-color: #17221E;
+      border: 2px solid #2A3B34;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
     .friends-dot-red { color: #E11D48; }
     .friends-dot-blue { color: #2563EB; }
     .friends-dot-yellow { color: #F59E0B; }
-    .gold-border { border: 2px solid #d4af37; }
-    .gold-pill {
-      background: linear-gradient(180deg, #eab308 0%, #ca8a04 100%);
-      color: #170b28;
-    }
   </style>
 </head>
-<body class="text-white min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none relative">
+<body class="brick-pattern text-white min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none" onclick="unlockAudioEngine()">
 
   <!-- HEADER -->
-  <header class="text-center my-2 relative max-w-2xl mx-auto w-full">
-    <div class="absolute top-0 right-0 flex items-center gap-2">
-      <span class="bg-black/60 border border-green-500 text-green-400 text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Live
-      </span>
+  <header class="max-w-xl w-full mx-auto text-center mb-2 relative">
+    <div class="absolute right-0 top-0 flex items-center space-x-1.5 bg-black/60 px-2.5 py-1 rounded-full border border-yellow-400/40 text-[10px]">
+      <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+      <span id="conn-text" class="text-yellow-300 font-bold">Live 🟢</span>
     </div>
 
-    <h1 class="text-2xl sm:text-3xl font-bold tracking-widest text-white uppercase flex items-center justify-center space-x-1">
-      <span>O</span><span class="friends-dot-red">•</span>
-      <span>R</span><span class="friends-dot-blue">•</span>
-      <span>I</span><span class="friends-dot-yellow">•</span>
-      <span>O</span><span class="friends-dot-red">•</span>
-      <span>N</span>
-    </h1>
-    
-    <h2 class="text-3xl sm:text-5xl font-black tracking-widest text-white uppercase flex items-center justify-center space-x-1 mt-1">
-      <span>F</span><span class="friends-dot-red">•</span>
-      <span>R</span><span class="friends-dot-blue">•</span>
-      <span>I</span><span class="friends-dot-yellow">•</span>
-      <span>E</span><span class="friends-dot-red">•</span>
-      <span>N</span><span class="friends-dot-blue">•</span>
-      <span>D</span><span class="friends-dot-yellow">•</span>
-      <span>S</span>
-    </h2>
+    <div class="pt-2">
+      <!-- ORION LOGO -->
+      <h1 class="text-2xl sm:text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 uppercase drop-shadow-md">
+        <span>O</span><span class="friends-dot-red">•</span>
+        <span>R</span><span class="friends-dot-blue">•</span>
+        <span>I</span><span class="friends-dot-yellow">•</span>
+        <span>O</span><span class="friends-dot-red">•</span>
+        <span>N</span>
+      </h1>
+      
+      <!-- FRIENDS LOGO -->
+      <h2 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 uppercase drop-shadow-md -mt-1">
+        <span>F</span><span class="friends-dot-red">•</span>
+        <span>R</span><span class="friends-dot-blue">•</span>
+        <span>I</span><span class="friends-dot-yellow">•</span>
+        <span>E</span><span class="friends-dot-red">•</span>
+        <span>N</span><span class="friends-dot-blue">•</span>
+        <span>D</span><span class="friends-dot-yellow">•</span>
+        <span>S</span>
+      </h2>
 
-    <div class="inline-flex items-center gap-2 bg-amber-900/80 border border-amber-500/80 text-amber-200 text-xs sm:text-sm font-bold px-4 py-1 rounded-full mt-2 shadow-lg">
-      ☕ Central Perk Player Lounge ☕
+      <div class="inline-block couch-orange text-amber-100 px-3.5 py-0.5 rounded-full text-xs font-bold shadow mt-1 tracking-wide border border-amber-300/40">
+        ☕ Central Perk Player Lounge ☕
+      </div>
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-2xl w-full mx-auto my-auto space-y-5">
+  <!-- MAIN GAME CONTAINER -->
+  <main class="max-w-xl w-full mx-auto my-auto space-y-3.5">
 
-    <!-- SCREEN 1: TEAM SELECTION -->
-    <div id="login-card" class="bg-[#23123d] gold-border rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
-      <h2 class="text-2xl sm:text-3xl font-bold text-amber-400">
-        Choose Your Team! ☕
-      </h2>
+    <!-- STEP 1: TEAM SELECTION CARD -->
+    <div id="team-card" class="door-purple yellow-frame rounded-2xl p-5 shadow-2xl space-y-3 text-center relative overflow-hidden">
+      <div class="absolute -top-6 -right-6 bg-yellow-400 text-purple-950 font-black text-xs px-8 py-7 rotate-12 shadow">
+        PIVOT!
+      </div>
       
-      <p class="text-xs sm:text-sm text-purple-200 font-medium">
-        Select your official team name from the dropdown menu below.
-      </p>
+      <h2 class="text-lg font-black text-yellow-300 uppercase tracking-wider">
+        Reserve Your Table
+      </h2>
+      <p class="text-xs text-purple-200">Pick your group's team name to start!</p>
 
-      <div class="space-y-4 text-left max-w-md mx-auto">
-        <div>
-          <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Select Team Name</label>
-          <select id="team-select" class="w-full bg-[#150a26] text-amber-300 font-bold p-4 rounded-2xl border-2 border-amber-500/60 focus:border-amber-400 outline-none text-base cursor-pointer">
-            <option value="">-- Choose Your Team --</option>
-            <option value="Central Perk Regulars">Central Perk Regulars</option>
-            <option value="The Chanandler Bongs">The Chanandler Bongs</option>
-            <option value="Princess Consuela Banana Hammock">Princess Consuela Banana Hammock</option>
-            <option value="Regina Phalange">Regina Phalange</option>
-            <option value="The Holiday Armadillos">The Holiday Armadillos</option>
-            <option value="Ken Adams">Ken Adams</option>
-            <option value="The Smelly Cats">The Smelly Cats</option>
-            <option value="Team Unagi">Team Unagi</option>
-            <option value="The Pivoters">The Pivoters</option>
-            <option value="The Geller Cup Champions">The Geller Cup Champions</option>
-            <option value="The Transponsters">The Transponsters</option>
-            <option value="Mike & Phoebe">Mike & Phoebe</option>
-          </select>
-        </div>
-      </div>
+      <select id="team-dropdown" class="w-full bg-purple-950 border-2 border-yellow-400/70 rounded-xl p-3 text-white font-bold text-sm focus:outline-none focus:border-yellow-400">
+        <option value="">-- Select Your Team --</option>
+        <option value="Team Central Perk">Team Central Perk ☕</option>
+        <option value="Team Pivot!">Team Pivot! 🛋️</option>
+        <option value="Team Unagi">Team Unagi 🍣</option>
+        <option value="Team Transponsters">Team Transponsters 💼</option>
+        <option value="Team Smelly Cat">Team Smelly Cat 🎸</option>
+        <option value="Team Holiday Armadillo">Team Holiday Armadillo 🦦</option>
+        <option value="Team We Were On A Break">Team We Were On A Break 💔</option>
+      </select>
 
-      <div id="login-error" class="text-red-400 font-bold text-xs hidden">
-        ⚠️ Please select a team name from the list!
-      </div>
-
-      <button onclick="lockInTeam()" class="max-w-md w-full gold-pill font-black text-lg py-4 rounded-2xl border-2 border-amber-200 shadow-xl active:scale-95 transition-all cursor-pointer">
-        ☕ Reserve Table & Play
+      <button onclick="lockInTeam()" class="w-full bg-yellow-400 hover:bg-yellow-300 active:scale-95 text-purple-950 font-black py-3 rounded-xl shadow-lg transition-all text-sm uppercase tracking-wider">
+        Lock In Team Name 🔒
       </button>
     </div>
 
-    <!-- SCREEN 2: GAME DASHBOARD -->
-    <div id="play-dashboard" class="space-y-4 hidden">
-
-      <div class="bg-[#1e0f35] border border-amber-500/40 rounded-2xl p-3 px-4 flex items-center justify-between shadow-md">
-        <div class="flex items-center space-x-2">
-          <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">Reserved Table:</span>
-          <span id="active-team-display" class="text-sm font-black text-white underline">--</span>
+    <!-- MAIN GAME PANEL (HIDDEN UNTIL TEAM IS LOCKED) -->
+    <div id="game-panel" class="hidden space-y-3">
+      
+      <!-- QUESTION SELECTOR MATRIX (Q1 to Q11) -->
+      <div class="chalkboard-card border-2 border-yellow-500/60 rounded-2xl p-3 shadow-xl">
+        <div class="flex items-center justify-between border-b border-yellow-500/30 pb-2 mb-2">
+          <span class="chalk-font text-xs text-yellow-300 tracking-wider">Select Question:</span>
+          <span id="progress-text" class="text-[11px] font-bold text-amber-200">0 of 11 Answered</span>
         </div>
-        <button onclick="changeTeam()" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/50 text-xs font-bold px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1">
-          🔄 Switch Team
+        
+        <div id="q-nav-grid" class="grid grid-cols-6 gap-1.5 text-center">
+          <!-- Generated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- ACTIVE QUESTION HEADER BANNER -->
+      <div class="text-center chalkboard-card border-2 border-yellow-500/40 py-2.5 px-4 rounded-xl shadow-lg flex items-center justify-between">
+        <span id="active-q-title" class="chalk-font text-base text-yellow-300 tracking-wider">
+          Question 1
+        </span>
+        <span id="q-status-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
+          Unanswered
+        </span>
+      </div>
+
+      <!-- ANSWER BUTTONS (A, B, C, D) -->
+      <div id="answer-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        
+        <button onclick="selectOption('A')" id="btn-A" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ A</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option A</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
         </button>
-      </div>
 
-      <div class="bg-[#23123d] gold-border rounded-2xl p-4 shadow-xl space-y-3">
-        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-amber-400 uppercase tracking-wider">
-          <span>SELECT QUESTION:</span>
-          <span id="answered-count-text" class="text-purple-200">0 of 11 Answered</span>
-        </div>
-        <div id="questions-grid" class="grid grid-cols-4 sm:grid-cols-6 gap-2"></div>
-      </div>
-
-      <div class="bg-[#23123d] gold-border rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-        <div class="flex items-center justify-between border-b border-purple-900/80 pb-3">
-          <span id="active-question-label" class="text-lg sm:text-xl font-black text-amber-400 uppercase tracking-wider">
-            QUESTION 1
-          </span>
-          <span id="selected-badge" class="bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full">
-            Selected: None
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button id="opt-btn-A" onclick="selectAnswer('A')" class="opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer">
-            <div class="flex items-center space-x-3">
-              <span class="gold-pill font-black px-2.5 py-1 rounded-lg text-xs flex items-center gap-1">☕ A</span>
-              <span id="opt-A-text" class="text-sm font-bold text-white">OPTION A</span>
-            </div>
-            <span id="opt-A-check" class="text-amber-400 font-bold hidden">✓</span>
-          </button>
-
-          <button id="opt-btn-B" onclick="selectAnswer('B')" class="opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer">
-            <div class="flex items-center space-x-3">
-              <span class="gold-pill font-black px-2.5 py-1 rounded-lg text-xs flex items-center gap-1">☕ B</span>
-              <span id="opt-B-text" class="text-sm font-bold text-white">OPTION B</span>
-            </div>
-            <span id="opt-B-check" class="text-amber-400 font-bold hidden">✓</span>
-          </button>
-
-          <button id="opt-btn-C" onclick="selectAnswer('C')" class="opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer">
-            <div class="flex items-center space-x-3">
-              <span class="gold-pill font-black px-2.5 py-1 rounded-lg text-xs flex items-center gap-1">☕ C</span>
-              <span id="opt-C-text" class="text-sm font-bold text-white">OPTION C</span>
-            </div>
-            <span id="opt-C-check" class="text-amber-400 font-bold hidden">✓</span>
-          </button>
-
-          <button id="opt-btn-D" onclick="selectAnswer('D')" class="opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer">
-            <div class="flex items-center space-x-3">
-              <span class="gold-pill font-black px-2.5 py-1 rounded-lg text-xs flex items-center gap-1">☕ D</span>
-              <span id="opt-D-text" class="text-sm font-bold text-white">OPTION D</span>
-            </div>
-            <span id="opt-D-check" class="text-amber-400 font-bold hidden">✓</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="text-center pt-2">
-        <button onclick="revealFinalScore()" class="w-full gold-pill font-black text-lg py-4 rounded-2xl border-2 border-amber-200 shadow-2xl active:scale-95 transition-all cursor-pointer">
-          🏆 Submit Answers & View Final Score
+        <button onclick="selectOption('B')" id="btn-B" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ B</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option B</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
         </button>
+
+        <button onclick="selectOption('C')" id="btn-C" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ C</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option C</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
+        </button>
+
+        <button onclick="selectOption('D')" id="btn-D" class="chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group">
+          <div class="flex items-center space-x-3">
+            <span class="bg-yellow-400 text-purple-950 font-black text-sm px-3 py-1.5 rounded-xl shadow">☕ D</span>
+            <span class="chalk-font text-base text-yellow-100 group-hover:text-yellow-300">Option D</span>
+          </div>
+          <span class="text-yellow-400 text-lg font-black opacity-0 check-icon">✓</span>
+        </button>
+
       </div>
 
-      <!-- SOUNDBOARD -->
-      <div class="bg-[#23123d] gold-border rounded-2xl p-4 shadow-xl space-y-3">
-        <div class="flex items-center justify-between border-b border-purple-900/80 pb-2">
-          <span class="text-xs sm:text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-            🎸 PHOEBE'S CENTRAL PERK SOUNDBOARD
-          </span>
-        </div>
-
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-          <button onclick="playSound('claps')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">👏 Claps</button>
-          <button onclick="playSound('howdoin')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">😏 How Doin'?</button>
-          <button onclick="playSound('allright')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">👍 All Right</button>
-          <button onclick="playSound('bing')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">🕺 Bing!</button>
-          <button onclick="playSound('excellent')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">✨ Excellent</button>
-
-          <button onclick="playSound('verygood')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">☕ Very Good</button>
-          <button onclick="playSound('helloyou')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">👋 Hello You</button>
-          <button onclick="playSound('decision')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">☕ Decision!</button>
-          <button onclick="playSound('dontknow')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">🤷 Don't Know</button>
-          <button onclick="playSound('iknow')" class="bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs py-2.5 px-2 rounded-xl border border-amber-300/40 active:scale-95 cursor-pointer">💡 I Know!</button>
-        </div>
+      <!-- SYNC STATUS TOAST -->
+      <div id="sync-toast" class="text-center text-xs text-yellow-300/80 font-semibold py-1 h-5">
+        <!-- Live status feedback text -->
       </div>
 
     </div>
+
   </main>
 
-  <!-- RESULTS MODAL -->
-  <div id="results-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-    <div class="bg-[#23123d] gold-border rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
-      <h2 class="text-3xl font-black text-amber-400">🎉 Game Complete! 🎉</h2>
-      <p id="modal-team-title" class="text-purple-200 font-bold text-base">Table Reserved: Team Name</p>
-      <div class="bg-[#150a26] gold-border rounded-2xl p-6 max-w-xs mx-auto space-y-1">
-        <span class="text-xs uppercase font-bold text-amber-400 tracking-widest">Final Team Score</span>
-        <div id="modal-score-display" class="text-5xl font-black text-white">0 / 11</div>
-      </div>
-      <div class="text-left space-y-2 pt-2">
-        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Question Breakdown</h3>
-        <div id="breakdown-list" class="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-1"></div>
-      </div>
-      <button onclick="closeModal()" class="w-full bg-purple-950 hover:bg-purple-900 border border-amber-400/60 text-amber-300 font-bold py-3 rounded-xl cursor-pointer">
-        Close Results
+  <!-- PHOEBE'S SOUNDBOARD SECTION -->
+  <section class="max-w-xl w-full mx-auto chalkboard-card border-2 border-yellow-500/60 rounded-2xl p-3 shadow-2xl my-3">
+    <div class="flex items-center justify-between border-b border-yellow-500/30 pb-1.5 mb-2 px-1">
+      <h3 class="chalk-font text-xs text-yellow-400 tracking-wider flex items-center gap-1.5">
+        🎸 Phoebe's Central Perk Soundboard
+      </h3>
+      <button onclick="stopAllAudio()" class="bg-red-600 hover:bg-red-500 text-white font-black text-[10px] px-2.5 py-1 rounded-lg shadow active:scale-95 uppercase">
+        ⏹ Stop Audio
       </button>
     </div>
-  </div>
 
-  <footer class="text-center text-xs text-amber-400 font-bold pt-4">
-    <div id="footer-team-display" class="hidden">
-      Table Reserved: <span id="current-team-name" class="text-white font-black">--</span>
-      <button onclick="changeTeam()" class="ml-2 text-purple-300 underline hover:text-amber-300 cursor-pointer text-[11px]">(Change Table)</button>
+    <div class="grid grid-cols-5 gap-1.5 text-center">
+      <button onclick="playSound('claps.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👏 Claps</button>
+      <button onclick="playSound('how-you-doing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">😏 How Doin'?</button>
+      <button onclick="playSound('all-right.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👍 All Right</button>
+      <button onclick="playSound('bing.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🔔 Bing!</button>
+      <button onclick="playSound('excellent.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">✨ Excellent</button>
+
+      <button onclick="playSound('good-very-good.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👌 Very Good</button>
+      <button onclick="playSound('hello-you.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">👋 Hello You</button>
+      <button onclick="playSound('game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🤯 Decision!</button>
+      <button onclick="playSound('game/i-don-t-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">🤷 Don't Know</button>
+      <button onclick="playSound('game/i-know.mp3')" class="couch-orange hover:bg-orange-600 text-amber-100 font-bold text-[10px] p-2 rounded-xl border border-amber-300/40 shadow active:scale-95 truncate">💡 I Know!</button>
     </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="text-center text-[11px] text-purple-300 mt-1">
+    <span id="active-team-label" class="font-bold text-yellow-300">Table: Not Reserved</span>
   </footer>
 
   <script>
+    // CORRECT NEW APPS SCRIPT URL INCLUDED
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUmKP5hX4eKC3wtooq8Dbudntw7318zjncwvcVqcch2YMnM62-9ZJibHa_P9L2lTIB/exec";
 
-    let currentTeam = "";
-    let activeQIndex = 1;
-    let teamAnswers = {};
+    let selectedTeam = "";
+    let activeQuestion = "Q1";
+    let teamAnswers = {}; 
 
-    // Standard HTML5 Audio implementation
-    function playSound(key) {
-      // NOTE: If this file is running locally, it looks for an 'audio' folder next to the HTML file. 
-      // If hosted on Google Apps Script, you MUST replace these with full web URLs (e.g. 'https://mywebsite.com/claps.mp3')
-      const audioFiles = {
-        'claps': 'audio/claps.mp3',
-        'howdoin': 'audio/howdoin.mp3',
-        'allright': 'audio/allright.mp3',
-        'bing': 'audio/bing.mp3',
-        'excellent': 'audio/excellent.mp3',
-        'verygood': 'audio/verygood.mp3',
-        'helloyou': 'audio/helloyou.mp3',
-        'decision': 'audio/decision.mp3',
-        'dontknow': 'audio/dontknow.mp3',
-        'iknow': 'audio/iknow.mp3'
-      };
+    // AUDIO SYSTEM
+    const audioFiles = [
+      'claps.mp3', 'how-you-doing.mp3', 'all-right.mp3', 'bing.mp3', 'excellent.mp3',
+      'good-very-good.mp3', 'hello-you.mp3', 'game/how-the-hell-am-i-supposed-to-make-this-kind-of-a-decision.mp3',
+      'game/i-don-t-know.mp3', 'game/i-know.mp3'
+    ];
 
-      try {
-        if (audioFiles[key]) {
-          const sound = new Audio(audioFiles[key]);
-          sound.play().catch(e => console.error("Audio playback blocked by browser:", e));
+    const audioPool = {};
+    let isUnlocked = false;
+
+    function getCandidateUrls(file) {
+      const cleanFile = file.replace(/^game\//, '');
+      return [file, cleanFile, `./${cleanFile}`, `../${cleanFile}`, `game/${cleanFile}`];
+    }
+
+    audioFiles.forEach(file => {
+      const candidates = getCandidateUrls(file);
+      let currentIdx = 0;
+      const audio = new Audio(candidates[0]);
+      audio.addEventListener('error', () => {
+        currentIdx++;
+        if (currentIdx < candidates.length) {
+          audio.src = candidates[currentIdx];
+          audio.load();
         }
-      } catch(e) {
-        console.error("Sound error:", e);
-      }
-    }
+      });
+      audioPool[file] = audio;
+    });
 
-    function lockInTeam() {
-      const chosen = document.getElementById('team-select').value;
-
-      if (!chosen) {
-        document.getElementById('login-error').classList.remove('hidden');
-        return;
-      }
-
-      currentTeam = chosen;
-      teamAnswers = {};
-      showDashboard();
-    }
-
-    function changeTeam() {
-      showLogin();
-    }
-
-    function showLogin() {
-      currentTeam = "";
-      teamAnswers = {};
-      document.getElementById('login-card').classList.remove('hidden');
-      document.getElementById('play-dashboard').classList.add('hidden');
-      document.getElementById('footer-team-display').classList.add('hidden');
-      document.getElementById('team-select').value = "";
-      document.getElementById('login-error').classList.add('hidden');
-    }
-
-    function showDashboard() {
-      document.getElementById('login-card').classList.add('hidden');
-      document.getElementById('play-dashboard').classList.remove('hidden');
-      document.getElementById('footer-team-display').classList.remove('hidden');
-      
-      document.getElementById('active-team-display').innerText = currentTeam;
-      document.getElementById('current-team-name').innerText = currentTeam;
-
-      renderQuestionGrid();
-      updateOptionsUI();
-      syncAnswersFromBackend();
-    }
-
-    function renderQuestionGrid() {
-      const container = document.getElementById('questions-grid');
-      container.innerHTML = '';
-
-      let answeredCount = 0;
-
-      for (let i = 1; i <= 11; i++) {
-        const qKey = `q${i}`;
-        const userAns = teamAnswers[qKey] || null;
-        if (userAns) answeredCount++;
-
-        const isSelected = i === activeQIndex;
-        const btn = document.createElement('button');
-        btn.onclick = () => selectQuestion(i);
-
-        if (isSelected) {
-          btn.className = "bg-amber-400 text-purple-950 font-black p-2.5 rounded-xl border-2 border-amber-200 flex flex-col items-center justify-center shadow-lg transform scale-105 transition-all cursor-pointer";
-          btn.innerHTML = `<span class="text-xs">Q${i}</span><span class="text-[11px] font-bold">${userAns ? `✓(${userAns})` : '-'}</span>`;
-        } else if (userAns) {
-          btn.className = "bg-[#144728] text-green-300 font-bold p-2 rounded-xl border border-green-500/60 flex flex-col items-center justify-center transition-all hover:bg-[#1a5c34] cursor-pointer";
-          btn.innerHTML = `<span class="text-xs text-white">Q${i}</span><span class="text-[11px]">✓(${userAns})</span>`;
-        } else {
-          btn.className = "bg-[#321854] text-purple-300 font-bold p-2 rounded-xl border border-purple-700/50 flex flex-col items-center justify-center transition-all hover:bg-[#432170] cursor-pointer";
-          btn.innerHTML = `<span class="text-xs text-white">Q${i}</span><span class="text-[11px] opacity-60">-</span>`;
-        }
-
-        container.appendChild(btn);
-      }
-
-      document.getElementById('answered-count-text').innerText = `${answeredCount} of 11 Answered`;
-    }
-
-    function selectQuestion(qNum) {
-      activeQIndex = qNum;
-      document.getElementById('active-question-label').innerText = `QUESTION ${qNum}`;
-      renderQuestionGrid();
-      updateOptionsUI();
-    }
-
-    function updateOptionsUI() {
-      const qKey = `q${activeQIndex}`;
-      const userAns = teamAnswers[qKey] || null;
-
-      const badge = document.getElementById('selected-badge');
-      if (userAns) {
-        badge.innerText = `Selected: (${userAns})`;
-        badge.className = "bg-amber-400 text-purple-950 border border-amber-200 text-xs font-black px-3 py-1 rounded-full shadow";
-      } else {
-        badge.innerText = `Selected: None`;
-        badge.className = "bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full";
-      }
-
-      ['A', 'B', 'C', 'D'].forEach(letter => {
-        const btn = document.getElementById(`opt-btn-${letter}`);
-        const check = document.getElementById(`opt-${letter}-check`);
-
-        if (userAns === letter) {
-          btn.className = "opt-btn gold-pill border-2 border-amber-200 p-3.5 rounded-2xl flex items-center justify-between transition-all scale-[1.02] shadow-lg font-black cursor-pointer";
-          check.classList.remove('hidden');
-        } else {
-          btn.className = "opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer";
-          check.classList.add('hidden');
+    function unlockAudioEngine() {
+      if (isUnlocked) return;
+      isUnlocked = true;
+      Object.keys(audioPool).forEach(key => {
+        const audio = audioPool[key];
+        const promise = audio.play();
+        if (promise !== undefined) {
+          promise.then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
         }
       });
     }
 
-    async function selectAnswer(letter) {
-      if (!currentTeam) return;
+    function playSound(filename) {
+      unlockAudioEngine();
+      stopAllAudio();
+      let audio = audioPool[filename] || new Audio(filename);
+      audio.currentTime = 0;
+      audio.play().catch(err => console.warn("Audio play blocked:", err));
+    }
 
-      const qKey = `q${activeQIndex}`;
-      teamAnswers[qKey] = letter;
+    function stopAllAudio() {
+      Object.keys(audioPool).forEach(key => {
+        if (audioPool[key]) {
+          audioPool[key].pause();
+          audioPool[key].currentTime = 0;
+        }
+      });
+    }
 
-      updateOptionsUI();
-      renderQuestionGrid();
+    // GAME INITIALIZATION & NAV
+    async function lockInTeam() {
+      unlockAudioEngine();
+      const select = document.getElementById('team-dropdown');
+
+      selectedTeam = select.value;
+
+      if (!selectedTeam) {
+        alert("Please select a Team Name from the list!");
+        return;
+      }
+
+      document.getElementById('team-card').classList.add('hidden');
+      document.getElementById('game-panel').classList.remove('hidden');
+      document.getElementById('active-team-label').innerText = `Table Reserved: ${selectedTeam}`;
+
+      renderQuestionNav();
+      updateActiveQuestionUI();
+
+      await fetchExistingAnswers();
+    }
+
+    function renderQuestionNav() {
+      const grid = document.getElementById('q-nav-grid');
+      grid.innerHTML = '';
+
+      for (let i = 1; i <= 11; i++) {
+        const qKey = `Q${i}`;
+        const hasAnswer = !!teamAnswers[qKey];
+        const isActive = activeQuestion === qKey;
+
+        const btn = document.createElement('button');
+        btn.onclick = () => switchQuestion(qKey);
+
+        let bgClass = "bg-purple-950/80 border-purple-800 text-purple-200 hover:border-yellow-400";
+        if (isActive) {
+          bgClass = "bg-yellow-400 text-purple-950 font-black border-2 border-yellow-200 scale-105 shadow-lg";
+        } else if (hasAnswer) {
+          bgClass = "central-perk-green text-yellow-300 font-bold border border-emerald-400/50";
+        }
+
+        btn.className = `p-2 rounded-xl text-xs flex flex-col items-center justify-center transition-all ${bgClass}`;
+        btn.innerHTML = `
+          <span>Q${i}</span>
+          <span class="text-[9px] ${isActive ? 'text-purple-950' : 'text-yellow-400'}">${hasAnswer ? `✓ (${teamAnswers[qKey]})` : '—'}</span>
+        `;
+
+        grid.appendChild(btn);
+      }
+
+      const answeredCount = Object.keys(teamAnswers).length;
+      document.getElementById('progress-text').innerText = `${answeredCount} of 11 Answered`;
+    }
+
+    function switchQuestion(qKey) {
+      unlockAudioEngine();
+      activeQuestion = qKey;
+      renderQuestionNav();
+      updateActiveQuestionUI();
+    }
+
+    function updateActiveQuestionUI() {
+      document.getElementById('active-q-title').innerText = `Question ${activeQuestion.replace('Q', '')}`;
+      
+      const currentAns = teamAnswers[activeQuestion];
+      const badge = document.getElementById('q-status-badge');
+
+      if (currentAns) {
+        badge.innerText = `Selected: (${currentAns})`;
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
+      } else {
+        badge.innerText = "Unanswered";
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30";
+      }
+
+      ['A', 'B', 'C', 'D'].forEach(opt => {
+        const btn = document.getElementById(`btn-${opt}`);
+        const check = btn.querySelector('.check-icon');
+
+        if (currentAns === opt) {
+          btn.className = "chalkboard-card bg-yellow-400 text-purple-950 border-4 border-yellow-200 p-4 rounded-2xl shadow-xl flex items-center justify-between transition-all font-black scale-[1.01]";
+          if (check) {
+            check.classList.remove('opacity-0');
+            check.className = "text-purple-950 text-xl font-black check-icon";
+          }
+        } else {
+          btn.className = "chalkboard-card hover:border-yellow-400 active:scale-95 p-4 rounded-2xl shadow-md flex items-center justify-between transition-all group";
+          if (check) check.classList.add('opacity-0');
+        }
+      });
+    }
+
+    async function selectOption(optionLetter) {
+      unlockAudioEngine();
+      if (!selectedTeam) return;
+
+      teamAnswers[activeQuestion] = optionLetter;
+      renderQuestionNav();
+      updateActiveQuestionUI();
+
+      const toast = document.getElementById('sync-toast');
+      toast.innerText = `Saving ${activeQuestion} -> (${optionLetter})...`;
 
       try {
-        // Updated to use text/plain to bypass Google Apps Script CORS issues
         await fetch(SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            team: currentTeam,
-            question: qKey,
-            answer: letter
+            action: 'submitAnswer',
+            team: selectedTeam,
+            question: activeQuestion,
+            answer: optionLetter
           })
         });
+
+        toast.innerText = `✓ ${activeQuestion} recorded as (${optionLetter})!`;
+        setTimeout(() => { if (toast.innerText.includes('recorded')) toast.innerText = ''; }, 3000);
       } catch (err) {
-        console.error("Failed to post answer:", err);
+        toast.innerText = `⚠️ Failed to save. Check internet connection.`;
+        console.error("Save error:", err);
       }
     }
 
-    async function syncAnswersFromBackend() {
-      if (!currentTeam) return;
+    async function fetchExistingAnswers() {
       try {
-        const res = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(currentTeam)}`);
-        const data = await res.json();
-        
-        if (data.status === 'success' && data.answers) {
-          Object.keys(data.answers).forEach(qKey => {
-            if (!teamAnswers[qKey]) {
-              teamAnswers[qKey] = data.answers[qKey];
-            }
-          });
-          renderQuestionGrid();
-          updateOptionsUI();
-        }
-      } catch (e) {
-        console.error("Backend fetch sync failed:", e);
-      }
-    }
-
-    async function revealFinalScore() {
-      if (!currentTeam) return;
-
-      document.getElementById('modal-team-title').innerText = `Table Reserved: ${currentTeam}`;
-      document.getElementById('results-modal').classList.remove('hidden');
-
-      try {
-        const res = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(currentTeam)}`);
-        const data = await res.json();
-
-        if (data.status === 'success') {
-          const score = data.score !== undefined ? data.score : 0;
-          document.getElementById('modal-score-display').innerText = `${score} / 11`;
-
-          const list = document.getElementById('breakdown-list');
-          list.innerHTML = '';
-
-          if (data.breakdown) {
-            for (let i = 1; i <= 11; i++) {
-              const qKey = `q${i}`;
-              const item = data.breakdown[qKey];
-              const userAns = teamAnswers[qKey] || (item ? item.userAnswer : null) || 'None';
-              const isCorrect = item ? item.isCorrect : false;
-              const correctAns = item ? item.correctAnswer : '';
-
-              const row = document.createElement('div');
-              row.className = isCorrect 
-                ? "bg-green-950/80 border border-green-500/60 p-2.5 rounded-xl flex items-center justify-between text-xs"
-                : "bg-red-950/80 border border-red-500/60 p-2.5 rounded-xl flex items-center justify-between text-xs";
-
-              row.innerHTML = `
-                <span class="font-bold text-white">Q${i}: Picked (${userAns})</span>
-                <span class="font-black ${isCorrect ? 'text-green-400' : 'text-red-400'}">
-                  ${isCorrect ? '🟢 Correct' : `🔴 Wrong (Ans: ${correctAns})`}
-                </span>
-              `;
-              list.appendChild(row);
-            }
+        const res = await fetch(`${SCRIPT_URL}?team=${encodeURIComponent(selectedTeam)}&t=${Date.now()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.answers) {
+            teamAnswers = data.answers;
+            renderQuestionNav();
+            updateActiveQuestionUI();
           }
         }
-      } catch (e) {
-        console.error("Failed to fetch breakdown:", e);
+      } catch (err) {
+        console.warn("Could not fetch initial answers:", err);
       }
     }
-
-    function closeModal() {
-      document.getElementById('results-modal').classList.add('hidden');
-    }
-
-    showLogin();
   </script>
 </body>
 </html>
