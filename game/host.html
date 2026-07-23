@@ -14,6 +14,15 @@
 </head>
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans select-none">
 
+  <!-- HARDCODED AUDIO ELEMENTS FOR INSTANT PLAYBACK -->
+  <audio id="timer-audio" src="friends.mp3" preload="auto"></audio>
+  <audio id="timer-stop-audio" src="enough-already.mp3" preload="auto"></audio>
+  <audio id="reveal-audio" src="claps.mp3" preload="auto"></audio>
+  <audio id="next-q-audio" src="i-got-a-question.mp3" preload="auto"></audio>
+  <audio id="leaderboard-audio" src="how-dumb-are-you.mp3" preload="auto"></audio>
+  <audio id="restart-round-audio" src="how-come-you-re-working-here.mp3" preload="auto"></audio>
+  <audio id="restart-game-audio" src="don-t-be-so-negative.mp3" preload="auto"></audio>
+
   <!-- FRIENDS-STYLE HEADER -->
   <header class="text-center my-2">
     <h1 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
@@ -29,10 +38,11 @@
   <!-- TOP CONTROL BAR -->
   <div class="max-w-6xl w-full mx-auto bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3">
     
-    <!-- FULL THEME SONG (friends.mp3) -->
+    <!-- MANUAL BACKUP CONTROLLER -->
     <div class="flex items-center space-x-2">
-      <span class="text-xs font-bold text-yellow-300 uppercase">🎵 Manual Theme</span>
-      <audio controls src="friends.mp3" class="h-8 max-w-[200px] rounded-lg bg-yellow-400"></audio>
+      <span class="text-xs font-bold text-yellow-300 uppercase">🎵 Sound Test</span>
+      <button onclick="playAudio('timer-audio')" class="bg-yellow-400 text-purple-950 font-black text-xs px-2 py-1 rounded-md">▶ Theme</button>
+      <button onclick="stopAllAudio()" class="bg-red-500 text-white font-black text-xs px-2 py-1 rounded-md">⏹ Stop All</button>
     </div>
 
     <!-- TIMER DISPLAY -->
@@ -45,7 +55,7 @@
     <!-- ACTION BUTTONS -->
     <div class="flex items-center gap-2 flex-wrap">
       
-      <!-- RESTART GAME (BACK TO Q1 & SCRAMBLE) -->
+      <!-- RESTART GAME BUTTON -->
       <button onclick="restartGame()" class="bg-red-600 hover:bg-red-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-red-300 shadow transition-all active:scale-95 flex items-center gap-1">
         ⏮️ Restart Game (Q1)
       </button>
@@ -120,21 +130,21 @@
   <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-2">
     <div class="flex items-center space-x-2">
       <span class="bg-purple-950 px-3 py-1 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold">
-        📲 Players Scan & Join: <span class="text-white underline">alicekeeler.github.io/friends-trivia/game/</span>
+        📲 Players Join: <span class="text-white underline">alicekeeler.github.io/friends-trivia/game/</span>
       </span>
     </div>
     <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1">
-      <span>🔊</span> Friends Sound Engine Active
+      <span>🔊</span> Central Perk Audio Engine Active
     </div>
   </footer>
 
-  <!-- 🏆 LEADERBOARD MODAL -->
+  <!-- LEADERBOARD MODAL -->
   <div id="leaderboard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
     <div class="bg-purple-950 border-4 border-yellow-400 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative space-y-4">
       
       <div class="flex items-center justify-between border-b border-yellow-400/30 pb-3">
         <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
-          🏆 Current Standings
+          🏆 Live Round Votes
         </h3>
         <button onclick="closeLeaderboard()" class="text-yellow-400 hover:text-white font-black text-xl px-2">✕</button>
       </div>
@@ -151,11 +161,37 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbE6je5WshCmMRJ9UTniRhlKM24fAsbqKvCNNEeN2d7b1jYtOdV3UWlirLA_FWyN4c0/exec";
+    const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    // AUDIO OBJECTS
-    const timerMusic = new Audio('friends.mp3');
-    const winSound = new Audio('claps.mp3');
+    // AUDIO SYSTEM CONTROLLERS
+    function playAudio(elementId) {
+      const audio = document.getElementById(elementId);
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log(`Audio unlock needed for ${elementId}:`, e));
+      }
+    }
+
+    function stopAudio(elementId) {
+      const audio = document.getElementById(elementId);
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    }
+
+    function stopAllAudio() {
+      const audioIds = [
+        'timer-audio', 
+        'timer-stop-audio', 
+        'reveal-audio', 
+        'next-q-audio', 
+        'leaderboard-audio', 
+        'restart-round-audio', 
+        'restart-game-audio'
+      ];
+      audioIds.forEach(id => stopAudio(id));
+    }
 
     // QUESTION POOL (EACH ROUND/TOPIC HAS MULTIPLE QUESTION OPTIONS)
     const topicPool = [
@@ -212,7 +248,7 @@
       return copy;
     }
 
-    // INITIALIZE GAME QUEUE
+    // INITIALIZE A NEW GAME QUEUE
     function initializeGameQueue() {
       activeGameQuestions = topicPool.map(topic => {
         const rawQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
@@ -257,9 +293,8 @@
       document.getElementById('timer-box').innerText = timer;
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
-      // START TIMER MUSIC
-      timerMusic.currentTime = 0;
-      timerMusic.play().catch(err => console.log("Audio autoplay deferral:", err));
+      // PLAY 30-SECOND THEME SONG
+      playAudio('timer-audio');
 
       timerInterval = setInterval(() => {
         timer--;
@@ -269,13 +304,18 @@
         }
         if (timer <= 0) {
           clearInterval(timerInterval);
-          timerMusic.pause(); // Stop music when timer reaches zero
+          // STOP TIMER MUSIC & PLAY "enough-already.mp3"
+          stopAudio('timer-audio');
+          playAudio('timer-stop-audio');
         }
       }, 1000);
     }
 
     function restartGame() {
-      if (confirm("Are you sure you want to restart the game from Question 1?")) {
+      stopAllAudio();
+      playAudio('restart-game-audio'); // don-t-be-so-negative.mp3
+
+      if (confirm("Restart game from Question 1? This will scramble question choices.")) {
         initializeGameQueue();
         currentQIndex = 0;
         loadQuestion(currentQIndex);
@@ -285,50 +325,36 @@
     }
 
     function restartRound() {
+      stopAllAudio();
+      playAudio('restart-round-audio'); // how-come-you-re-working-here.mp3
       loadQuestion(currentQIndex);
     }
 
     function revealAnswer() {
+      stopAudio('timer-audio');
+      playAudio('reveal-audio'); // claps.mp3
+
       const q = activeGameQuestions[currentQIndex];
       if (!q) return;
-
-      // Stop timer music on answer reveal
-      timerMusic.pause();
 
       const correctIndex = q.correct;
       const correctCard = document.getElementById(`option-card-${correctIndex}`);
 
       correctCard.className = "option-card bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
-      
-      winSound.currentTime = 0;
-      winSound.play().catch(() => {});
-    }
-
-    async function broadcastQuestionToPlayers(q) {
-      try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'setActiveQuestion',
-            id: q.id,
-            number: q.roundNumber,
-            question: q.question,
-            options: q.options
-          })
-        });
-      } catch (err) {
-        console.error("Broadcast failed:", err);
-      }
     }
 
     function nextQuestion() {
+      stopAllAudio();
+      playAudio('next-q-audio'); // i-got-a-question.mp3
+
       currentQIndex = (currentQIndex + 1) % activeGameQuestions.length;
       loadQuestion(currentQIndex);
     }
 
     async function openLeaderboard() {
+      stopAudio('timer-audio');
+      playAudio('leaderboard-audio'); // how-dumb-are-you.mp3
+
       document.getElementById('leaderboard-modal').classList.remove('hidden');
       const listContainer = document.getElementById('leaderboard-list');
       listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores...</p>`;
@@ -374,8 +400,28 @@
       document.getElementById('leaderboard-modal').classList.add('hidden');
     }
 
-    // START GAME ON LOAD
-    restartGame();
+    async function broadcastQuestionToPlayers(q) {
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'setActiveQuestion',
+            id: q.id,
+            number: q.roundNumber,
+            question: q.question,
+            options: q.options
+          })
+        });
+      } catch (err) {
+        console.error("Broadcast failed:", err);
+      }
+    }
+
+    // INITIALIZE QUEUE AND LOAD Q1
+    initializeGameQueue();
+    loadQuestion(0);
   </script>
 </body>
 </html>
