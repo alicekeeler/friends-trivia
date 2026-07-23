@@ -96,7 +96,7 @@
       </span>
     </div>
 
-    <!-- QUESTION CARD -->
+    <!-- QUESTION CARD / HOLDING SCREEN -->
     <div class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
       <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
         Join the game
@@ -107,12 +107,12 @@
         
         <div id="option-card-0" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">A</span>
-          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100">Select a team name</span>
+          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100">Select your Team Name from the drop down</span>
         </div>
 
         <div id="option-card-1" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">B</span>
-          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100">One device</span>
+          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100">One device per team</span>
         </div>
 
         <div id="option-card-2" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
@@ -167,15 +167,38 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    // QUESTION ZERO (HOLDING / INSTRUCTION SCREEN)
+    // BROWSER AUDIO POLICY UNLOCKER
+    let audioUnlocked = false;
+    function unlockBrowserAudio() {
+      if (audioUnlocked) return;
+      const audioIds = [
+        'full-theme-audio', 'timer-audio', 'timer-stop-audio', 
+        'reveal-audio', 'next-q-audio', 'leaderboard-audio', 
+        'restart-round-audio', 'restart-game-audio'
+      ];
+      audioIds.forEach(id => {
+        const audio = document.getElementById(id);
+        if (audio) {
+          audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          }).catch(() => {});
+        }
+      });
+      audioUnlocked = true;
+    }
+
+    document.addEventListener('click', unlockBrowserAudio, { once: true });
+
+    // QUESTION ZERO (HOLDING SCREEN)
     const questionZero = {
       id: "q0",
       roundNumber: 0,
       badge: "QUESTION 0: GET READY TO PLAY (0 PTS)",
       question: "Join the game",
       options: [
-        "Select a team name",
-        "One device",
+        "Select your Team Name from the drop down",
+        "One device per team",
         "Go to player link: alicekeeler.github.io/friends-trivia/game/",
         "Know the handbook"
       ],
@@ -230,10 +253,11 @@
 
     // AUDIO HELPERS
     function playAudio(elementId) {
+      unlockBrowserAudio();
       const audio = document.getElementById(elementId);
       if (audio) {
         audio.currentTime = 0;
-        audio.play().catch(e => console.log(`Audio unlock needed for ${elementId}:`, e));
+        audio.play().catch(e => console.log(`Audio error for ${elementId}:`, e));
       }
     }
 
@@ -333,7 +357,7 @@
       document.getElementById('timer-box').innerText = timer;
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
-      // DELAY INTRO SONG SLIGHTLY SO "I GOT A QUESTION" PLAYS CLEARLY
+      // DELAY THE THEME INTRO SLIGHTLY SO VOICE QUOTES PLAY CLEANLY
       musicDelayTimeout = setTimeout(() => {
         playAudio('timer-audio'); // 30secondfriendsintro.mp3
       }, delayMusicMs);
@@ -473,7 +497,7 @@
       }
     }
 
-    // INITIALIZE QUEUE AND DISPLAY QUESTION ZERO
+    // INITIALIZE QUEUE AND SHOW QUESTION ZERO
     initializeGameQueue();
     loadQuestionZero();
   </script>
