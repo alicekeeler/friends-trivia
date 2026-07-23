@@ -12,7 +12,7 @@
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans select-none" onclick="unlockMobileAudio()">
 
   <!-- HEADER -->
   <header class="text-center my-2">
@@ -28,7 +28,7 @@
 
   <main class="w-full max-w-md mx-auto space-y-4 my-auto">
 
-    <!-- FUN FRIENDS TEAM DROPDOWN -->
+    <!-- TEAM DROPDOWN -->
     <div class="bg-purple-900/90 p-4 rounded-2xl border-2 border-yellow-400 shadow-xl text-center">
       <label for="team-select" class="block text-yellow-300 font-bold mb-2 uppercase text-xs tracking-wider">
         Select Your Team:
@@ -42,10 +42,10 @@
         <option value="The Transponsters">The Transponsters</option>
         <option value="The Smelly Cats">The Smelly Cats</option>
         <option value="The Holiday Armadillos">The Holiday Armadillos</option>
-        <option value="Princess Consuela & The Banana Hammocks">Princess Consuela & The Banana Hammocks</option>
+        <option value="Princess Consuela & Banana Hammock">Princess Consuela & Banana Hammock</option>
         <option value="The Regina Phalanges">The Regina Phalanges</option>
         <option value="The Routine">The Routine</option>
-        <option value="Crap Bag & The Chicks">Crap Bag & The Chicks</option>
+        <option value="The Chick & The Duck">The Chick & The Duck</option>
         <option value="Team Unagi">Team Unagi</option>
         <option value="The Remorays">The Remorays</option>
         <option value="Central Perk Regulars">Central Perk Regulars</option>
@@ -81,23 +81,29 @@
     <!-- SUBMISSION STATUS -->
     <div id="status-msg" class="text-center font-bold text-sm min-h-[20px] text-yellow-300"></div>
 
-    <!-- 🔊 FUN PLAYER SOUNDBOARD -->
+    <!-- 🔊 FRIENDS SOUNDBOARD (MATCHED TO YOUR MP3 FILES) -->
     <div class="bg-purple-950/80 p-3.5 rounded-2xl border border-yellow-400/40 text-center shadow-lg">
       <p class="text-yellow-300 font-bold text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1">
         <span>🔊</span> Friends Soundboard (Just For Fun)
       </p>
       <div class="grid grid-cols-2 gap-2">
-        <button onclick="playSound('howYouDoin')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+        <button onclick="playSound('howYouDoing')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-2.5 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
           😏 How You Doin'?
         </button>
-        <button onclick="playSound('pivot')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
-          🛋️ PIVOT!
+        <button onclick="playSound('iKnow')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-2.5 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          ✨ I Know!
         </button>
-        <button onclick="playSound('ohMyGod')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
-          😱 OH. MY. GOD.
+        <button onclick="playSound('helloYou')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-2.5 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          👋 Hello You
         </button>
-        <button onclick="playSound('onABreak')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-3 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
-          💔 ON A BREAK!
+        <button onclick="playSound('iDontKnow')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-2.5 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          🤷 I Don't Know
+        </button>
+        <button onclick="playSound('lostMind')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-2.5 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          🤯 Lost Your Mind?
+        </button>
+        <button onclick="playSound('claps')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-xs py-2 px-2.5 rounded-xl border border-yellow-400/50 transition-all active:scale-90 flex items-center justify-center gap-1">
+          👏 Claps
         </button>
       </div>
     </div>
@@ -111,19 +117,46 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxZPWY8Tjkc5vkik0sVLLciZHw5VMrkUoTb2APTwOZk7IZRzPkSVSkN0WLlFzXaOSoI/exec";
 
-    // AUDIO FILES FOR PLAYER SOUNDBOARD
+    // AUDIO FILES MATCHING YOUR EXACT DIRECTORY FILENAMES
     const playerSounds = {
-      howYouDoin: new Audio('../howyoudoin.mp3'),
-      pivot: new Audio('../pivot.mp3'),
-      ohMyGod: new Audio('../oh-my-god.mp3'),
-      onABreak: new Audio('../we-were-on-a-break.mp3')
+      howYouDoing: new Audio('../how-you-doing.mp3'),
+      iKnow: new Audio('../i-know.mp3'),
+      helloYou: new Audio('../hello-you.mp3'),
+      iDontKnow: new Audio('../i-don-t-know.mp3'),
+      lostMind: new Audio('../have-you-lost-your-mind.mp3'),
+      claps: new Audio('../claps.mp3')
     };
 
+    let audioUnlocked = false;
+
+    // UNLOCK AUDIO ENGINE ON FIRST SCREEN TOUCH
+    function unlockMobileAudio() {
+      if (audioUnlocked) return;
+      Object.values(playerSounds).forEach(audio => {
+        audio.play().then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+        }).catch(() => {});
+      });
+      audioUnlocked = true;
+    }
+
     function playSound(key) {
-      if (playerSounds[key]) {
-        playerSounds[key].currentTime = 0;
-        playerSounds[key].play().catch(err => {
-          console.warn("Audio play blocked by browser rules:", err);
+      const audio = playerSounds[key];
+      const statusMsg = document.getElementById('status-msg');
+
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().then(() => {
+          statusMsg.className = "text-center font-bold text-xs text-yellow-300";
+          statusMsg.innerText = "🎵 Playing sound effect!";
+          setTimeout(() => { 
+            if (statusMsg.innerText === "🎵 Playing sound effect!") statusMsg.innerText = ""; 
+          }, 2000);
+        }).catch(err => {
+          console.error("Audio playback error:", err);
+          statusMsg.className = "text-center font-bold text-xs text-red-400";
+          statusMsg.innerText = `⚠️ Audio blocked or missing file`;
         });
       }
     }
