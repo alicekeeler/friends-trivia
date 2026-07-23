@@ -31,7 +31,7 @@
     
     <!-- FULL THEME SONG (friends.mp3) -->
     <div class="flex items-center space-x-2">
-      <span class="text-xs font-bold text-yellow-300 uppercase">🎵 Theme Song</span>
+      <span class="text-xs font-bold text-yellow-300 uppercase">🎵 Manual Theme</span>
       <audio controls src="friends.mp3" class="h-8 max-w-[200px] rounded-lg bg-yellow-400"></audio>
     </div>
 
@@ -124,7 +124,7 @@
       </span>
     </div>
     <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1">
-      <span>🔊</span> Friends Sound Engine Ready
+      <span>🔊</span> Friends Sound Engine Active
     </div>
   </footer>
 
@@ -152,6 +152,10 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbE6je5WshCmMRJ9UTniRhlKM24fAsbqKvCNNEeN2d7b1jYtOdV3UWlirLA_FWyN4c0/exec";
+
+    // AUDIO OBJECTS
+    const timerMusic = new Audio('friends.mp3');
+    const winSound = new Audio('claps.mp3');
 
     // QUESTION POOL (EACH ROUND/TOPIC HAS MULTIPLE QUESTION OPTIONS)
     const topicPool = [
@@ -198,9 +202,7 @@
     let timer = 30;
     let timerInterval = null;
 
-    const winSound = new Audio('claps.mp3');
-
-    // SCRAMBLE ARRAY UTILITY
+    // SHUFFLE UTILITY
     function shuffleArray(arr) {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
@@ -210,13 +212,10 @@
       return copy;
     }
 
-    // INITIALIZE A NEW GAME (PICKS RANDOM QUESTION PER TOPIC & SHUFFLES OPTIONS)
+    // INITIALIZE GAME QUEUE
     function initializeGameQueue() {
       activeGameQuestions = topicPool.map(topic => {
-        // Pick random question from topic pool
         const rawQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
-        
-        // Shuffle options and relocate correct answer index
         const shuffledOpts = shuffleArray(rawQ.options);
         const newCorrectIndex = shuffledOpts.indexOf(rawQ.correctText);
 
@@ -258,6 +257,10 @@
       document.getElementById('timer-box').innerText = timer;
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
+      // START TIMER MUSIC
+      timerMusic.currentTime = 0;
+      timerMusic.play().catch(err => console.log("Audio autoplay deferral:", err));
+
       timerInterval = setInterval(() => {
         timer--;
         document.getElementById('timer-box').innerText = timer;
@@ -266,25 +269,21 @@
         }
         if (timer <= 0) {
           clearInterval(timerInterval);
+          timerMusic.pause(); // Stop music when timer reaches zero
         }
       }, 1000);
     }
 
-    // RESTART GAME BACK TO QUESTION 1 (WITH FRESH SCRAMBLE)
-    async function restartGame() {
-      if (confirm("Are you sure you want to restart the game from Question 1? This will scramble new questions.")) {
+    function restartGame() {
+      if (confirm("Are you sure you want to restart the game from Question 1?")) {
         initializeGameQueue();
         currentQIndex = 0;
         loadQuestion(currentQIndex);
 
-        // Reset database scores on backend
-        try {
-          await fetch(`${SCRIPT_URL}?action=reset`);
-        } catch(e){}
+        fetch(`${SCRIPT_URL}?action=reset`).catch(() => {});
       }
     }
 
-    // RESTART CURRENT ROUND TIMER
     function restartRound() {
       loadQuestion(currentQIndex);
     }
@@ -292,6 +291,9 @@
     function revealAnswer() {
       const q = activeGameQuestions[currentQIndex];
       if (!q) return;
+
+      // Stop timer music on answer reveal
+      timerMusic.pause();
 
       const correctIndex = q.correct;
       const correctCard = document.getElementById(`option-card-${correctIndex}`);
