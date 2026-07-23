@@ -12,9 +12,9 @@
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans select-none">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans select-none" onclick="unlockAudioOnce()">
 
-  <!-- HARDCODED AUDIO ELEMENTS -->
+  <!-- AUDIO ELEMENTS -->
   <audio id="full-theme-audio" src="friends.mp3" preload="auto"></audio>
   <audio id="timer-audio" src="30secondfriendsintro.mp3" preload="auto"></audio>
   <audio id="timer-stop-audio" src="enough-already.mp3" preload="auto"></audio>
@@ -39,10 +39,10 @@
   <!-- TOP CONTROL BAR -->
   <div class="max-w-6xl w-full mx-auto bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3">
     
-    <!-- FULL THEME & STOP CONTROLS -->
+    <!-- FRIENDS THEME & STOP ALL -->
     <div class="flex items-center space-x-2">
       <button onclick="playAudio('full-theme-audio')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
-        ▶ Theme
+        ☕ FRIENDS THEME ▶ Play
       </button>
       <button onclick="stopAllAudio()" class="bg-red-500 hover:bg-red-400 text-white font-black text-xs px-3 py-2 rounded-xl shadow transition-all active:scale-95">
         ⏹ Stop All
@@ -86,45 +86,65 @@
     </div>
   </div>
 
-  <!-- MAIN QUESTION DISPLAY -->
+  <!-- MAIN CARD CONTAINER -->
   <main class="max-w-4xl w-full mx-auto my-auto space-y-4">
 
     <!-- ROUND BADGE -->
     <div class="text-center">
       <span id="round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-4 py-1.5 rounded-full border-2 border-yellow-200 tracking-wider shadow-md">
-        QUESTION 0: GET READY TO PLAY (0 PTS)
+        WELCOME TO CENTRAL PERK ☕
       </span>
     </div>
 
-    <!-- QUESTION CARD / HOLDING SCREEN -->
-    <div class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-      <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
-        Join the game
+    <!-- WELCOME / HOLDING CARD (START SCREEN) -->
+    <div id="welcome-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-yellow-300">
+        Could this BE any more exciting? ☕
       </h2>
 
-      <!-- OPTIONS GRID -->
+      <div class="bg-purple-950/80 border-2 border-yellow-400/50 rounded-2xl p-6 text-left space-y-4 max-w-2xl mx-auto shadow-inner">
+        <p class="font-bold text-base sm:text-lg text-purple-100 flex items-start gap-2">
+          <span class="text-yellow-400">1.</span> Gather your crew and form a team! (Pivot those chairs!)
+        </p>
+        <p class="font-bold text-base sm:text-lg text-purple-100 flex items-start gap-2">
+          <span class="text-yellow-400">2.</span> Pick ONE device per team and go to:
+        </p>
+        <div class="bg-purple-900 border-2 border-yellow-400 p-3 rounded-xl text-center text-yellow-300 font-mono font-bold text-sm sm:text-base break-all shadow">
+          https://alicekeeler.github.io/friends-trivia/game/
+        </div>
+        <p class="font-bold text-base sm:text-lg text-purple-100 flex items-start gap-2">
+          <span class="text-yellow-400">3.</span> Select your Team Name from the drop down and get locked in.
+        </p>
+      </div>
+
+      <p class="text-xs sm:text-sm italic text-yellow-400 font-semibold pt-2">
+        👉 Host: Click "Next Question ➡️" above when all teams are ready to start Round 1!
+      </p>
+    </div>
+
+    <!-- QUESTION CARD (HIDDEN UNTIL GAME STARTS) -->
+    <div id="question-card" class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 hidden">
+      <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
+        Loading Question...
+      </h2>
+
       <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
         <div id="option-card-0" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">A</span>
-          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100">Select your Team Name from the drop down</span>
+          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
         </div>
-
         <div id="option-card-1" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">B</span>
-          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100">One device per team</span>
+          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
         </div>
-
         <div id="option-card-2" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">C</span>
-          <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100">Go to player link: alicekeeler.github.io/friends-trivia/game/</span>
+          <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
         </div>
-
         <div id="option-card-3" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">D</span>
-          <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100">Know the handbook</span>
+          <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100"></span>
         </div>
-
       </div>
     </div>
 
@@ -145,7 +165,6 @@
   <!-- LEADERBOARD MODAL -->
   <div id="leaderboard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
     <div class="bg-purple-950 border-4 border-yellow-400 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative space-y-4">
-      
       <div class="flex items-center justify-between border-b border-yellow-400/30 pb-3">
         <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
           🏆 Live Round Votes
@@ -160,23 +179,28 @@
       <button onclick="closeLeaderboard()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl transition-all">
         Close Leaderboard
       </button>
-
     </div>
   </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    // BROWSER AUDIO POLICY UNLOCKER
+    const audioFileMap = {
+      'full-theme-audio': 'friends.mp3',
+      'timer-audio': '30secondfriendsintro.mp3',
+      'timer-stop-audio': 'enough-already.mp3',
+      'reveal-audio': 'claps.mp3',
+      'next-q-audio': 'i-got-a-question.mp3',
+      'leaderboard-audio': 'how-dumb-are-you.mp3',
+      'restart-round-audio': 'how-come-you-re-working-here.mp3',
+      'restart-game-audio': 'don-t-be-so-negative.mp3'
+    };
+
     let audioUnlocked = false;
-    function unlockBrowserAudio() {
+
+    function unlockAudioOnce() {
       if (audioUnlocked) return;
-      const audioIds = [
-        'full-theme-audio', 'timer-audio', 'timer-stop-audio', 
-        'reveal-audio', 'next-q-audio', 'leaderboard-audio', 
-        'restart-round-audio', 'restart-game-audio'
-      ];
-      audioIds.forEach(id => {
+      Object.keys(audioFileMap).forEach(id => {
         const audio = document.getElementById(id);
         if (audio) {
           audio.play().then(() => {
@@ -188,24 +212,38 @@
       audioUnlocked = true;
     }
 
-    document.addEventListener('click', unlockBrowserAudio, { once: true });
+    function playAudio(elementId) {
+      unlockAudioOnce();
+      const audio = document.getElementById(elementId);
+      if (audio) {
+        audio.currentTime = 0;
+        const promise = audio.play();
+        if (promise !== undefined) {
+          promise.catch(() => {
+            // FALLBACK TO DIRECT AUDIO INSTANCE IF DOM AUDIO WAS BLOCKED
+            const filename = audioFileMap[elementId];
+            if (filename) {
+              const freshAudio = new Audio(filename);
+              freshAudio.play().catch(e => console.error("Audio failed:", e));
+            }
+          });
+        }
+      }
+    }
 
-    // QUESTION ZERO (HOLDING SCREEN)
-    const questionZero = {
-      id: "q0",
-      roundNumber: 0,
-      badge: "QUESTION 0: GET READY TO PLAY (0 PTS)",
-      question: "Join the game",
-      options: [
-        "Select your Team Name from the drop down",
-        "One device per team",
-        "Go to player link: alicekeeler.github.io/friends-trivia/game/",
-        "Know the handbook"
-      ],
-      correct: -1
-    };
+    function stopAudio(elementId) {
+      const audio = document.getElementById(elementId);
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    }
 
-    // QUESTION POOL FOR GAMEPLAY
+    function stopAllAudio() {
+      Object.keys(audioFileMap).forEach(id => stopAudio(id));
+    }
+
+    // QUESTION POOL
     const topicPool = [
       {
         roundNumber: 1,
@@ -246,42 +284,10 @@
     ];
 
     let activeGameQuestions = [];
-    let currentQIndex = -1; // -1 represents Question 0 placeholder
+    let currentQIndex = -1; // -1 = Welcome Screen
     let timer = 30;
     let timerInterval = null;
     let musicDelayTimeout = null;
-
-    // AUDIO HELPERS
-    function playAudio(elementId) {
-      unlockBrowserAudio();
-      const audio = document.getElementById(elementId);
-      if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(e => console.log(`Audio error for ${elementId}:`, e));
-      }
-    }
-
-    function stopAudio(elementId) {
-      const audio = document.getElementById(elementId);
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-    }
-
-    function stopAllAudio() {
-      const audioIds = [
-        'full-theme-audio',
-        'timer-audio', 
-        'timer-stop-audio', 
-        'reveal-audio', 
-        'next-q-audio', 
-        'leaderboard-audio', 
-        'restart-round-audio', 
-        'restart-game-audio'
-      ];
-      audioIds.forEach(id => stopAudio(id));
-    }
 
     function shuffleArray(arr) {
       const copy = [...arr];
@@ -309,32 +315,26 @@
       });
     }
 
-    // LOAD QUESTION ZERO (STARTUP HOLDING STATE)
-    function loadQuestionZero() {
+    function showWelcomeScreen() {
       currentQIndex = -1;
       clearInterval(timerInterval);
       clearTimeout(musicDelayTimeout);
       stopAllAudio();
 
       document.getElementById('timer-box').innerText = "30";
-      document.getElementById('round-badge').innerText = questionZero.badge;
-      document.getElementById('question-text').innerText = questionZero.question;
-
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`opt-${i}-text`).innerText = questionZero.options[i];
-        const card = document.getElementById(`option-card-${i}`);
-        card.className = "option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all";
-      }
-
-      broadcastQuestionToPlayers(questionZero);
+      document.getElementById('round-badge').innerText = "WELCOME TO CENTRAL PERK ☕";
+      document.getElementById('welcome-card').classList.remove('hidden');
+      document.getElementById('question-card').classList.add('hidden');
     }
 
-    // LOAD ACTIVE GAME QUESTION
     function loadQuestion(index, delayMusicMs = 1200) {
       if (activeGameQuestions.length === 0) initializeGameQueue();
-      
+
       const q = activeGameQuestions[index];
       if (!q) return;
+
+      document.getElementById('welcome-card').classList.add('hidden');
+      document.getElementById('question-card').classList.remove('hidden');
 
       document.getElementById('round-badge').innerText = q.badge;
       document.getElementById('question-text').innerText = q.question;
@@ -352,12 +352,11 @@
     function startTimer(delayMusicMs = 1200) {
       clearInterval(timerInterval);
       clearTimeout(musicDelayTimeout);
-      
+
       timer = 30;
       document.getElementById('timer-box').innerText = timer;
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
-      // DELAY THE THEME INTRO SLIGHTLY SO VOICE QUOTES PLAY CLEANLY
       musicDelayTimeout = setTimeout(() => {
         playAudio('timer-audio'); // 30secondfriendsintro.mp3
       }, delayMusicMs);
@@ -400,9 +399,9 @@
       stopAllAudio();
       playAudio('restart-game-audio'); // don-t-be-so-negative.mp3
 
-      if (confirm("Restart game back to Question 0? This will scramble question choices.")) {
+      if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
         initializeGameQueue();
-        loadQuestionZero();
+        showWelcomeScreen();
         fetch(`${SCRIPT_URL}?action=reset`).catch(() => {});
       }
     }
@@ -432,7 +431,7 @@
       const listContainer = document.getElementById('leaderboard-list');
 
       if (currentQIndex === -1) {
-        listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">Game has not started yet (Question 0).</p>`;
+        listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">Game has not started yet.</p>`;
         return;
       }
 
@@ -497,9 +496,9 @@
       }
     }
 
-    // INITIALIZE QUEUE AND SHOW QUESTION ZERO
+    // INITIALIZE QUEUE & DISPLAY WELCOME SCREEN
     initializeGameQueue();
-    loadQuestionZero();
+    showWelcomeScreen();
   </script>
 </body>
 </html>
