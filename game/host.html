@@ -27,7 +27,7 @@
   </header>
 
   <!-- TOP GAME CONTROLS -->
-  <div class="max-w-6xl w-full mx-auto bg-purple-950/90 p-3.5 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3 mb-4">
+  <div class="max-w-6xl w-full mx-auto bg-purple-950/90 p-3.5 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3 mb-4 relative z-20">
     
     <!-- TIMER DISPLAY -->
     <div class="flex items-center space-x-2">
@@ -39,30 +39,26 @@
 
     <!-- MAIN ACTION BUTTONS -->
     <div class="flex items-center gap-2 flex-wrap">
-      <button onclick="restartGame()" class="bg-red-600 hover:bg-red-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-red-300 shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="restartGame()" class="bg-red-600 hover:bg-red-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-red-300 shadow transition-all active:scale-95 flex items-center gap-1 cursor-pointer relative z-30">
         ⏮️ Restart Game
       </button>
 
-      <button onclick="restartRound()" class="bg-yellow-500 hover:bg-yellow-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-yellow-300 shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="restartRound()" class="bg-yellow-500 hover:bg-yellow-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-yellow-300 shadow transition-all active:scale-95 flex items-center gap-1 cursor-pointer relative z-30">
         🔄 Restart Round
       </button>
 
-      <button onclick="revealAnswer()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-green-300 shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="revealAnswer()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-green-300 shadow transition-all active:scale-95 flex items-center gap-1 cursor-pointer relative z-30">
         💡 Reveal Answer
       </button>
 
-      <button onclick="openLeaderboard()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-blue-300 shadow transition-all active:scale-95 flex items-center gap-1">
-        🏆 Leaderboard
-      </button>
-
-      <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-4 py-2 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-4 py-2 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95 flex items-center gap-1 cursor-pointer relative z-30">
         Next Question ➡️
       </button>
     </div>
   </div>
 
   <!-- MAIN CARD CONTAINER -->
-  <main class="max-w-4xl w-full mx-auto my-auto py-2 space-y-4">
+  <main class="max-w-4xl w-full mx-auto my-auto py-2 space-y-4 relative z-10">
 
     <!-- ROUND BADGE -->
     <div class="text-center py-1">
@@ -106,23 +102,23 @@
         Loading Question...
       </h2>
 
-      <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div id="option-card-0" onclick="selectOption(0)" class="option-card bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
+      <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-20">
+        <button id="option-card-0" onclick="selectOption(0)" class="option-card w-full text-left bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg pointer-events-none">A</span>
           <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100 pointer-events-none"></span>
-        </div>
-        <div id="option-card-1" onclick="selectOption(1)" class="option-card bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
+        </button>
+        <button id="option-card-1" onclick="selectOption(1)" class="option-card w-full text-left bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg pointer-events-none">B</span>
           <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100 pointer-events-none"></span>
-        </div>
-        <div id="option-card-2" onclick="selectOption(2)" class="option-card bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
+        </button>
+        <button id="option-card-2" onclick="selectOption(2)" class="option-card w-full text-left bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg pointer-events-none">C</span>
           <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100 pointer-events-none"></span>
-        </div>
-        <div id="option-card-3" onclick="selectOption(3)" class="option-card bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
+        </button>
+        <button id="option-card-3" onclick="selectOption(3)" class="option-card w-full text-left bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg pointer-events-none">D</span>
           <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100 pointer-events-none"></span>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -143,7 +139,7 @@
         <p id="end-message" class="font-bold text-lg text-purple-200 italic mt-2"></p>
       </div>
 
-      <button onclick="restartGame()" class="mt-4 bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-sm px-6 py-3 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95">
+      <button onclick="restartGame()" class="mt-4 bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-sm px-6 py-3 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95 cursor-pointer">
         Play Again! 🔄
       </button>
     </div>
@@ -151,46 +147,46 @@
   </main>
 
   <!-- DEDICATED SOUNDBOARD SECTION -->
-  <section class="max-w-6xl w-full mx-auto bg-purple-950/90 border-2 border-yellow-400/80 rounded-2xl p-3 shadow-2xl my-3">
+  <section class="max-w-6xl w-full mx-auto bg-purple-950/90 border-2 border-yellow-400/80 rounded-2xl p-3 shadow-2xl my-3 relative z-20">
     <div class="flex items-center justify-between border-b border-yellow-400/30 pb-2 mb-2.5 px-1">
       <h3 class="text-xs font-black text-yellow-400 uppercase tracking-widest flex items-center gap-1.5">
         🔊 Central Perk Soundboard
       </h3>
-      <button onclick="stopAllAudio()" class="bg-red-600 hover:bg-red-500 text-white font-black text-[10px] px-2.5 py-1 rounded-lg shadow active:scale-95 uppercase">
+      <button onclick="stopAllAudio()" class="bg-red-600 hover:bg-red-500 text-white font-black text-[10px] px-2.5 py-1 rounded-lg shadow active:scale-95 uppercase cursor-pointer">
         ⏹ Stop All Audio
       </button>
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 text-center">
-      <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-bold text-[11px] p-2 rounded-xl shadow active:scale-95 truncate">
+      <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-bold text-[11px] p-2 rounded-xl shadow active:scale-95 truncate cursor-pointer">
         ☕ Friends Theme
       </button>
-      <button onclick="playSound('claps.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('claps.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         👏 Claps
       </button>
-      <button onclick="playSound('hello-you.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('hello-you.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         👋 Hello You
       </button>
-      <button onclick="playSound('how-dumb-are-you.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('how-dumb-are-you.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         🤨 How Dumb?
       </button>
-      <button onclick="playSound('don-t-be-so-negative.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('don-t-be-so-negative.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         😒 Be Negative
       </button>
-      <button onclick="playSound('don-t-blame-the-questions.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('don-t-blame-the-questions.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         ❓ Blame Questions
       </button>
-      <button onclick="playSound('enough-already.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('enough-already.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         🛑 Enough Already
       </button>
-      <button onclick="playSound('i-got-a-question.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate">
+      <button onclick="playSound('i-got-a-question.mp3')" class="bg-purple-800 hover:bg-purple-700 text-yellow-300 font-bold text-[11px] p-2 rounded-xl border border-yellow-400/40 shadow active:scale-95 truncate cursor-pointer">
         🙋 I Got Question
       </button>
     </div>
   </section>
 
   <!-- BOTTOM FOOTER -->
-  <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-2 pt-2">
+  <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-2 pt-2 relative z-20">
     <div class="flex items-center space-x-2">
       <span class="bg-purple-950 px-3 py-1 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold shadow text-[11px]">
         📲 Players Join: <span class="text-white underline">alicekeeler.github.io/friends-trivia/game/</span>
@@ -200,26 +196,6 @@
       <span>🔊</span> <span id="status-text">Audio Engine Ready</span>
     </div>
   </footer>
-
-  <!-- LEADERBOARD MODAL -->
-  <div id="leaderboard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-purple-950 border-4 border-yellow-400 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative space-y-4">
-      <div class="flex items-center justify-between border-b border-yellow-400/30 pb-3">
-        <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
-          🏆 Live Round Scores
-        </h3>
-        <button onclick="closeLeaderboard()" class="text-yellow-400 hover:text-white font-black text-xl px-2">✕</button>
-      </div>
-
-      <div id="leaderboard-list" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
-        <p class="text-center text-purple-300 italic py-4">Loading team scores...</p>
-      </div>
-
-      <button onclick="closeLeaderboard()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl transition-all">
-        Close Leaderboard
-      </button>
-    </div>
-  </div>
 
   <script>
     // UPDATE THIS URL IF NEEDED
@@ -705,9 +681,10 @@
       for (let i = 0; i < 4; i++) {
         document.getElementById(`opt-${i}-text`).innerText = q.options[i];
         const card = document.getElementById(`option-card-${i}`);
-        card.className = "option-card bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95";
+        card.className = "option-card w-full text-left bg-purple-950 hover:bg-purple-800 cursor-pointer border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all shadow-md active:scale-95";
       }
 
+      // Broadcast to players via Google Sheet - MULTIPLAYER REMAINS INTACT
       broadcastQuestionToPlayers(q);
       startTimer(delayMusicMs);
     }
@@ -751,7 +728,6 @@
         currentQIndex++;
       }
       
-      // Check if we finished all 11 questions
       if (currentQIndex >= activeGameQuestions.length) {
         showEndScreen();
       } else {
@@ -767,23 +743,32 @@
 
     function restartGame() {
       playSound('don-t-be-so-negative.mp3');
-      if (confirm("Restart game back to Welcome Screen? This will clear all scores and pick a new set of random questions.")) {
+      if (confirm("Restart game back to Welcome Screen? This will clear the team scores from the spreadsheet.")) {
         initializeGameQueue();
         showWelcomeScreen();
         
+        // SPREADSHEET RESET FIX: We fire this twice to ensure it catches depending on how the backend Apps Script is configured (doGet vs doPost).
+        
+        // 1. Post request payload (standard)
         fetch(SCRIPT_URL, { 
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'reset' })
-        }).catch(err => console.error("Reset failed:", err));
+        }).catch(err => console.error("Reset POST failed:", err));
+
+        // 2. URL Parameter payload fallback (bypasses payload parsing issues on GAS side)
+        fetch(`${SCRIPT_URL}?action=reset`, {
+          method: 'GET',
+          mode: 'no-cors'
+        }).catch(err => console.error("Reset GET failed:", err));
       }
     }
 
-    // NEW: Handle clicking on an option locally
+    // LOCAL PLAY: Clicking host options
     function selectOption(index) {
       if (currentQIndex === -1 || hasAnsweredCurrent || isGameOver) return;
-      hasAnsweredCurrent = true;
+      hasAnsweredCurrent = true; // Lock in the answer
       
       clearInterval(timerInterval);
       clearTimeout(musicDelayTimeout);
@@ -794,21 +779,20 @@
       if (index === correctIndex) {
         playSound('claps.mp3');
         localScore++;
-        document.getElementById(`option-card-${index}`).className = "option-card cursor-pointer bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
+        document.getElementById(`option-card-${index}`).className = "option-card w-full text-left cursor-pointer bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
       } else {
         playSound('how-dumb-are-you.mp3');
-        document.getElementById(`option-card-${index}`).className = "option-card cursor-pointer bg-red-900/90 border-4 border-red-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-red-400/50 scale-105";
-        document.getElementById(`option-card-${correctIndex}`).className = "option-card cursor-pointer bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all";
+        document.getElementById(`option-card-${index}`).className = "option-card w-full text-left cursor-pointer bg-red-900/90 border-4 border-red-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-red-400/50 scale-105";
+        document.getElementById(`option-card-${correctIndex}`).className = "option-card w-full text-left cursor-pointer bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all";
       }
     }
 
     function revealAnswer() {
-      if (currentQIndex === -1 || hasAnsweredCurrent || isGameOver) return;
-      hasAnsweredCurrent = true;
-      
+      // Allow reveal even if answered locally, just in case host clicked something by mistake but wants to show the room
       clearTimeout(musicDelayTimeout);
       clearInterval(timerInterval);
       playSound('claps.mp3');
+      hasAnsweredCurrent = true; // Stop them from clicking after revealing
 
       const q = activeGameQuestions[currentQIndex];
       if (!q) return;
@@ -817,19 +801,18 @@
       const correctCard = document.getElementById(`option-card-${correctIndex}`);
 
       if (correctCard) {
-        correctCard.className = "option-card cursor-pointer bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
+        correctCard.className = "option-card w-full text-left cursor-pointer bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
       }
     }
 
-    // NEW: The End Screen
     function showEndScreen() {
       isGameOver = true;
-      currentQIndex = -1; // Keep it out of question mode
+      currentQIndex = -1; 
       clearInterval(timerInterval);
       clearTimeout(musicDelayTimeout);
       stopAllAudio();
       
-      playSound('friends.mp3'); // Play the theme!
+      playSound('friends.mp3');
       
       document.getElementById('timer-box').innerText = "0";
       document.getElementById('round-badge').innerText = "THAT'S A WRAP! 🎬";
@@ -852,63 +835,6 @@
         message = "Oh no... you've been BAMBOOZLED!";
       }
       document.getElementById('end-message').innerText = message;
-    }
-
-    async function openLeaderboard() {
-      playSound('how-dumb-are-you.mp3');
-      document.getElementById('leaderboard-modal').classList.remove('hidden');
-      const listContainer = document.getElementById('leaderboard-list');
-
-      if ((currentQIndex === -1 && !isGameOver)) {
-        listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">Game has not started yet.</p>`;
-        return;
-      }
-      
-      if (isGameOver) {
-         listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">Game Over! Checking final scores...</p>`;
-      } else {
-         listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores from spreadsheet...</p>`;
-      }
-
-      // If game is over, we'll try to fetch round 11 scores as the final state.
-      const roundToFetch = isGameOver ? activeGameQuestions.length : activeGameQuestions[currentQIndex].roundNumber;
-
-      try {
-        const response = await fetch(`${SCRIPT_URL}?action=getScores&round=${roundToFetch}`);
-        const data = await response.json();
-
-        if (data && data.scores) {
-          const scores = data.scores;
-          const teams = Object.keys(scores);
-
-          if (teams.length === 0) {
-            listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">No teams have scored yet.</p>`;
-            return;
-          }
-
-          teams.sort((a, b) => scores[b] - scores[a]);
-
-          let html = '';
-          teams.forEach(team => {
-            html += `
-              <div class="flex items-center justify-between bg-purple-900/80 p-3 rounded-xl border border-yellow-400/40">
-                <span class="font-bold text-white text-sm">${team}</span>
-                <span class="font-bold text-xs text-green-400 bg-green-950 px-2.5 py-1 rounded-lg border border-green-500">
-                  ${scores[team]} PTS
-                </span>
-              </div>
-            `;
-          });
-
-          listContainer.innerHTML = html;
-        }
-      } catch (err) {
-        listContainer.innerHTML = `<p class="text-center text-red-400 font-bold py-4">Unable to load scores. (If playing locally, this is normal!)</p>`;
-      }
-    }
-
-    function closeLeaderboard() {
-      document.getElementById('leaderboard-modal').classList.add('hidden');
     }
 
     async function broadcastQuestionToPlayers(q) {
