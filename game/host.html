@@ -68,8 +68,7 @@
     let currentRound = -1;
     let timerInterval = null;
 
-    // Paste question bank JSON array here
-    const bank = [/* Questions array from Section 1 */];
+ 
 
     function nextQuestion() {
       currentRound++;
@@ -89,6 +88,21 @@
       SFX.question.play().catch(()=>{});
       startTimer();
     }
+
+    //questions
+
+      let bank = [];
+
+  // Load questions automatically when the host page loads
+  window.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const response = await fetch('./questions.json');
+      bank = await response.json();
+      console.log('Question bank loaded successfully!', bank);
+    } catch (err) {
+      console.error('Failed to load questions.json:', err);
+    }
+  });
 
     function startTimer() {
       clearInterval(timerInterval);
