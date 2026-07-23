@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Friends Trivia - Player Pad</title>
+  <title>Friends Trivia - Player</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .purple-door { background-color: #2D0A3E; }
@@ -12,10 +12,10 @@
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans select-none" onclick="unlockMobileAudio()">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-4 font-sans select-none">
 
   <!-- HEADER -->
-  <header class="text-center my-2">
+  <header class="text-center my-3">
     <h1 class="text-3xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
       <span>O</span><span class="friends-dot-red">•</span>
       <span>R</span><span class="friends-dot-blue">•</span>
@@ -23,207 +23,172 @@
       <span>O</span><span class="friends-dot-red">•</span>
       <span>N</span>
     </h1>
-    <p class="text-yellow-400 text-xs font-bold italic mt-0.5">Player Pad ☕</p>
+    <p class="text-yellow-400 italic text-xs font-bold mt-1">Player Response Screen</p>
   </header>
 
-  <main class="w-full max-w-md mx-auto space-y-3 my-auto">
+  <main class="max-w-md w-full mx-auto my-auto space-y-4">
 
-    <!-- TEAM DROPDOWN -->
-    <div class="bg-purple-900/90 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl text-center">
-      <label for="team-select" class="block text-yellow-300 font-bold mb-1 uppercase text-xs tracking-wider">
-        Select Your Team:
-      </label>
-      <select 
-        id="team-select" 
-        class="w-full p-2.5 rounded-xl bg-purple-950 border border-yellow-400 text-yellow-300 font-bold text-center text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
-      >
-        <option value="">-- Choose Your Team --</option>
-        <option value="The Chan-Chan Mans">The Chan-Chan Mans</option>
-        <option value="The Transponsters">The Transponsters</option>
-        <option value="The Smelly Cats">The Smelly Cats</option>
-        <option value="The Holiday Armadillos">The Holiday Armadillos</option>
-        <option value="Princess Consuela & Banana Hammock">Princess Consuela & Banana Hammock</option>
-        <option value="The Regina Phalanges">The Regina Phalanges</option>
-        <option value="The Routine">The Routine</option>
-        <option value="The Chick & The Duck">The Chick & The Duck</option>
-        <option value="Team Unagi">Team Unagi</option>
-        <option value="The Remorays">The Remorays</option>
-        <option value="Central Perk Regulars">Central Perk Regulars</option>
-        <option value="The Ugly Naked Guys">The Ugly Naked Guys</option>
-      </select>
-    </div>
-
-    <!-- ACTIVE QUESTION DISPLAY -->
-    <div class="bg-purple-950/90 p-4 rounded-2xl border-2 border-yellow-400 text-center shadow-lg">
-      <p id="question-number" class="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">
-        Waiting for next question...
-      </p>
-      <h2 id="question-text" class="text-white font-black text-base sm:text-lg leading-snug">
-        Host screen will broadcast the active question here.
+    <!-- TEAM NAME INPUT (IF NOT SET) -->
+    <div id="team-name-card" class="bg-purple-900 border-4 border-yellow-400 rounded-3xl p-6 shadow-2xl space-y-4">
+      <h2 class="text-lg font-black text-center text-yellow-300 uppercase tracking-wider">
+        Enter Your Team Name
       </h2>
-    </div>
-
-    <!-- ANSWER BUTTONS WITH DYNAMIC TEXT -->
-    <div class="bg-purple-900/90 p-3.5 rounded-2xl border-2 border-yellow-400 shadow-xl space-y-2">
-      <p class="text-center text-purple-200 text-xs font-semibold">Tap your team's choice:</p>
-
-      <button onclick="submitAnswer(0)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-2.5 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
-        <span class="bg-yellow-400 text-purple-950 px-3 py-0.5 rounded-lg font-black text-base">A</span>
-        <span id="label-0" class="text-xs sm:text-sm">Option A</span>
-      </button>
-
-      <button onclick="submitAnswer(1)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-2.5 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
-        <span class="bg-yellow-400 text-purple-950 px-3 py-0.5 rounded-lg font-black text-base">B</span>
-        <span id="label-1" class="text-xs sm:text-sm">Option B</span>
-      </button>
-
-      <button onclick="submitAnswer(2)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-2.5 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
-        <span class="bg-yellow-400 text-purple-950 px-3 py-0.5 rounded-lg font-black text-base">C</span>
-        <span id="label-2" class="text-xs sm:text-sm">Option C</span>
-      </button>
-
-      <button onclick="submitAnswer(3)" class="w-full bg-purple-950 hover:bg-yellow-500 hover:text-purple-950 text-yellow-400 border-2 border-yellow-400 font-bold p-2.5 rounded-xl transition-all active:scale-95 text-left flex items-center space-x-3 cursor-pointer">
-        <span class="bg-yellow-400 text-purple-950 px-3 py-0.5 rounded-lg font-black text-base">D</span>
-        <span id="label-3" class="text-xs sm:text-sm">Option D</span>
+      <input id="team-input" type="text" placeholder="e.g. The Chan-Chan Mans" class="w-full p-3 rounded-xl bg-purple-950 border-2 border-yellow-400 text-white font-bold placeholder-purple-400 text-center focus:outline-none focus:ring-2 focus:ring-yellow-300"/>
+      <button onclick="saveTeamName()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-3 rounded-xl transition-all shadow-lg active:scale-95">
+        Join Game 🚀
       </button>
     </div>
 
-    <!-- SUBMISSION STATUS -->
-    <div id="status-msg" class="text-center font-bold text-xs min-h-[18px] text-yellow-300"></div>
+    <!-- MAIN GAME CARD (HIDDEN UNTIL TEAM NAME SET) -->
+    <div id="game-card" class="bg-purple-900 border-4 border-yellow-400 rounded-3xl p-5 shadow-2xl space-y-4 hidden">
+      
+      <!-- TEAM BADGE -->
+      <div class="flex items-center justify-between border-b border-yellow-400/30 pb-2">
+        <span id="team-display-name" class="font-black text-yellow-300 text-sm"></span>
+        <button onclick="changeTeam()" class="text-xs text-purple-300 underline">Change</button>
+      </div>
 
-    <!-- 🔊 FRIENDS SOUNDBOARD -->
-    <div class="bg-purple-950/80 p-3 rounded-2xl border border-yellow-400/40 text-center shadow-lg">
-      <p class="text-yellow-300 font-bold text-xs uppercase tracking-wider mb-1.5 flex items-center justify-center gap-1">
-        <span>🔊</span> Friends Soundboard
-      </p>
-      <div class="grid grid-cols-3 gap-1.5">
-        <button onclick="playSound('howYouDoing')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-[11px] py-1.5 px-1 rounded-lg border border-yellow-400/50 transition-all active:scale-90">
-          😏 How You Doin'
+      <!-- ROUND BADGE -->
+      <div class="text-center">
+        <span id="player-round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-3 py-1 rounded-full">
+          Waiting for Round...
+        </span>
+      </div>
+
+      <!-- QUESTION TEXT -->
+      <h3 id="player-question-text" class="text-base sm:text-lg font-bold text-center text-white leading-snug min-h-[50px] flex items-center justify-center">
+        Waiting for the host to start the round...
+      </h3>
+
+      <!-- ANSWER BUTTONS GRID -->
+      <div id="options-grid" class="grid grid-cols-1 gap-2">
+        <button onclick="submitVote(0)" id="btn-0" class="vote-btn bg-purple-950 border-2 border-yellow-400/60 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 active:scale-95 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded">A</span>
+          <span id="opt-0-label">Option A</span>
         </button>
-        <button onclick="playSound('iKnow')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-[11px] py-1.5 px-1 rounded-lg border border-yellow-400/50 transition-all active:scale-90">
-          ✨ I Know!
+
+        <button onclick="submitVote(1)" id="btn-1" class="vote-btn bg-purple-950 border-2 border-yellow-400/60 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 active:scale-95 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded">B</span>
+          <span id="opt-1-label">Option B</span>
         </button>
-        <button onclick="playSound('helloYou')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-[11px] py-1.5 px-1 rounded-lg border border-yellow-400/50 transition-all active:scale-90">
-          👋 Hello You
+
+        <button onclick="submitVote(2)" id="btn-2" class="vote-btn bg-purple-950 border-2 border-yellow-400/60 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 active:scale-95 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded">C</span>
+          <span id="opt-2-label">Option C</span>
         </button>
-        <button onclick="playSound('iDontKnow')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-[11px] py-1.5 px-1 rounded-lg border border-yellow-400/50 transition-all active:scale-90">
-          🤷 I Don't Know
-        </button>
-        <button onclick="playSound('lostMind')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-[11px] py-1.5 px-1 rounded-lg border border-yellow-400/50 transition-all active:scale-90">
-          🤯 Lost Mind?
-        </button>
-        <button onclick="playSound('claps')" class="bg-purple-900 hover:bg-yellow-400 hover:text-purple-950 text-yellow-300 font-bold text-[11px] py-1.5 px-1 rounded-lg border border-yellow-400/50 transition-all active:scale-90">
-          👏 Claps
+
+        <button onclick="submitVote(3)" id="btn-3" class="vote-btn bg-purple-950 border-2 border-yellow-400/60 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 active:scale-95 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-2.5 py-0.5 rounded">D</span>
+          <span id="opt-3-label">Option D</span>
         </button>
       </div>
+
+      <!-- VOTE STATUS MESSAGE -->
+      <div id="vote-status" class="text-center text-xs font-bold text-yellow-300 min-h-[20px]"></div>
+
     </div>
 
   </main>
 
-  <footer class="text-center text-[10px] text-purple-300 my-1">
-    Orion Handbook Trivia • Powered by Central Perk
+  <footer class="text-center text-xs text-purple-300 my-2">
+    Friends Trivia System • Real-Time Sync Active
   </footer>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbE6je5WshCmMRJ9UTniRhlKM24fAsbqKvCNNEeN2d7b1jYtOdV3UWlirLA_FWyN4c0/exec";
 
-    // AUDIO FILES
-    const playerSounds = {
-      howYouDoing: new Audio('../how-you-doing.mp3'),
-      iKnow: new Audio('../i-know.mp3'),
-      helloYou: new Audio('../hello-you.mp3'),
-      iDontKnow: new Audio('../i-don-t-know.mp3'),
-      lostMind: new Audio('../have-you-lost-your-mind.mp3'),
-      claps: new Audio('../claps.mp3')
-    };
+    let teamName = localStorage.getItem("friends_trivia_team") || "";
+    let currentActiveQ = null;
+    let submittedVote = null;
 
-    let audioUnlocked = false;
+    if (teamName) showGameCard();
 
-    function unlockMobileAudio() {
-      if (audioUnlocked) return;
-      Object.values(playerSounds).forEach(audio => {
-        audio.play().then(() => {
-          audio.pause();
-          audio.currentTime = 0;
-        }).catch(() => {});
-      });
-      audioUnlocked = true;
+    function saveTeamName() {
+      const val = document.getElementById("team-input").value.trim();
+      if (!val) return alert("Please enter a team name!");
+      teamName = val;
+      localStorage.setItem("friends_trivia_team", teamName);
+      showGameCard();
     }
 
-    function playSound(key) {
-      const audio = playerSounds[key];
-      if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(err => console.warn("Audio blocked:", err));
-      }
+    function changeTeam() {
+      localStorage.removeItem("friends_trivia_team");
+      document.getElementById("team-name-card").classList.remove("hidden");
+      document.getElementById("game-card").classList.add("hidden");
     }
 
-    // LIVE QUESTION SYNC (POLLING)
-    let lastQuestionId = null;
+    function showGameCard() {
+      document.getElementById("team-name-card").classList.add("hidden");
+      document.getElementById("game-card").classList.remove("hidden");
+      document.getElementById("team-display-name").innerText = `Team: ${teamName}`;
+      startPollingQuestion();
+    }
 
-    async function fetchLiveQuestion() {
+    // POLL GOOGLE APPS SCRIPT EVERY 2 SECONDS FOR CURRENT QUESTION
+    function startPollingQuestion() {
+      fetchQuestion();
+      setInterval(fetchQuestion, 2000);
+    }
+
+    async function fetchQuestion() {
       try {
         const response = await fetch(`${SCRIPT_URL}?action=getActiveQuestion`);
         const data = await response.json();
 
         if (data && data.question) {
-          // Only update DOM if the question actually changed
-          if (data.id !== lastQuestionId) {
-            lastQuestionId = data.id;
-            document.getElementById('question-number').innerText = `Question ${data.number || ''}`;
-            document.getElementById('question-text').innerText = data.question;
+          // If a new question loaded, clear previous selection state
+          if (!currentActiveQ || currentActiveQ.id !== data.id) {
+            currentActiveQ = data;
+            submittedVote = null;
+            resetOptionStyles();
+            document.getElementById("vote-status").innerText = "";
+          }
 
-            if (data.options && data.options.length >= 4) {
-              document.getElementById('label-0').innerText = data.options[0];
-              document.getElementById('label-1').innerText = data.options[1];
-              document.getElementById('label-2').innerText = data.options[2];
-              document.getElementById('label-3').innerText = data.options[3];
-            }
+          document.getElementById("player-round-badge").innerText = `ROUND ${data.number}`;
+          document.getElementById("player-question-text").innerText = data.question;
+
+          for (let i = 0; i < 4; i++) {
+            document.getElementById(`opt-${i}-label`).innerText = data.options[i] || `Option ${i+1}`;
           }
         }
       } catch (err) {
-        // Silent catch for background polling
+        console.log("Polling active question...", err);
       }
     }
 
-    // Poll for question updates every 2.5 seconds
-    setInterval(fetchLiveQuestion, 2500);
-    fetchLiveQuestion(); // Initial fetch on load
+    // SUBMIT VOTE TO GOOGLE SHEET
+    async function submitVote(optionIndex) {
+      if (!currentActiveQ) return alert("Wait for the host to display a question!");
 
-    async function submitAnswer(index) {
-      const teamName = document.getElementById('team-select').value;
-      const statusMsg = document.getElementById('status-msg');
-
-      if (!teamName) {
-        alert("Please select your Team Name first!");
-        return;
-      }
-
-      const options = ['A', 'B', 'C', 'D'];
-      const chosenOption = options[index];
-
-      statusMsg.className = "text-center font-bold text-xs text-yellow-400 animate-pulse";
-      statusMsg.innerText = `Submitting choice ${chosenOption}...`;
+      submittedVote = optionIndex;
+      highlightSelectedOption(optionIndex);
+      document.getElementById("vote-status").innerText = "⏳ Recording vote in spreadsheet...";
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'submitVote',
-            team: teamName,
-            round: 1,
-            answer: index
-          })
-        });
+        const url = `${SCRIPT_URL}?action=submitVote&team=${encodeURIComponent(teamName)}&round=${currentActiveQ.number}&vote=${optionIndex}`;
+        await fetch(url, { mode: 'no-cors' });
 
-        statusMsg.className = "text-center font-bold text-xs text-green-400";
-        statusMsg.innerText = `✅ Choice ${chosenOption} locked in for "${teamName}"!`;
+        document.getElementById("vote-status").innerText = "✅ Answer Locked In!";
       } catch (err) {
-        console.error(err);
-        statusMsg.className = "text-center font-bold text-xs text-red-400";
-        statusMsg.innerText = "❌ Submission failed. Try again.";
+        document.getElementById("vote-status").innerText = "❌ Connection error, tap to retry.";
+      }
+    }
+
+    function highlightSelectedOption(selectedIndex) {
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-${i}`);
+        if (i === selectedIndex) {
+          btn.className = "vote-btn bg-green-700 border-4 border-green-300 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 text-white scale-102";
+        } else {
+          btn.className = "vote-btn bg-purple-950 border-2 border-yellow-400/30 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 opacity-50";
+        }
+      }
+    }
+
+    function resetOptionStyles() {
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-${i}`);
+        btn.className = "vote-btn bg-purple-950 border-2 border-yellow-400/60 p-3 rounded-xl text-left font-bold text-sm flex items-center gap-3 active:scale-95 transition-all";
       }
     }
   </script>
