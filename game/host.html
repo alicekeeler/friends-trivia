@@ -215,7 +215,6 @@
       font-weight: 600;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       .options-grid { grid-template-columns: 1fr; }
       .control-toolbar { justify-content: center; }
@@ -249,33 +248,16 @@
 
   <!-- 🏷️ ROUND INDICATOR -->
   <div class="round-badge" id="round-title">
-    ROUND 1 OF 11: CLOCKING IN/OUT
+    LOADING QUESTIONS...
   </div>
 
   <!-- ❓ QUESTION DISPLAY BOX -->
   <div class="question-card">
     <div class="question-text" id="question-text">
-      Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?
+      Loading game dataset...
     </div>
 
-    <div class="options-grid" id="options-container">
-      <div class="option-btn" id="opt-0">
-        <div class="option-badge">A</div>
-        <div>Allowed if you are good friends</div>
-      </div>
-      <div class="option-btn" id="opt-1">
-        <div class="option-badge">B</div>
-        <div>Strictly prohibited and considered payroll fraud</div>
-      </div>
-      <div class="option-btn" id="opt-2">
-        <div class="option-badge">C</div>
-        <div>Allowed twice per month</div>
-      </div>
-      <div class="option-btn" id="opt-3">
-        <div class="option-badge">D</div>
-        <div>Only permitted during coffee breaks</div>
-      </div>
-    </div>
+    <div class="options-grid" id="options-container"></div>
   </div>
 
   <!-- 🦶 FOOTER BAR -->
@@ -288,110 +270,69 @@
     </div>
   </div>
 
-  <!-- 🎵 AUDIO ENGINE -->
   <audio id="audio-player"></audio>
 
   <script>
-    // 🔗 LEADERBOARD URL (Set this to your separate Leaderboard view file or Google Apps Script URL)
-    const LEADERBOARD_URL = "Leaderboard.html"; 
+    const LEADERBOARD_URL = "Leaderboard.html";
+    const JSON_PATH = "questions.json";
 
-    // 📋 FULL QUESTIONS DATASET (11 ROUNDS / TOPICS)
-    const QUESTIONS = [
-      {
-        round: 1,
-        category: "CLOCKING IN/OUT",
-        q: "Chandler asks Joey to clock him in because he's running late after dropping his shoe in a toilet. What does the handbook say about buddy punching?",
-        options: ["Allowed if you are good friends", "Strictly prohibited and considered payroll fraud", "Allowed twice per month", "Only permitted during coffee breaks"],
-        answer: 1
-      },
-      {
-        round: 2,
-        category: "DRESS CODE",
-        q: "Joey walks into the office wearing ALL of Chandler's clothes at once ('Could I BE wearing any more clothes?'). Is this compliant with workplace attire policy?",
-        options: ["Yes, if it's Friday", "No, attire must be neat, clean, and appropriate for business casual", "Yes, as long as he doesn't do lunges", "Only if HR approves the brand"],
-        answer: 1
-      },
-      {
-        round: 3,
-        category: "SEXUAL HARASSMENT",
-        q: "Joey winks and asks a coworker 'How YOU doin'?' repeatedly after being asked to stop. What should the coworker do?",
-        options: ["Ignore it forever", "Report it to HR, a supervisor, or Compliance Coordinator immediately", "Challenge Joey to an arm wrestling match", "Post about it on social media"],
-        answer: 1
-      },
-      {
-        round: 4,
-        category: "BEREAVEMENT LEAVE",
-        q: "Phoebe's beloved grandmother passes away. Under the updated policy, how is bereavement leave requested?",
-        options: ["Send a pigeon", "Notify HR and supervisor as soon as possible to receive designated paid leave", "Take 3 weeks off without telling anyone", "Trade shifts with Monica"],
-        answer: 1
-      },
-      {
-        round: 5,
-        category: "INCLEMENT WEATHER",
-        q: "A massive snowstorm hits, and Monica's apartment is snowed in. How do employees learn about official office closures?",
-        options: ["Wait for Phoebe to sing a song", "Check official company notification channels / emergency alerts", "Assume office is closed if temperature is under 30°F", "Call Central Perk"],
-        answer: 1
-      },
-      {
-        round: 6,
-        category: "DRUG FREE WORKPLACE",
-        q: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
-        options: ["Strictly drug-free workplace; prohibited on premises or while performing duties", "Allowed during lunch hours", "Allowed if brought in a Tupperware container", "Only prohibited on Mondays"],
-        answer: 0
-      },
-      {
-        round: 7,
-        category: "LUNCH BREAKS",
-        q: "Ross screams 'MY SANDWICH?!' after someone takes his Moist Maker from the fridge. What is the breakroom fridge policy?",
-        options: ["Label your food; items left at end of week will be cleaned out", "Bosses can eat any sandwich they want", "No food allowed in fridge", "Joey owns all fridge food"],
-        answer: 0
-      },
-      {
-        round: 8,
-        category: "FMLA",
-        q: "Rachel needs extended leave after giving birth to Emma. What is the eligibility requirement for FMLA?",
-        options: ["12 months of service & at least 1,250 hours worked in past 12 months", "1 month of service", "5 years of service", "Must live in Apartment 20"],
-        answer: 0
-      },
-      {
-        round: 9,
-        category: "PAYROLL DATES",
-        q: "Chandler asks 'When do we actually get paid?'. Where can employees find official payroll schedule dates?",
-        options: ["On the breakroom bulletin board and employee portal schedule", "By asking Gunther at Central Perk", "Every day at 5 PM", "Whenever Chandler asks"],
-        answer: 0
-      },
-      {
-        round: 10,
-        category: "KPERS & KPERS 457",
-        q: "Phoebe asks if KPERS retirement participation is optional or mandatory for eligible positions. What is the rule?",
-        options: ["Mandatory for covered eligible employees from day one", "Optional after 10 years", "Only for paleontologists", "Replaced by Central Perk coffee vouchers"],
-        answer: 0
-      },
-      {
-        round: 11,
-        category: "WORK COMP",
-        q: "Ross injures his shoulder shouting 'PIVOT!' while lifting office furniture. When must a workplace injury be reported?",
-        options: ["Immediately to your supervisor/HR", "Next month", "Only if you need surgery", "After telling Chandler"],
-        answer: 0
-      }
-    ];
-
+    let gameQuestions = [];
+    let rawCategoriesData = [];
     let currentIndex = 0;
     let timerInterval = null;
     let secondsElapsed = 0;
 
-    // 🚀 INITIALIZE SCREEN
+    // 📥 FETCH & INITIALIZE GAME
+    async function initGame() {
+      try {
+        const response = await fetch(JSON_PATH);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        
+        rawCategoriesData = await response.json();
+        buildRandomizedGame();
+      } catch (err) {
+        console.error("Error loading questions.json:", err);
+        document.getElementById('question-text').innerText = 
+          "Failed to load questions.json. Ensure file is saved in the same directory and served via a local web server (e.g. GitHub Pages or VS Code Live Server).";
+      }
+    }
+
+    // 🎲 PICK ONE RANDOM QUESTION PER CATEGORY
+    function buildRandomizedGame() {
+      gameQuestions = rawCategoriesData.map((cat, idx) => {
+        // Pick random question from array
+        const randomQIndex = Math.floor(Math.random() * cat.questions.length);
+        const selectedQ = cat.questions[randomQIndex];
+
+        return {
+          round: idx + 1,
+          category: cat.category.toUpperCase(),
+          q: selectedQ.q,
+          // Strip "A) ", "B) " prefixes if present so option text stays clean
+          options: selectedQ.options.map(opt => opt.replace(/^[A-D]\)\s*/i, '')),
+          answer: selectedQ.answer
+        };
+      });
+
+      currentIndex = 0;
+      loadQuestion(0);
+    }
+
+    // 🚀 DISPLAY CURRENT QUESTION
     function loadQuestion(index) {
-      const qData = QUESTIONS[index];
-      document.getElementById('round-title').innerText = `ROUND ${qData.round} OF ${QUESTIONS.length}: ${qData.category}`;
+      if (!gameQuestions.length) return;
+
+      const qData = gameQuestions[index];
+      document.getElementById('round-title').innerText = `ROUND ${qData.round} OF ${gameQuestions.length}: ${qData.category}`;
       document.getElementById('question-text').innerText = qData.q;
 
       const letters = ['A', 'B', 'C', 'D'];
       const container = document.getElementById('options-container');
-      container.innerHTML = qData.options.map((opt, i) => `
+      
+      container.innerHTML = qData.options.map((optText, i) => `
         <div class="option-btn" id="opt-${i}">
           <div class="option-badge">${letters[i]}</div>
-          <div>${opt}</div>
+          <div>${optText}</div>
         </div>
       `).join('');
 
@@ -401,7 +342,8 @@
 
     // 💡 REVEAL CORRECT ANSWER
     function revealAnswer() {
-      const qData = QUESTIONS[currentIndex];
+      if (!gameQuestions.length) return;
+      const qData = gameQuestions[currentIndex];
       const correctBtn = document.getElementById(`opt-${qData.answer}`);
       if (correctBtn) {
         correctBtn.classList.add('correct');
@@ -410,11 +352,11 @@
 
     // ➡️ NEXT QUESTION
     function nextQuestion() {
-      if (currentIndex < QUESTIONS.length - 1) {
+      if (currentIndex < gameQuestions.length - 1) {
         currentIndex++;
         loadQuestion(currentIndex);
       } else {
-        alert("You have reached the end of all 11 rounds!");
+        alert("You have reached the end of all rounds!");
       }
     }
 
@@ -424,18 +366,17 @@
     }
 
     function restartGame() {
-      if (confirm("Restart game back to Round 1?")) {
-        currentIndex = 0;
-        loadQuestion(0);
+      if (confirm("Restart game? This will pick a new set of random questions from questions.json!")) {
+        buildRandomizedGame();
       }
     }
 
-    // 🏆 OPEN LEADERBOARD
+    // 🏆 LEADERBOARD
     function openLeaderboard() {
       window.open(LEADERBOARD_URL, '_blank');
     }
 
-    // ⏱️ TIMER LOGIC
+    // ⏱️ TIMER
     function startTimer() {
       clearInterval(timerInterval);
       secondsElapsed = 0;
@@ -452,20 +393,18 @@
       document.getElementById('timer-display').innerText = "0";
     }
 
-    // 🔊 AUDIO CONTROLS
+    // 🔊 AUDIO
     function playAudio(type) {
-      const status = document.getElementById('audio-status');
-      status.innerText = "🔊 Playing: Friends Theme.mp3";
+      document.getElementById('audio-status').innerText = "🔊 Playing: Friends Theme.mp3";
     }
 
     function stopAudio() {
-      const status = document.getElementById('audio-status');
-      status.innerText = "🔇 Audio: Stopped";
+      document.getElementById('audio-status').innerText = "🔇 Audio: Stopped";
     }
 
     // START ON LOAD
     window.onload = () => {
-      loadQuestion(0);
+      initGame();
     };
   </script>
 </body>
