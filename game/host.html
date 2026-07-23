@@ -12,17 +12,7 @@
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans select-none" onclick="unlockAudioOnce()">
-
-  <!-- AUDIO ELEMENTS -->
-  <audio id="full-theme-audio" src="friends.mp3" preload="auto"></audio>
-  <audio id="timer-audio" src="30secondfriendsintro.mp3" preload="auto"></audio>
-  <audio id="timer-stop-audio" src="enough-already.mp3" preload="auto"></audio>
-  <audio id="reveal-audio" src="claps.mp3" preload="auto"></audio>
-  <audio id="next-q-audio" src="i-got-a-question.mp3" preload="auto"></audio>
-  <audio id="leaderboard-audio" src="how-dumb-are-you.mp3" preload="auto"></audio>
-  <audio id="restart-round-audio" src="how-come-you-re-working-here.mp3" preload="auto"></audio>
-  <audio id="restart-game-audio" src="don-t-be-so-negative.mp3" preload="auto"></audio>
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 md:p-8 font-sans select-none" onclick="unlockAudioEngine()">
 
   <!-- FRIENDS-STYLE HEADER -->
   <header class="text-center my-2">
@@ -36,15 +26,15 @@
     <p class="text-yellow-400 italic text-sm font-bold tracking-widest mt-1">"The One With the Employee Handbook" ☕</p>
   </header>
 
-  <!-- TOP CONTROL BAR -->
-  <div class="max-w-6xl w-full mx-auto bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3">
+  <!-- TOP CONTROL BAR (WITH MARGIN BELOW) -->
+  <div class="max-w-6xl w-full mx-auto bg-purple-950/90 p-3.5 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3 mb-6">
     
     <!-- FRIENDS THEME & STOP ALL -->
     <div class="flex items-center space-x-2">
-      <button onclick="playAudio('full-theme-audio')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
+      <button onclick="playSound('friends.mp3')" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95 flex items-center gap-1">
         ☕ FRIENDS THEME ▶ Play
       </button>
-      <button onclick="stopAllAudio()" class="bg-red-500 hover:bg-red-400 text-white font-black text-xs px-3 py-2 rounded-xl shadow transition-all active:scale-95">
+      <button onclick="stopAllAudio()" class="bg-red-500 hover:bg-red-400 text-white font-black text-xs px-3.5 py-2 rounded-xl shadow transition-all active:scale-95">
         ⏹ Stop All
       </button>
     </div>
@@ -86,12 +76,12 @@
     </div>
   </div>
 
-  <!-- MAIN CARD CONTAINER -->
-  <main class="max-w-4xl w-full mx-auto my-auto space-y-4">
+  <!-- MAIN CARD CONTAINER (WITH VERTICAL MARGIN) -->
+  <main class="max-w-4xl w-full mx-auto my-auto py-4 space-y-6">
 
     <!-- ROUND BADGE -->
-    <div class="text-center">
-      <span id="round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-4 py-1.5 rounded-full border-2 border-yellow-200 tracking-wider shadow-md">
+    <div class="text-center py-2">
+      <span id="round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-5 py-2 rounded-full border-2 border-yellow-200 tracking-wider shadow-md">
         WELCOME TO CENTRAL PERK ☕
       </span>
     </div>
@@ -150,15 +140,15 @@
 
   </main>
 
-  <!-- BOTTOM FOOTER -->
-  <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-2">
+  <!-- BOTTOM FOOTER (WITH TOP MARGIN TO PREVENT OVERLAP) -->
+  <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-3 mt-8 pt-4">
     <div class="flex items-center space-x-2">
-      <span class="bg-purple-950 px-3 py-1 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold">
+      <span class="bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold shadow">
         📲 Players Join: <span class="text-white underline">alicekeeler.github.io/friends-trivia/game/</span>
       </span>
     </div>
-    <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1">
-      <span>🔊</span> Central Perk Audio Engine Active
+    <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow">
+      <span>🔊</span> <span id="status-text">Central Perk Audio Engine Active</span>
     </div>
   </footer>
 
@@ -185,62 +175,51 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbxf_7zgRk51eJcHgUwMsIsVwInZp3pfn04NdldD2zaqO-R4_G2lYzBKoVJ3LR-D4lj8/exec";
 
-    const audioFileMap = {
-      'full-theme-audio': 'friends.mp3',
-      'timer-audio': '30secondfriendsintro.mp3',
-      'timer-stop-audio': 'enough-already.mp3',
-      'reveal-audio': 'claps.mp3',
-      'next-q-audio': 'i-got-a-question.mp3',
-      'leaderboard-audio': 'how-dumb-are-you.mp3',
-      'restart-round-audio': 'how-come-you-re-working-here.mp3',
-      'restart-game-audio': 'don-t-be-so-negative.mp3'
-    };
+    // AUDIO MANAGEMENT SYSTEM
+    const activeAudioMap = {};
+    let isUnlocked = false;
 
-    let audioUnlocked = false;
-
-    function unlockAudioOnce() {
-      if (audioUnlocked) return;
-      Object.keys(audioFileMap).forEach(id => {
-        const audio = document.getElementById(id);
-        if (audio) {
-          audio.play().then(() => {
-            audio.pause();
-            audio.currentTime = 0;
-          }).catch(() => {});
-        }
-      });
-      audioUnlocked = true;
+    function unlockAudioEngine() {
+      if (isUnlocked) return;
+      isUnlocked = true;
+      document.getElementById('status-text').innerText = "Central Perk Audio Engine Active";
     }
 
-    function playAudio(elementId) {
-      unlockAudioOnce();
-      const audio = document.getElementById(elementId);
-      if (audio) {
+    function playSound(filename) {
+      unlockAudioEngine();
+      stopAllAudio();
+
+      try {
+        if (!activeAudioMap[filename]) {
+          activeAudioMap[filename] = new Audio('./' + filename);
+        }
+
+        const audio = activeAudioMap[filename];
         audio.currentTime = 0;
-        const promise = audio.play();
-        if (promise !== undefined) {
-          promise.catch(() => {
-            // FALLBACK TO DIRECT AUDIO INSTANCE IF DOM AUDIO WAS BLOCKED
-            const filename = audioFileMap[elementId];
-            if (filename) {
-              const freshAudio = new Audio(filename);
-              freshAudio.play().catch(e => console.error("Audio failed:", e));
-            }
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            document.getElementById('status-text').innerText = `Playing: ${filename}`;
+            document.getElementById('status-indicator').className = "text-green-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-green-500/40 shadow";
+          }).catch(error => {
+            console.error(`Error playing ${filename}:`, error);
+            document.getElementById('status-text').innerText = `⚠️ Audio file '${filename}' not found or blocked`;
+            document.getElementById('status-indicator').className = "text-yellow-400 font-semibold flex items-center gap-1 bg-purple-950 px-3 py-1.5 rounded-lg border border-yellow-500/40 shadow";
           });
         }
-      }
-    }
-
-    function stopAudio(elementId) {
-      const audio = document.getElementById(elementId);
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
+      } catch (err) {
+        console.error("Audio engine failure:", err);
       }
     }
 
     function stopAllAudio() {
-      Object.keys(audioFileMap).forEach(id => stopAudio(id));
+      Object.keys(activeAudioMap).forEach(key => {
+        if (activeAudioMap[key]) {
+          activeAudioMap[key].pause();
+          activeAudioMap[key].currentTime = 0;
+        }
+      });
     }
 
     // QUESTION POOL
@@ -358,7 +337,7 @@
       document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
       musicDelayTimeout = setTimeout(() => {
-        playAudio('timer-audio'); // 30secondfriendsintro.mp3
+        playSound('30secondfriendsintro.mp3');
       }, delayMusicMs);
 
       timerInterval = setInterval(() => {
@@ -369,15 +348,13 @@
         }
         if (timer <= 0) {
           clearInterval(timerInterval);
-          stopAudio('timer-audio');
-          playAudio('timer-stop-audio'); // enough-already.mp3
+          playSound('enough-already.mp3');
         }
       }, 1000);
     }
 
     function nextQuestion() {
-      stopAllAudio();
-      playAudio('next-q-audio'); // i-got-a-question.mp3
+      playSound('i-got-a-question.mp3');
 
       if (currentQIndex === -1) {
         currentQIndex = 0;
@@ -390,14 +367,12 @@
 
     function restartRound() {
       if (currentQIndex === -1) return;
-      stopAllAudio();
-      playAudio('restart-round-audio'); // how-come-you-re-working-here.mp3
+      playSound('how-come-you-re-working-here.mp3');
       loadQuestion(currentQIndex, 1800);
     }
 
     function restartGame() {
-      stopAllAudio();
-      playAudio('restart-game-audio'); // don-t-be-so-negative.mp3
+      playSound('don-t-be-so-negative.mp3');
 
       if (confirm("Restart game back to Welcome Screen? This will reshuffle question order.")) {
         initializeGameQueue();
@@ -408,9 +383,8 @@
 
     function revealAnswer() {
       if (currentQIndex === -1) return;
-      stopAudio('timer-audio');
       clearTimeout(musicDelayTimeout);
-      playAudio('reveal-audio'); // claps.mp3
+      playSound('claps.mp3');
 
       const q = activeGameQuestions[currentQIndex];
       if (!q) return;
@@ -424,8 +398,7 @@
     }
 
     async function openLeaderboard() {
-      stopAudio('timer-audio');
-      playAudio('leaderboard-audio'); // how-dumb-are-you.mp3
+      playSound('how-dumb-are-you.mp3');
 
       document.getElementById('leaderboard-modal').classList.remove('hidden');
       const listContainer = document.getElementById('leaderboard-list');
@@ -496,7 +469,7 @@
       }
     }
 
-    // INITIALIZE QUEUE & DISPLAY WELCOME SCREEN
+    // INITIALIZE QUEUE & SHOW WELCOME SCREEN
     initializeGameQueue();
     showWelcomeScreen();
   </script>
