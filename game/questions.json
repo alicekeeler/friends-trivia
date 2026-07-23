@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Host Screen - Orion Friends Trivia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .purple-door { background-color: #3B0764; }
+    .yellow-frame {
+      border: 10px solid #FBBF24;
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
+    }
+  </style>
+</head>
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-8 font-sans">
+
+  <!-- TOP HEADER & CONTROLS -->
+  <header class="flex justify-between items-center border-b-4 border-yellow-400 pb-4">
+    <div>
+      <h1 class="text-4xl font-black text-yellow-300">ORION HANDBOOK TRIVIA</h1>
+      <p class="text-sm text-purple-200 uppercase tracking-widest">Host Master Display</p>
+    </div>
+    <div class="flex items-center space-x-4">
+      <div id="timer" class="text-5xl font-black text-yellow-400 bg-purple-950 px-6 py-2 rounded-2xl border-4 border-yellow-400">30</div>
+      <button onclick="nextQuestion()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black px-6 py-3 rounded-xl text-xl shadow-lg">NEXT QUESTION ➡️</button>
+    </div>
+  </header>
+
+  <!-- MAIN QUESTION DISPLAY -->
+  <main class="my-auto flex flex-col items-center">
+    <div id="category-badge" class="bg-yellow-400 text-purple-950 font-black text-lg px-6 py-2 rounded-full uppercase mb-4">
+      Category: Clocking In/Out
+    </div>
+
+    <!-- PURPLE DOOR & YELLOW FRAME DISPLAY -->
+    <div class="yellow-frame bg-purple-900 p-8 rounded-3xl w-full max-w-4xl text-center">
+      <h2 id="question-text" class="text-3xl font-bold text-white mb-8">
+        Press "NEXT QUESTION" to Start Game!
+      </h2>
+
+      <!-- 4 OPTIONS GRID -->
+      <div class="grid grid-cols-2 gap-4 text-left">
+        <div id="opt-box-0" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-lg font-semibold"><span class="text-yellow-400 font-bold mr-2">A)</span> <span id="h-opt-0">--</span></div>
+        <div id="opt-box-1" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-lg font-semibold"><span class="text-yellow-400 font-bold mr-2">B)</span> <span id="h-opt-1">--</span></div>
+        <div id="opt-box-2" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-lg font-semibold"><span class="text-yellow-400 font-bold mr-2">C)</span> <span id="h-opt-2">--</span></div>
+        <div id="opt-box-3" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-lg font-semibold"><span class="text-yellow-400 font-bold mr-2">D)</span> <span id="h-opt-3">--</span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER audio feedback -->
+  <footer class="flex justify-between items-center text-sm text-purple-300">
+    <div>Scan QR on Mobile: <span class="text-yellow-300 font-bold">alicekeeler.github.io/friends-trivia/game/</span></div>
+    <div id="audio-status">🔊 Sound Engine Ready</div>
+  </footer>
+
+  <script>
+    // AUDIO MAPPING TO ROOT DIRECTORY FILES
+    const SFX = {
+      question: new Audio('../how-came-you-re-working-here.mp3'),
+      warning: new Audio('../how-the-hell-am-i-supposed-to-make-this-kind-of-decision.mp3'),
+      timesUp: new Audio('../enough-already.mp3'),
+      correct: new Audio('../excellent.mp3'),
+      wrong: new Audio('../don-t-blame-the-questions.mp3')
+    };
+
+    let currentRound = -1;
+    let timerInterval = null;
+
+    // Paste question bank JSON array here
+    const bank = [/* Questions array from Section 1 */];
+
+    function nextQuestion() {
+      currentRound++;
+      if (currentRound >= bank.length) { alert('Game Over!'); return; }
+
+      // Pick random question within category
+      const topic = bank[currentRound];
+      const q = topic.questions[Math.floor(Math.random() * topic.questions.length)];
+
+      document.getElementById('category-badge').innerText = `Category: ${topic.category}`;
+      document.getElementById('question-text').innerText = q.q;
+      document.getElementById('h-opt-0').innerText = q.options[0];
+      document.getElementById('h-opt-1').innerText = q.options[1];
+      document.getElementById('h-opt-2').innerText = q.options[2];
+      document.getElementById('h-opt-3').innerText = q.options[3];
+
+      SFX.question.play().catch(()=>{});
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      let timeLeft = 30;
+      document.getElementById('timer').innerText = timeLeft;
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = timeLeft;
+        if (timeLeft === 10) SFX.warning.play().catch(()=>{});
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          SFX.timesUp.play().catch(()=>{});
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
