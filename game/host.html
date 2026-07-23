@@ -14,18 +14,25 @@
 </head>
 <body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans select-none">
 
-  <!-- HEADER -->
-  <header class="text-center">
-    <p class="text-yellow-400 italic text-sm font-bold tracking-widest">"The One With the Employee Handbook"</p>
+  <!-- FRIENDS-STYLE HEADER -->
+  <header class="text-center my-2">
+    <h1 class="text-4xl sm:text-5xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
+      <span>O</span><span class="friends-dot-red">•</span>
+      <span>R</span><span class="friends-dot-blue">•</span>
+      <span>I</span><span class="friends-dot-yellow">•</span>
+      <span>O</span><span class="friends-dot-red">•</span>
+      <span>N</span>
+    </h1>
+    <p class="text-yellow-400 italic text-sm font-bold tracking-widest mt-1">"The One With the Employee Handbook" ☕</p>
   </header>
 
   <!-- TOP CONTROL BAR -->
-  <div class="max-w-5xl w-full mx-auto bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3">
+  <div class="max-w-6xl w-full mx-auto bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3">
     
-    <!-- 1. FULL THEME SONG (friends.mp3) -->
+    <!-- FULL THEME SONG (friends.mp3) -->
     <div class="flex items-center space-x-2">
       <span class="text-xs font-bold text-yellow-300 uppercase">🎵 Theme Song</span>
-      <audio controls src="friends.mp3" class="h-8 max-w-[220px] rounded-lg bg-yellow-400"></audio>
+      <audio controls src="friends.mp3" class="h-8 max-w-[200px] rounded-lg bg-yellow-400"></audio>
     </div>
 
     <!-- TIMER DISPLAY -->
@@ -37,17 +44,23 @@
 
     <!-- ACTION BUTTONS -->
     <div class="flex items-center gap-2 flex-wrap">
-      <!-- 2. RESTART ROUND BUTTON -->
+      
+      <!-- RESTART GAME (BACK TO Q1 & SCRAMBLE) -->
+      <button onclick="restartGame()" class="bg-red-600 hover:bg-red-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-red-300 shadow transition-all active:scale-95 flex items-center gap-1">
+        ⏮️ Restart Game (Q1)
+      </button>
+
+      <!-- RESTART ROUND BUTTON -->
       <button onclick="restartRound()" class="bg-yellow-500 hover:bg-yellow-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-yellow-300 shadow transition-all active:scale-95 flex items-center gap-1">
         🔄 Restart Round
       </button>
 
-      <!-- 3. REVEAL ANSWER BUTTON -->
+      <!-- REVEAL ANSWER BUTTON -->
       <button onclick="revealAnswer()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-green-300 shadow transition-all active:scale-95 flex items-center gap-1">
         💡 Reveal Answer
       </button>
 
-      <!-- 4. LEADERBOARD BUTTON -->
+      <!-- LEADERBOARD BUTTON -->
       <button onclick="openLeaderboard()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-blue-300 shadow transition-all active:scale-95 flex items-center gap-1">
         🏆 Leaderboard
       </button>
@@ -65,14 +78,14 @@
     <!-- ROUND BADGE -->
     <div class="text-center">
       <span id="round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-4 py-1.5 rounded-full border-2 border-yellow-200 tracking-wider shadow-md">
-        ROUND 6 OF 11: DRUG FREE WORKPLACE
+        ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY
       </span>
     </div>
 
     <!-- QUESTION CARD -->
     <div class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
       <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
-        Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?
+        Loading Question...
       </h2>
 
       <!-- OPTIONS GRID -->
@@ -80,22 +93,22 @@
         
         <div id="option-card-0" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">A</span>
-          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100">Strictly drug-free workplace; prohibited on premises or while performing duties</span>
+          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100">Option A</span>
         </div>
 
         <div id="option-card-1" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">B</span>
-          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100">Allowed during lunch hours</span>
+          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100">Option B</span>
         </div>
 
         <div id="option-card-2" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">C</span>
-          <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100">Allowed if brought in a Tupperware container</span>
+          <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100">Option C</span>
         </div>
 
         <div id="option-card-3" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
           <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">D</span>
-          <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100">Only prohibited on Mondays</span>
+          <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100">Option D</span>
         </div>
 
       </div>
@@ -140,45 +153,88 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbE6je5WshCmMRJ9UTniRhlKM24fAsbqKvCNNEeN2d7b1jYtOdV3UWlirLA_FWyN4c0/exec";
 
-    // QUESTION BANK WITH ANSWER KEYS (0=A, 1=B, 2=C, 3=D)
-    const questions = [
+    // QUESTION POOL (EACH ROUND/TOPIC HAS MULTIPLE QUESTION OPTIONS)
+    const topicPool = [
       {
-        id: "q1",
-        roundNumber: "1",
+        roundNumber: 1,
         badge: "ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY",
-        question: "Monica is obsessed with being on time. What is Orion's policy regarding tardiness?",
-        options: [
-          "Notify supervisor as soon as possible if arriving late",
-          "Hide under your desk until noon",
-          "Blame Chandler",
-          "Tardiness is strictly allowed on Tuesdays"
-        ],
-        correct: 0
+        questions: [
+          {
+            id: "q1_a",
+            question: "Monica is obsessed with being on time. What is Orion's policy regarding tardiness?",
+            options: ["Notify supervisor as soon as possible if arriving late", "Hide under your desk until noon", "Blame Chandler", "Tardiness is strictly allowed on Tuesdays"],
+            correctText: "Notify supervisor as soon as possible if arriving late"
+          },
+          {
+            id: "q1_b",
+            question: "If Joey oversleeps for his shift, what is the required protocol?",
+            options: ["Notify supervisor immediately prior to shift start", "Send Joey's twin Carl to cover", "Blame daylight saving time", "Eat a sandwich and show up at 2 PM"],
+            correctText: "Notify supervisor immediately prior to shift start"
+          }
+        ]
       },
       {
-        id: "q6",
-        roundNumber: "6",
+        roundNumber: 6,
         badge: "ROUND 6 OF 11: DRUG FREE WORKPLACE",
-        question: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
-        options: [
-          "Strictly drug-free workplace; prohibited on premises or while performing duties",
-          "Allowed during lunch hours",
-          "Allowed if brought in a Tupperware container",
-          "Only prohibited on Mondays"
-        ],
-        correct: 0
+        questions: [
+          {
+            id: "q6_a",
+            question: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
+            options: ["Strictly drug-free workplace; prohibited on premises or while performing duties", "Allowed during lunch hours", "Allowed if brought in a Tupperware container", "Only prohibited on Mondays"],
+            correctText: "Strictly drug-free workplace; prohibited on premises or while performing duties"
+          },
+          {
+            id: "q6_b",
+            question: "Phoebe brings unauthorized controlled substances near company premises. Is this permitted?",
+            options: ["Strictly prohibited on company premises or during work hours", "Permitted if shared with supervisors", "Permitted on Fridays after 3 PM", "Permitted in the coffee lounge"],
+            correctText: "Strictly prohibited on company premises or during work hours"
+          }
+        ]
       }
     ];
 
-    let currentQIndex = 1; // Defaulting to Question 6 from screenshot
+    let activeGameQuestions = [];
+    let currentQIndex = 0;
     let timer = 30;
     let timerInterval = null;
 
-    // SOUND EFFECTS
     const winSound = new Audio('claps.mp3');
 
+    // SCRAMBLE ARRAY UTILITY
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // INITIALIZE A NEW GAME (PICKS RANDOM QUESTION PER TOPIC & SHUFFLES OPTIONS)
+    function initializeGameQueue() {
+      activeGameQuestions = topicPool.map(topic => {
+        // Pick random question from topic pool
+        const rawQ = topic.questions[Math.floor(Math.random() * topic.questions.length)];
+        
+        // Shuffle options and relocate correct answer index
+        const shuffledOpts = shuffleArray(rawQ.options);
+        const newCorrectIndex = shuffledOpts.indexOf(rawQ.correctText);
+
+        return {
+          id: rawQ.id,
+          roundNumber: topic.roundNumber,
+          badge: topic.badge,
+          question: rawQ.question,
+          options: shuffledOpts,
+          correct: newCorrectIndex
+        };
+      });
+    }
+
     function loadQuestion(index) {
-      const q = questions[index];
+      if (activeGameQuestions.length === 0) initializeGameQueue();
+      
+      const q = activeGameQuestions[index];
       if (!q) return;
 
       document.getElementById('round-badge').innerText = q.badge;
@@ -214,27 +270,38 @@
       }, 1000);
     }
 
-    // 2. RESTART ROUND FUNCTION
+    // RESTART GAME BACK TO QUESTION 1 (WITH FRESH SCRAMBLE)
+    async function restartGame() {
+      if (confirm("Are you sure you want to restart the game from Question 1? This will scramble new questions.")) {
+        initializeGameQueue();
+        currentQIndex = 0;
+        loadQuestion(currentQIndex);
+
+        // Reset database scores on backend
+        try {
+          await fetch(`${SCRIPT_URL}?action=reset`);
+        } catch(e){}
+      }
+    }
+
+    // RESTART CURRENT ROUND TIMER
     function restartRound() {
       loadQuestion(currentQIndex);
     }
 
-    // 3. REVEAL ANSWER FUNCTION
     function revealAnswer() {
-      const q = questions[currentQIndex];
+      const q = activeGameQuestions[currentQIndex];
       if (!q) return;
 
       const correctIndex = q.correct;
       const correctCard = document.getElementById(`option-card-${correctIndex}`);
 
-      // Highlight in glowing green
       correctCard.className = "option-card bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
       
       winSound.currentTime = 0;
       winSound.play().catch(() => {});
     }
 
-    // BROADCAST ACTIVE QUESTION TO BACKEND (PLAYER PHONES)
     async function broadcastQuestionToPlayers(q) {
       try {
         await fetch(SCRIPT_URL, {
@@ -255,17 +322,16 @@
     }
 
     function nextQuestion() {
-      currentQIndex = (currentQIndex + 1) % questions.length;
+      currentQIndex = (currentQIndex + 1) % activeGameQuestions.length;
       loadQuestion(currentQIndex);
     }
 
-    // 4. LEADERBOARD FUNCTIONS
     async function openLeaderboard() {
       document.getElementById('leaderboard-modal').classList.remove('hidden');
       const listContainer = document.getElementById('leaderboard-list');
       listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores...</p>`;
 
-      const currentQ = questions[currentQIndex];
+      const currentQ = activeGameQuestions[currentQIndex];
 
       try {
         const response = await fetch(`${SCRIPT_URL}?action=getVotes&round=${currentQ.roundNumber}`);
@@ -306,8 +372,8 @@
       document.getElementById('leaderboard-modal').classList.add('hidden');
     }
 
-    // INITIAL LOAD
-    loadQuestion(currentQIndex);
+    // START GAME ON LOAD
+    restartGame();
   </script>
 </body>
 </html>
