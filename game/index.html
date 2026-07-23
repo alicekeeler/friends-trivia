@@ -59,7 +59,7 @@
   <!-- MAIN CONTAINER -->
   <main class="max-w-2xl w-full mx-auto my-auto space-y-5">
 
-    <!-- SCREEN 1: TEAM SELECTION (DEFAULT VISIBLE) -->
+    <!-- SCREEN 1: TEAM SELECTION -->
     <div id="login-card" class="bg-[#23123d] gold-border rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
       <h2 class="text-2xl sm:text-3xl font-bold text-amber-400">
         Choose Your Team! ☕
@@ -72,7 +72,7 @@
       <div class="space-y-4 text-left max-w-md mx-auto">
         <div>
           <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Select Team Name</label>
-          <select id="team-select" class="w-full bg-[#150a26] text-amber-300 font-bold p-4 rounded-2xl border-2 border-amber-500/60 focus:border-amber-400 outline-none text-base">
+          <select id="team-select" class="w-full bg-[#150a26] text-amber-300 font-bold p-4 rounded-2xl border-2 border-amber-500/60 focus:border-amber-400 outline-none text-base cursor-pointer">
             <option value="">-- Choose Your Team --</option>
             <option value="Central Perk Regulars">Central Perk Regulars</option>
             <option value="The Chanandler Bongs">The Chanandler Bongs</option>
@@ -83,21 +83,15 @@
             <option value="The Smelly Cats">The Smelly Cats</option>
             <option value="Team Unagi">Team Unagi</option>
             <option value="The Pivoters">The Pivoters</option>
-            <option value="Ugly Naked Guys">Ugly Naked Guys</option>
+            <option value="The Geller Cup Champions">The Geller Cup Champions</option>
             <option value="The Transponsters">The Transponsters</option>
-            <option value="Crap Bag & Phoebe">Crap Bag & Phoebe</option>
+            <option value="Mike & Phoebe">Mike & Phoebe</option>
           </select>
-        </div>
-
-        <div class="text-center text-xs text-purple-300 italic">- OR -</div>
-
-        <div>
-          <input type="text" id="custom-team-input" placeholder="Type Custom Team Name..." class="w-full bg-[#150a26] text-white font-bold p-3.5 rounded-2xl border border-purple-700 focus:border-amber-400 outline-none text-sm placeholder-purple-400/70"/>
         </div>
       </div>
 
       <div id="login-error" class="text-red-400 font-bold text-xs hidden">
-        ⚠️ Please select or enter a team name!
+        ⚠️ Please select a team name from the list!
       </div>
 
       <button onclick="lockInTeam()" class="max-w-md w-full gold-pill font-black text-lg py-4 rounded-2xl border-2 border-amber-200 shadow-xl active:scale-95 transition-all cursor-pointer">
@@ -105,7 +99,7 @@
       </button>
     </div>
 
-    <!-- SCREEN 2: GAME DASHBOARD (HIDDEN BY DEFAULT) -->
+    <!-- SCREEN 2: GAME DASHBOARD -->
     <div id="play-dashboard" class="space-y-4 hidden">
 
       <div class="bg-[#1e0f35] border border-amber-500/40 rounded-2xl p-3 px-4 flex items-center justify-between shadow-md">
@@ -235,27 +229,28 @@
     let currentTeam = "";
     let activeQIndex = 1;
     let teamAnswers = {};
-    let audioCtx = null;
 
+    // Standard HTML5 Audio implementation
     function playSound(key) {
-      // Add your actual MP3 URLs here
-      const soundUrls = {
-        'claps': 'https://your-link-here.com/claps.mp3',
-        'howdoin': 'https://your-link-here.com/howdoin.mp3',
-        'allright': 'https://your-link-here.com/allright.mp3',
-        'bing': 'https://your-link-here.com/bing.mp3',
-        'excellent': 'https://your-link-here.com/excellent.mp3',
-        'verygood': 'https://your-link-here.com/verygood.mp3',
-        'helloyou': 'https://your-link-here.com/helloyou.mp3',
-        'decision': 'https://your-link-here.com/decision.mp3',
-        'dontknow': 'https://your-link-here.com/dontknow.mp3',
-        'iknow': 'https://your-link-here.com/iknow.mp3'
+      // NOTE: If this file is running locally, it looks for an 'audio' folder next to the HTML file. 
+      // If hosted on Google Apps Script, you MUST replace these with full web URLs (e.g. 'https://mywebsite.com/claps.mp3')
+      const audioFiles = {
+        'claps': 'audio/claps.mp3',
+        'howdoin': 'audio/howdoin.mp3',
+        'allright': 'audio/allright.mp3',
+        'bing': 'audio/bing.mp3',
+        'excellent': 'audio/excellent.mp3',
+        'verygood': 'audio/verygood.mp3',
+        'helloyou': 'audio/helloyou.mp3',
+        'decision': 'audio/decision.mp3',
+        'dontknow': 'audio/dontknow.mp3',
+        'iknow': 'audio/iknow.mp3'
       };
 
       try {
-        if (soundUrls[key]) {
-          const audio = new Audio(soundUrls[key]);
-          audio.play().catch(e => console.warn("Browser blocked audio play:", e));
+        if (audioFiles[key]) {
+          const sound = new Audio(audioFiles[key]);
+          sound.play().catch(e => console.error("Audio playback blocked by browser:", e));
         }
       } catch(e) {
         console.error("Sound error:", e);
@@ -263,12 +258,10 @@
     }
 
     function lockInTeam() {
-      const sel = document.getElementById('team-select')?.value;
-      const custom = document.getElementById('custom-team-input')?.value.trim();
-      const chosen = custom !== "" ? custom : sel;
+      const chosen = document.getElementById('team-select').value;
 
       if (!chosen) {
-        document.getElementById('login-error')?.classList.remove('hidden');
+        document.getElementById('login-error').classList.remove('hidden');
         return;
       }
 
@@ -284,25 +277,20 @@
     function showLogin() {
       currentTeam = "";
       teamAnswers = {};
-      document.getElementById('login-card')?.classList.remove('hidden');
-      document.getElementById('play-dashboard')?.classList.add('hidden');
-      document.getElementById('footer-team-display')?.classList.add('hidden');
-      if (document.getElementById('team-select')) document.getElementById('team-select').value = "";
-      if (document.getElementById('custom-team-input')) document.getElementById('custom-team-input').value = "";
-      document.getElementById('login-error')?.classList.add('hidden');
+      document.getElementById('login-card').classList.remove('hidden');
+      document.getElementById('play-dashboard').classList.add('hidden');
+      document.getElementById('footer-team-display').classList.add('hidden');
+      document.getElementById('team-select').value = "";
+      document.getElementById('login-error').classList.add('hidden');
     }
 
     function showDashboard() {
-      document.getElementById('login-card')?.classList.add('hidden');
-      document.getElementById('play-dashboard')?.classList.remove('hidden');
-      document.getElementById('footer-team-display')?.classList.remove('hidden');
+      document.getElementById('login-card').classList.add('hidden');
+      document.getElementById('play-dashboard').classList.remove('hidden');
+      document.getElementById('footer-team-display').classList.remove('hidden');
       
-      if (document.getElementById('active-team-display')) {
-        document.getElementById('active-team-display').innerText = currentTeam;
-      }
-      if (document.getElementById('current-team-name')) {
-        document.getElementById('current-team-name').innerText = currentTeam;
-      }
+      document.getElementById('active-team-display').innerText = currentTeam;
+      document.getElementById('current-team-name').innerText = currentTeam;
 
       renderQuestionGrid();
       updateOptionsUI();
@@ -311,7 +299,6 @@
 
     function renderQuestionGrid() {
       const container = document.getElementById('questions-grid');
-      if (!container) return;
       container.innerHTML = '';
 
       let answeredCount = 0;
@@ -339,14 +326,12 @@
         container.appendChild(btn);
       }
 
-      const countEl = document.getElementById('answered-count-text');
-      if (countEl) countEl.innerText = `${answeredCount} of 11 Answered`;
+      document.getElementById('answered-count-text').innerText = `${answeredCount} of 11 Answered`;
     }
 
     function selectQuestion(qNum) {
       activeQIndex = qNum;
-      const lbl = document.getElementById('active-question-label');
-      if (lbl) lbl.innerText = `QUESTION ${qNum}`;
+      document.getElementById('active-question-label').innerText = `QUESTION ${qNum}`;
       renderQuestionGrid();
       updateOptionsUI();
     }
@@ -356,28 +341,24 @@
       const userAns = teamAnswers[qKey] || null;
 
       const badge = document.getElementById('selected-badge');
-      if (badge) {
-        if (userAns) {
-          badge.innerText = `Selected: (${userAns})`;
-          badge.className = "bg-amber-400 text-purple-950 border border-amber-200 text-xs font-black px-3 py-1 rounded-full shadow";
-        } else {
-          badge.innerText = `Selected: None`;
-          badge.className = "bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full";
-        }
+      if (userAns) {
+        badge.innerText = `Selected: (${userAns})`;
+        badge.className = "bg-amber-400 text-purple-950 border border-amber-200 text-xs font-black px-3 py-1 rounded-full shadow";
+      } else {
+        badge.innerText = `Selected: None`;
+        badge.className = "bg-[#120822] text-amber-300 border border-amber-500/50 text-xs font-bold px-3 py-1 rounded-full";
       }
 
       ['A', 'B', 'C', 'D'].forEach(letter => {
         const btn = document.getElementById(`opt-btn-${letter}`);
         const check = document.getElementById(`opt-${letter}-check`);
 
-        if (btn) {
-          if (userAns === letter) {
-            btn.className = "opt-btn gold-pill border-2 border-amber-200 p-3.5 rounded-2xl flex items-center justify-between transition-all scale-[1.02] shadow-lg font-black cursor-pointer";
-            if (check) check.classList.remove('hidden');
-          } else {
-            btn.className = "opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer";
-            if (check) check.classList.add('hidden');
-          }
+        if (userAns === letter) {
+          btn.className = "opt-btn gold-pill border-2 border-amber-200 p-3.5 rounded-2xl flex items-center justify-between transition-all scale-[1.02] shadow-lg font-black cursor-pointer";
+          check.classList.remove('hidden');
+        } else {
+          btn.className = "opt-btn bg-[#18291f] hover:bg-[#203a2c] border-2 border-amber-500/60 p-3.5 rounded-2xl flex items-center justify-between transition-all active:scale-95 text-left cursor-pointer";
+          check.classList.add('hidden');
         }
       });
     }
@@ -392,9 +373,9 @@
       renderQuestionGrid();
 
       try {
+        // Updated to use text/plain to bypass Google Apps Script CORS issues
         await fetch(SCRIPT_URL, {
           method: 'POST',
-          // Use text/plain to bypass Google Apps Script CORS preflight restrictions
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             team: currentTeam,
@@ -403,7 +384,7 @@
           })
         });
       } catch (err) {
-        console.error("Failed to post answer to Google Sheet:", err);
+        console.error("Failed to post answer:", err);
       }
     }
 
@@ -476,7 +457,6 @@
       document.getElementById('results-modal').classList.add('hidden');
     }
 
-    // Explicitly show the team select login card
     showLogin();
   </script>
 </body>
