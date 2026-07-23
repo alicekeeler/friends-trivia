@@ -2,211 +2,312 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Host TV Screen - Orion Friends Trivia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friends Trivia - Host Control Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .purple-door { background-color: #2D0A3E; }
-    .yellow-frame {
-      border: 8px solid #FBBF24;
-      box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
-    }
     .friends-dot-red { color: #E11D48; }
     .friends-dot-blue { color: #2563EB; }
     .friends-dot-yellow { color: #F59E0B; }
   </style>
 </head>
-<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans">
+<body class="purple-door text-white min-h-screen flex flex-col justify-between p-6 font-sans select-none">
 
-  <!-- HEADER AREA -->
-  <header class="flex flex-col items-center w-full max-w-5xl mx-auto border-b-4 border-yellow-400 pb-4">
-    
-    <!-- FRIENDS DOTS LOGO -->
-    <div class="text-center my-2">
-      <h1 class="text-5xl md:text-6xl font-black tracking-widest text-white flex items-center justify-center space-x-1 font-mono uppercase">
-        <span>O</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
-        <span>R</span><span class="friends-dot-blue text-3xl mx-0.5">•</span>
-        <span>I</span><span class="friends-dot-yellow text-3xl mx-0.5">•</span>
-        <span>O</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
-        <span>N</span>
-        <span class="mx-4 text-yellow-400 text-4xl">|</span>
-        <span>T</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
-        <span>R</span><span class="friends-dot-blue text-3xl mx-0.5">•</span>
-        <span>I</span><span class="friends-dot-yellow text-3xl mx-0.5">•</span>
-        <span>V</span><span class="friends-dot-red text-3xl mx-0.5">•</span>
-        <span>I</span><span class="friends-dot-blue text-3xl mx-0.5">•</span>
-        <span>A</span>
-      </h1>
-      <p class="text-xl italic text-yellow-300 font-serif font-bold mt-2">
-        "The One With the Employee Handbook"
-      </p>
-    </div>
-
-    <!-- AUDIO PLAYER & GAME CONTROLS -->
-    <div class="w-full flex flex-col md:flex-row justify-between items-center mt-4 bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-500/40 gap-4">
-      
-      <!-- FULL THEME SONG (55 SECONDS) -->
-      <div class="flex items-center space-x-3 w-full md:w-auto">
-        <span class="text-yellow-400 font-bold text-sm tracking-wider flex items-center whitespace-nowrap">
-          🎵 FULL THEME SONG
-        </span>
-        <audio id="full-theme-player" controls class="h-9 w-64 rounded-lg accent-yellow-400">
-          <source src="../short%20friends%20intro.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
-      </div>
-
-      <!-- TIMER & NEXT BUTTON -->
-      <div class="flex items-center space-x-4">
-        <div id="timer" class="text-4xl font-black text-yellow-400 bg-purple-900 px-5 py-1 rounded-xl border-2 border-yellow-400 shadow-md min-w-[80px] text-center">
-          30
-        </div>
-        <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black px-6 py-2.5 rounded-xl text-lg shadow-lg transition-transform active:scale-95 cursor-pointer whitespace-nowrap">
-          NEXT QUESTION ➡️
-        </button>
-      </div>
-    </div>
+  <!-- HEADER -->
+  <header class="text-center">
+    <p class="text-yellow-400 italic text-sm font-bold tracking-widest">"The One With the Employee Handbook"</p>
   </header>
 
-  <!-- MAIN QUESTION BOARD -->
-  <main class="my-auto flex flex-col items-center w-full max-w-5xl mx-auto py-4">
-    <div id="category-badge" class="bg-yellow-400 text-purple-950 font-black text-base px-6 py-1.5 rounded-full uppercase mb-4 shadow-md tracking-wide">
-      Category: Welcome to Friends Trivia
+  <!-- TOP CONTROL BAR -->
+  <div class="max-w-5xl w-full mx-auto bg-purple-950/80 p-3 rounded-2xl border-2 border-yellow-400 shadow-xl flex flex-wrap items-center justify-between gap-3">
+    
+    <!-- 1. FULL THEME SONG (friends.mp3) -->
+    <div class="flex items-center space-x-2">
+      <span class="text-xs font-bold text-yellow-300 uppercase">🎵 Theme Song</span>
+      <audio controls src="friends.mp3" class="h-8 max-w-[220px] rounded-lg bg-yellow-400"></audio>
     </div>
 
-    <div class="yellow-frame bg-purple-900/90 p-8 rounded-3xl w-full text-center shadow-2xl">
-      <h2 id="question-text" class="text-2xl md:text-3xl font-bold text-white mb-6 min-h-[80px] flex items-center justify-center">
-        Click "NEXT QUESTION" above to start Round 1! ☕
-      </h2>
-
-      <!-- 4 OPTIONS GRID -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-        <div id="opt-box-0" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
-          <span class="text-yellow-400 font-black text-2xl mr-3">A</span>
-          <span id="h-opt-0" class="text-purple-100">Option A</span>
-        </div>
-        <div id="opt-box-1" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
-          <span class="text-yellow-400 font-black text-2xl mr-3">B</span>
-          <span id="h-opt-1" class="text-purple-100">Option B</span>
-        </div>
-        <div id="opt-box-2" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
-          <span class="text-yellow-400 font-black text-2xl mr-3">C</span>
-          <span id="h-opt-2" class="text-purple-100">Option C</span>
-        </div>
-        <div id="opt-box-3" class="bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center">
-          <span class="text-yellow-400 font-black text-2xl mr-3">D</span>
-          <span id="h-opt-3" class="text-purple-100">Option D</span>
-        </div>
+    <!-- TIMER DISPLAY -->
+    <div class="flex items-center space-x-2">
+      <div id="timer-box" class="bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner">
+        30
       </div>
     </div>
-  </main>
 
-  <!-- FOOTER -->
-  <footer class="flex justify-between items-center text-xs md:text-sm text-purple-300 border-t-2 border-purple-800/60 pt-3 max-w-5xl mx-auto w-full">
-    <div class="flex items-center space-x-2">
-      <span>📲 Players Scan & Join:</span>
-      <span class="text-yellow-300 font-mono font-bold bg-purple-950 px-3 py-1 rounded-lg border border-yellow-400/30">
-        alicekeeler.github.io/friends-trivia/game/
+    <!-- ACTION BUTTONS -->
+    <div class="flex items-center gap-2 flex-wrap">
+      <!-- 2. RESTART ROUND BUTTON -->
+      <button onclick="restartRound()" class="bg-yellow-500 hover:bg-yellow-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-yellow-300 shadow transition-all active:scale-95 flex items-center gap-1">
+        🔄 Restart Round
+      </button>
+
+      <!-- 3. REVEAL ANSWER BUTTON -->
+      <button onclick="revealAnswer()" class="bg-green-500 hover:bg-green-400 text-purple-950 font-black text-xs px-3 py-2 rounded-xl border border-green-300 shadow transition-all active:scale-95 flex items-center gap-1">
+        💡 Reveal Answer
+      </button>
+
+      <!-- 4. LEADERBOARD BUTTON -->
+      <button onclick="openLeaderboard()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-3 py-2 rounded-xl border border-blue-300 shadow transition-all active:scale-95 flex items-center gap-1">
+        🏆 Leaderboard
+      </button>
+
+      <!-- NEXT QUESTION BUTTON -->
+      <button onclick="nextQuestion()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black text-xs px-4 py-2 rounded-xl border-2 border-yellow-200 shadow transition-all active:scale-95 flex items-center gap-1">
+        Next Question ➡️
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN QUESTION DISPLAY -->
+  <main class="max-w-4xl w-full mx-auto my-auto space-y-4">
+
+    <!-- ROUND BADGE -->
+    <div class="text-center">
+      <span id="round-badge" class="bg-yellow-400 text-purple-950 font-black text-xs uppercase px-4 py-1.5 rounded-full border-2 border-yellow-200 tracking-wider shadow-md">
+        ROUND 6 OF 11: DRUG FREE WORKPLACE
       </span>
     </div>
-    <div id="audio-status" class="text-green-400 font-semibold flex items-center">
-      <span class="mr-1.5">🔊</span> Friends Sound Engine Ready
+
+    <!-- QUESTION CARD -->
+    <div class="bg-purple-900/90 border-4 border-yellow-400 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-center text-white leading-snug">
+        Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?
+      </h2>
+
+      <!-- OPTIONS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <div id="option-card-0" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">A</span>
+          <span id="opt-0-text" class="text-sm sm:text-base font-bold text-purple-100">Strictly drug-free workplace; prohibited on premises or while performing duties</span>
+        </div>
+
+        <div id="option-card-1" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">B</span>
+          <span id="opt-1-text" class="text-sm sm:text-base font-bold text-purple-100">Allowed during lunch hours</span>
+        </div>
+
+        <div id="option-card-2" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">C</span>
+          <span id="opt-2-text" class="text-sm sm:text-base font-bold text-purple-100">Allowed if brought in a Tupperware container</span>
+        </div>
+
+        <div id="option-card-3" class="option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all">
+          <span class="bg-yellow-400 text-purple-950 font-black px-3 py-1 rounded-lg text-lg">D</span>
+          <span id="opt-3-text" class="text-sm sm:text-base font-bold text-purple-100">Only prohibited on Mondays</span>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM FOOTER -->
+  <footer class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between text-xs text-purple-300 gap-2">
+    <div class="flex items-center space-x-2">
+      <span class="bg-purple-950 px-3 py-1 rounded-lg border border-yellow-400/40 text-yellow-300 font-bold">
+        📲 Players Scan & Join: <span class="text-white underline">alicekeeler.github.io/friends-trivia/game/</span>
+      </span>
+    </div>
+    <div id="status-indicator" class="text-green-400 font-semibold flex items-center gap-1">
+      <span>🔊</span> Friends Sound Engine Ready
     </div>
   </footer>
 
-  <!-- SCRIPT LOGIC -->
-  <script>
-    const SFX = {
-      fullTheme: document.getElementById('full-theme-player'),
-      timerSong: new Audio('../30secondfriendsintro.mp3'),
-      question: new Audio('../i-got-a-question.mp3'),
-      warning: new Audio('../how-the-hell-am-i-supposed-to-make-this-kind-of-decision.mp3'),
-      timesUp: new Audio('../enough-already.mp3'),
-      winner: new Audio('../i-know.mp3')
-    };
+  <!-- 🏆 LEADERBOARD MODAL -->
+  <div id="leaderboard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+    <div class="bg-purple-950 border-4 border-yellow-400 w-full max-w-lg rounded-3xl p-6 shadow-2xl relative space-y-4">
+      
+      <div class="flex items-center justify-between border-b border-yellow-400/30 pb-3">
+        <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
+          🏆 Current Standings
+        </h3>
+        <button onclick="closeLeaderboard()" class="text-yellow-400 hover:text-white font-black text-xl px-2">✕</button>
+      </div>
 
-    let bank = [];
-    let currentRound = -1;
+      <div id="leaderboard-list" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <p class="text-center text-purple-300 italic py-4">Loading team scores...</p>
+      </div>
+
+      <button onclick="closeLeaderboard()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-950 font-black py-2.5 rounded-xl transition-all">
+        Close Leaderboard
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/a/macros/orioneducation.org/s/AKfycbE6je5WshCmMRJ9UTniRhlKM24fAsbqKvCNNEeN2d7b1jYtOdV3UWlirLA_FWyN4c0/exec";
+
+    // QUESTION BANK WITH ANSWER KEYS (0=A, 1=B, 2=C, 3=D)
+    const questions = [
+      {
+        id: "q1",
+        roundNumber: "1",
+        badge: "ROUND 1 OF 11: ATTENDANCE & PUNCTUALITY",
+        question: "Monica is obsessed with being on time. What is Orion's policy regarding tardiness?",
+        options: [
+          "Notify supervisor as soon as possible if arriving late",
+          "Hide under your desk until noon",
+          "Blame Chandler",
+          "Tardiness is strictly allowed on Tuesdays"
+        ],
+        correct: 0
+      },
+      {
+        id: "q6",
+        roundNumber: "6",
+        badge: "ROUND 6 OF 11: DRUG FREE WORKPLACE",
+        question: "Ross accidentally eats a 'special' brownie before coming to work. What is Orion's policy on controlled substances?",
+        options: [
+          "Strictly drug-free workplace; prohibited on premises or while performing duties",
+          "Allowed during lunch hours",
+          "Allowed if brought in a Tupperware container",
+          "Only prohibited on Mondays"
+        ],
+        correct: 0
+      }
+    ];
+
+    let currentQIndex = 1; // Defaulting to Question 6 from screenshot
+    let timer = 30;
     let timerInterval = null;
 
-    // FETCH QUESTIONS FROM QUESTIONS.JSON
-    window.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const response = await fetch('./questions.json');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        bank = await response.json();
-        console.log('Question bank loaded successfully:', bank);
-      } catch (err) {
-        console.error('Failed to load questions.json:', err);
-        document.getElementById('question-text').innerText = '⚠️ Error loading questions.json!';
-      }
-    });
+    // SOUND EFFECTS
+    const winSound = new Audio('claps.mp3');
 
-    function nextQuestion() {
-      if (!bank || bank.length === 0) {
-        alert('Questions are still loading or questions.json is missing!');
-        return;
-      }
+    function loadQuestion(index) {
+      const q = questions[index];
+      if (!q) return;
 
-      // Stop manual full theme song if it's currently playing
-      SFX.fullTheme.pause();
+      document.getElementById('round-badge').innerText = q.badge;
+      document.getElementById('question-text').innerText = q.question;
 
-      currentRound++;
-      if (currentRound >= bank.length) {
-        clearInterval(timerInterval);
-        SFX.timerSong.pause();
-        document.getElementById('category-badge').innerText = 'GAME COMPLETED';
-        document.getElementById('question-text').innerText = '🎉 Congratulations! You survived the Handbook Trivia!';
-        SFX.winner.play().catch(() => {});
-        return;
-      }
-
-      // Reset option box styling
       for (let i = 0; i < 4; i++) {
-        const box = document.getElementById(`opt-box-${i}`);
-        box.className = "bg-purple-950 p-4 rounded-xl border-2 border-yellow-500 text-base md:text-lg font-semibold flex items-center";
+        document.getElementById(`opt-${i}-text`).innerText = q.options[i];
+        
+        // Reset Card Highlights
+        const card = document.getElementById(`option-card-${i}`);
+        card.className = "option-card bg-purple-950 border-2 border-yellow-400/60 p-4 rounded-2xl flex items-center space-x-3 transition-all";
       }
 
-      // Select topic and pick a random question inside it
-      const topic = bank[currentRound];
-      const q = topic.questions[Math.floor(Math.random() * topic.questions.length)];
-
-      // Update UI
-      document.getElementById('category-badge').innerText = `Round ${currentRound + 1} of ${bank.length}: ${topic.category}`;
-      document.getElementById('question-text').innerText = q.q;
-      document.getElementById('h-opt-0').innerText = q.options[0];
-      document.getElementById('h-opt-1').innerText = q.options[1];
-      document.getElementById('h-opt-2').innerText = q.options[2];
-      document.getElementById('h-opt-3').innerText = q.options[3];
-
-      // Play Intro Voice Clip & Start 30s Music Countdown
-      SFX.question.play().catch(() => {});
+      broadcastQuestionToPlayers(q);
       startTimer();
     }
 
     function startTimer() {
       clearInterval(timerInterval);
-      let timeLeft = 30;
-      document.getElementById('timer').innerText = timeLeft;
-
-      // Play 30-Second Intro Song during Countdown
-      SFX.timerSong.currentTime = 0;
-      SFX.timerSong.play().catch(e => console.log('Audio playback blocked:', e));
+      timer = 30;
+      document.getElementById('timer-box').innerText = timer;
+      document.getElementById('timer-box').className = "bg-purple-900 border-2 border-yellow-400 text-yellow-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner";
 
       timerInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer').innerText = timeLeft;
-
-        if (timeLeft === 10) {
-          SFX.warning.play().catch(() => {});
+        timer--;
+        document.getElementById('timer-box').innerText = timer;
+        if (timer <= 5) {
+          document.getElementById('timer-box').className = "bg-red-900 border-2 border-red-400 text-red-300 font-black text-2xl w-14 h-10 rounded-xl flex items-center justify-center shadow-inner animate-pulse";
         }
-        if (timeLeft <= 0) {
+        if (timer <= 0) {
           clearInterval(timerInterval);
-          SFX.timerSong.pause();
-          SFX.timesUp.play().catch(() => {});
         }
       }, 1000);
     }
+
+    // 2. RESTART ROUND FUNCTION
+    function restartRound() {
+      loadQuestion(currentQIndex);
+    }
+
+    // 3. REVEAL ANSWER FUNCTION
+    function revealAnswer() {
+      const q = questions[currentQIndex];
+      if (!q) return;
+
+      const correctIndex = q.correct;
+      const correctCard = document.getElementById(`option-card-${correctIndex}`);
+
+      // Highlight in glowing green
+      correctCard.className = "option-card bg-green-900/90 border-4 border-green-400 p-4 rounded-2xl flex items-center space-x-3 transition-all ring-4 ring-green-400/50 scale-105";
+      
+      winSound.currentTime = 0;
+      winSound.play().catch(() => {});
+    }
+
+    // BROADCAST ACTIVE QUESTION TO BACKEND (PLAYER PHONES)
+    async function broadcastQuestionToPlayers(q) {
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'setActiveQuestion',
+            id: q.id,
+            number: q.roundNumber,
+            question: q.question,
+            options: q.options
+          })
+        });
+      } catch (err) {
+        console.error("Broadcast failed:", err);
+      }
+    }
+
+    function nextQuestion() {
+      currentQIndex = (currentQIndex + 1) % questions.length;
+      loadQuestion(currentQIndex);
+    }
+
+    // 4. LEADERBOARD FUNCTIONS
+    async function openLeaderboard() {
+      document.getElementById('leaderboard-modal').classList.remove('hidden');
+      const listContainer = document.getElementById('leaderboard-list');
+      listContainer.innerHTML = `<p class="text-center text-purple-300 italic py-4">Fetching live scores...</p>`;
+
+      const currentQ = questions[currentQIndex];
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=getVotes&round=${currentQ.roundNumber}`);
+        const data = await response.json();
+
+        if (data && data.votes) {
+          const votes = data.votes;
+          const teams = Object.keys(votes);
+
+          if (teams.length === 0) {
+            listContainer.innerHTML = `<p class="text-center text-yellow-300 py-4 font-bold">No answers submitted yet for Round ${currentQ.roundNumber}.</p>`;
+            return;
+          }
+
+          let html = '';
+          teams.forEach(team => {
+            const chosenAnswer = votes[team];
+            const isCorrect = chosenAnswer == currentQ.correct;
+            
+            html += `
+              <div class="flex items-center justify-between bg-purple-900/80 p-3 rounded-xl border border-yellow-400/40">
+                <span class="font-bold text-white text-sm">${team}</span>
+                <span class="font-bold text-xs ${isCorrect ? 'text-green-400 bg-green-950 px-2.5 py-1 rounded-lg border border-green-500' : 'text-red-400 bg-red-950 px-2.5 py-1 rounded-lg border border-red-500'}">
+                  ${isCorrect ? '100 PTS (Correct)' : '0 PTS'}
+                </span>
+              </div>
+            `;
+          });
+
+          listContainer.innerHTML = html;
+        }
+      } catch (err) {
+        listContainer.innerHTML = `<p class="text-center text-red-400 font-bold py-4">Unable to load scores.</p>`;
+      }
+    }
+
+    function closeLeaderboard() {
+      document.getElementById('leaderboard-modal').classList.add('hidden');
+    }
+
+    // INITIAL LOAD
+    loadQuestion(currentQIndex);
   </script>
 </body>
 </html>
