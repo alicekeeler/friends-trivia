@@ -238,37 +238,27 @@
     let audioCtx = null;
 
     function playSound(key) {
+      // Add your actual MP3 URLs here
+      const soundUrls = {
+        'claps': 'https://your-link-here.com/claps.mp3',
+        'howdoin': 'https://your-link-here.com/howdoin.mp3',
+        'allright': 'https://your-link-here.com/allright.mp3',
+        'bing': 'https://your-link-here.com/bing.mp3',
+        'excellent': 'https://your-link-here.com/excellent.mp3',
+        'verygood': 'https://your-link-here.com/verygood.mp3',
+        'helloyou': 'https://your-link-here.com/helloyou.mp3',
+        'decision': 'https://your-link-here.com/decision.mp3',
+        'dontknow': 'https://your-link-here.com/dontknow.mp3',
+        'iknow': 'https://your-link-here.com/iknow.mp3'
+      };
+
       try {
-        if (!audioCtx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          audioCtx = new AudioContext();
+        if (soundUrls[key]) {
+          const audio = new Audio(soundUrls[key]);
+          audio.play().catch(e => console.warn("Browser blocked audio play:", e));
         }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        const freqs = {
-          'claps': 440, 'howdoin': 523.25, 'allright': 659.25,
-          'bing': 783.99, 'excellent': 880, 'verygood': 587.33,
-          'helloyou': 698.46, 'decision': 493.88, 'dontknow': 349.23, 'iknow': 987.77
-        };
-
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freqs[key] || 440, audioCtx.currentTime);
-        
-        gain.gain.setValueAtTime(0, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.4);
       } catch(e) {
-        console.warn("Sound error:", e);
+        console.error("Sound error:", e);
       }
     }
 
@@ -404,8 +394,8 @@
       try {
         await fetch(SCRIPT_URL, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          // Use text/plain to bypass Google Apps Script CORS preflight restrictions
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             team: currentTeam,
             question: qKey,
@@ -413,7 +403,7 @@
           })
         });
       } catch (err) {
-        console.error("Failed to post answer:", err);
+        console.error("Failed to post answer to Google Sheet:", err);
       }
     }
 
